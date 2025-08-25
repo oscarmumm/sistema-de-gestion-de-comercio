@@ -12,6 +12,21 @@ Utilizamos la siguiente información:
 
 
 ```
+Table roles {
+  role_id int [pk, increment]
+  role_name varchar(50) [not null]
+}
+
+Table users {
+  user_id int [pk, increment]
+  role_id int [not null, ref: > roles.role_id]
+  name varchar(100) [not null]
+  surname varchar(100) [not null]
+  username varchar(50) [not null]
+  password text [not null]
+  created_at timestamp [default: 'now()']
+}
+
 Table categories {
   category_id int [pk, increment]
   name varchar(50) [not null]
@@ -29,6 +44,7 @@ Table products {
 
 Table product_entries_header {
   entry_id int [pk, increment]
+  user_id int [not null, ref: > users.user_id]
   supplier varchar(100) [not null]
   entry_date timestamp [not null, default: 'now()']
 }
@@ -48,6 +64,7 @@ Table payment_methods {
 
 Table sales {
   sale_id int [pk, increment]
+  user_id int [not null, ref: > users.user_id]
   sale_date timestamp [not null, note: 'TIMESTAMP WITHOUT TIME ZONE', default: 'now()']
   total numeric(10, 2) [not null]
   customer varchar(150)
