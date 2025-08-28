@@ -14,7 +14,7 @@ CREATE TABLE users (
         role_id INT REFERENCES roles(role_id),
         name VARCHAR(100) NOT NULL,
         surname VARCHAR(100) NOT NULL,
-        username VARCHAR(50) NOT NULL,
+        username VARCHAR(50) UNIQUE NOT NULL,
         password TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT NOW()
 );
@@ -36,7 +36,7 @@ CREATE TABLE products (
 
 CREATE TABLE product_entries_header (
         entry_id SERIAL PRIMARY KEY,
-        user_id INT REFERENCES users(user_id) NOT NULL
+        user_id INT REFERENCES users(user_id) NOT NULL,
         supplier VARCHAR(100) NOT NULL,
         entry_date TIMESTAMP NOT NULL DEFAULT NOW()
 );

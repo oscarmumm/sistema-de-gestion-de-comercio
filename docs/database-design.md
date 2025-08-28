@@ -22,7 +22,7 @@ Table users {
   role_id int [not null, ref: > roles.role_id]
   name varchar(100) [not null]
   surname varchar(100) [not null]
-  username varchar(50) [not null]
+  username varchar(50) [not null, unique]
   password text [not null]
   created_at timestamp [default: 'now()']
 }
