@@ -30,7 +30,8 @@ CREATE TABLE products (
         name VARCHAR(100) NOT NULL,
         description VARCHAR(1000),
         stock INT NOT NULL,
-        price_unit NUMERIC(10,2) NOT NULL,
+        unit_cost NUMERIC(10,2) NOT NULL,
+        sale_price NUMERIC (10, 2) NOT NULL,
         units_per_box INT NOT NULL
 );
 
@@ -68,6 +69,7 @@ CREATE TABLE sale_items (
         id SERIAL PRIMARY KEY,
         sale_id INT NOT NULL REFERENCES sales(sale_id),
         product_id INT NOT NULL REFERENCES products(product_id),
-        quantity INT NOT NULL,
-        unit_price NUMERIC(10, 2) NOT NULL
+        quantity INT NOT NULL CHECK (quantity > 0),
+        discount NUMERIC(10, 2) NOT NULL DEFAULT 0 CHECK (discount >= 0),
+        price_type VARCHAR(20) 
 );

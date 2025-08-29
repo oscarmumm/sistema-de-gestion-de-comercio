@@ -38,7 +38,8 @@ Table products {
   name varchar(100) [not null]
   description varchar(1000)
   stock int [not null]
-  price_unit numeric(10,2) [not null]
+  unit_cost numeric(10,2) [not null]
+  sale_price numeric(10, 2) [not null]
   units_per_box int [not null]
 }
 
@@ -76,7 +77,8 @@ Table sale_items {
   id int [pk, increment]
   sale_id int [not null, ref: > sales.sale_id]
   product_id int [not null, ref: > products.product_id]
-  quantity int [not null]
-  unit_price numeric(10, 2) [not null]
+  quantity int [not null, note: 'check(quantity > 0)'] 
+  discount numeric(10, 2) [not null, default: '0', note: 'check(quantity >= 0)']
+  price_type varchar(20)
 }
 ```
