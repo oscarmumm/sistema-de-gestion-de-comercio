@@ -14,71 +14,92 @@ Utilizamos la siguiente información:
 ```
 Table roles {
   role_id int [pk, increment]
-  role_name varchar(50) [not null]
+  role_name varchar(50) [unique, not null]
+  updated_at timestamp
+  updated_by int
 }
 
 Table users {
   user_id int [pk, increment]
-  role_id int [not null, ref: > roles.role_id]
+  role_id int [ref: > roles.role_id]
   name varchar(100) [not null]
   surname varchar(100) [not null]
-  username varchar(50) [not null, unique]
+  username varchar(50) [unique, not null]
   password text [not null]
-  created_at timestamp [default: 'now()']
+  created_at timestamp
+  updated_at timestamp
+  updated_by int
 }
 
 Table categories {
   category_id int [pk, increment]
-  name varchar(50) [not null]
+  name varchar(50) [unique, not null]
+  updated_at timestamp
+  updated_by int
+}
+
+Table brands {
+  brand_id int [pk, increment]
+  name varchar(50) [unique, not null]
+  updated_at timestamp
+  updated_by int
 }
 
 Table products {
   product_id int [pk, increment]
-  category_id int [not null, ref: > categories.category_id] 
+  category_id int [ref: > categories.category_id]
+  brand_id int [ref: > brands.brand_id]
   name varchar(100) [not null]
   description varchar(1000)
   stock int [not null]
   unit_cost numeric(10,2) [not null]
-  sale_price numeric(10, 2) [not null]
+  sale_price numeric(10,2) [not null]
   units_per_box int [not null]
+  updated_at timestamp
+  updated_by int
+}
+
+Table suppliers {
+  supplier_id int [pk, increment]
+  name varchar(100) [unique, not null]
+  updated_at timestamp
+  updated_by int
 }
 
 Table product_entries_header {
   entry_id int [pk, increment]
-  user_id int [not null, ref: > users.user_id]
-  supplier varchar(100) [not null]
-  entry_date timestamp [not null, default: 'now()']
+  user_id int [ref: > users.user_id]
+  supplier int [ref: > suppliers.supplier_id]
+  entry_date timestamp
 }
 
 Table product_entries_items {
   id int [pk, increment]
-  product_id int [not null, ref: > products.product_id]
-  entry_id int [not null, ref: > product_entries_header.entry_id]
+  product_id int [ref: > products.product_id]
+  entry_id int [ref: > product_entries_header.entry_id]
   boxes int [not null]
-  units_added int [not null]
 }
 
 Table payment_methods {
   payment_method_id int [pk, increment]
-  name varchar(50) [not null]
+  name varchar(50) [unique, not null]
 }
 
 Table sales {
   sale_id int [pk, increment]
-  user_id int [not null, ref: > users.user_id]
-  sale_date timestamp [not null, note: 'TIMESTAMP WITHOUT TIME ZONE', default: 'now()']
-  total numeric(10, 2) [not null]
+  user_id int [ref: > users.user_id]
+  total numeric(10,2) [not null]
   customer varchar(150)
-  payment_method_id int [not null, ref: > payment_methods.payment_method_id] 
-  created_at timestamp [not null, default: 'now()']
+  payment_method_id int [ref: > payment_methods.payment_method_id]
+  created_at timestamp
 }
 
 Table sale_items {
   id int [pk, increment]
-  sale_id int [not null, ref: > sales.sale_id]
-  product_id int [not null, ref: > products.product_id]
-  quantity int [not null, note: 'check(quantity > 0)'] 
-  discount numeric(10, 2) [not null, default: '0', note: 'check(quantity >= 0)']
+  sale_id int [ref: > sales.sale_id]
+  product_id int [ref: > products.product_id]
+  quantity int [not null]
+  discount numeric(10,2) [not null]
   price_type varchar(20)
 }
 ```
