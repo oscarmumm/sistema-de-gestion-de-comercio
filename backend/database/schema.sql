@@ -8,8 +8,7 @@ CREATE DATABASE store_management;
 CREATE TABLE roles (
         role_id SERIAL PRIMARY KEY,
         role_name VARCHAR(50) UNIQUE NOT NULL,
-        updated_at TIMESTAMP,
-        updated_by INT REFERENCES users(user_id)
+        updated_at TIMESTAMP
 );
 
 CREATE TABLE users (
@@ -20,9 +19,11 @@ CREATE TABLE users (
         username VARCHAR(50) UNIQUE NOT NULL,
         password TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
-        updated_at TIMESTAMP,
-        updated_by INT REFERENCES users(user_id)
+        updated_at TIMESTAMP
 );
+
+ALTER TABLE roles ADD COLUMN updated_by INT REFERENCES users(user_id);
+ALTER TABLE users ADD COLUMN updated_by INT REFERENCES users(user_id);
 
 CREATE TABLE categories (
         category_id SERIAL PRIMARY KEY,
@@ -62,7 +63,7 @@ CREATE TABLE suppliers (
 CREATE TABLE product_entries_header (
         entry_id SERIAL PRIMARY KEY,
         user_id INT REFERENCES users(user_id) NOT NULL,
-        supplier INT NOT NULL REFERENCES suppliers(supplier_id),
+        supplier_id INT NOT NULL REFERENCES suppliers(supplier_id),
         entry_date TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
@@ -129,18 +130,18 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION update_stock_on_entry()
 RETURNS TRIGGER AS $$
 DECLARE
-        units_per_box INT;
+        v_units_per_box INT;
 BEGIN
-        SELECT units_per_box INTO units_per_box
+        SELECT units_per_box INTO v_units_per_box
         FROM products
         WHERE product_id = NEW.product_id;
 
-        IF units_per_box IS NULL THEN
+        IF v_units_per_box IS NULL THEN
                 RAISE EXCEPTION 'Producto % no tiene definido units_per_box', NEW.product_id;
         END IF;
 
         UPDATE products
-        SET stock = stock + (NEW.boxes * units_per_box)
+        SET stock = stock + (NEW.boxes * v_units_per_box)
         WHERE product_id = NEW.product_id;
 
         RETURN NEW;
