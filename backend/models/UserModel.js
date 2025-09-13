@@ -32,37 +32,31 @@ export const getAllUsers = async () => {
     }
 };
 
-export const updateUser = async (
-    user_id,
-    role_id,
-    name,
-    surname,
-    username,
-    password,
-    updated_by
-) => {
+export const updateUser = async (user_id, fields) => {
     try {
-        let query = '';
-        let params = [];
-        if (password) {
-            const hashedPassword = await bcrypt.hash(password, 10);
-            query =
-                'UPDATE users SET role_id = $1, name = $2, surname = $3, username = $4, password = $5, updated_by = $6 WHERE user_id = $7 RETURNING *';
-            params = [
-                role_id,
-                name,
-                surname,
-                username,
-                hashedPassword,
-                updated_by,
-                user_id,
-            ];
-        } else {
-            query =
-                'UPDATE users SET role_id = $1, name = $2, surname = $3, username = $4, updated_by = $5 WHERE user_id = $6 RETURNING *';
-            params = [role_id, name, surname, username, updated_by, user_id];
+        if (fields.password) {
+            fields.password = await bcrypt.hash(fields.password, 10);
         }
-        const result = await pool.query(query, params);
+        // estas variables las uso para hacer la query dinámicamente, por si solo se desean cambiar algunos campos
+        const setClauses = [];
+        const values = [];
+        let index = 1;
+        // para eso uso un ciclo for
+        for (const [key, value] of Object.entries(fields)) {
+            setClauses.push(`${key} = $${index}`);
+            values.push(value);
+            index++;
+        }
+        // si no hay campos a modificar devolvemos null
+        if (setClauses.length === 0) {
+            return null;
+        }
+        // acá formamos la query dinámicamente
+        const query = `UPDATE users SET ${setClauses.join(
+            ', '
+        )} WHERE user_id = $${index} RETURNING *`;
+        values.push(user_id);
+        const result = await pool.query(query, values);
         return result.rows[0];
     } catch (error) {
         throw error;

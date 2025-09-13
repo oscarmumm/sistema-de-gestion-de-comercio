@@ -76,6 +76,9 @@ export const deleteRoleController = async (req, res) => {
         if (!deletedRole) {
             res.status(404).json({message: 'Rol no encontrado'});
         }
+        return res
+            .status(200)
+            .json({message: 'Rol eliminado correctamente', rol: deletedRole});
     } catch (error) {
         res.status(500).json({messade: 'Error al eliminar el rol'});
     }
