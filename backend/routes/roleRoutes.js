@@ -5,7 +5,7 @@ const router = Router();
 
 router.post('/', RoleController.createRoleController);
 router.get('/', RoleController.getRoleController);
-router.post('/:id', RoleController.updateRoleController);
+router.put('/:id', RoleController.updateRoleController);
 router.delete('/:id', RoleController.deleteRoleController);
 
 export default router;
