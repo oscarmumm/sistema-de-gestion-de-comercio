@@ -8,7 +8,7 @@ CREATE DATABASE store_management;
 CREATE TABLE roles (
         role_id SERIAL PRIMARY KEY,
         role_name VARCHAR(50) UNIQUE NOT NULL,
-        updated_at TIMESTAMP
+        updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE users (
@@ -28,14 +28,14 @@ ALTER TABLE users ADD COLUMN updated_by INT REFERENCES users(user_id);
 CREATE TABLE categories (
         category_id SERIAL PRIMARY KEY,
         name VARCHAR(50) UNIQUE NOT NULL,
-        updated_at TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT NOW(),
         updated_by INT REFERENCES users(user_id)
 );
 
 CREATE TABLE brands (
         brand_id SERIAL PRIMARY KEY,
         name VARCHAR(50) UNIQUE NOT NULL,
-        updated_at TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT NOW(),
         updated_by INT REFERENCES users(user_id)
 );
 
@@ -49,14 +49,14 @@ CREATE TABLE products (
         unit_cost NUMERIC(10,2) NOT NULL,
         sale_price NUMERIC (10, 2) NOT NULL,
         units_per_box INT NOT NULL,
-        updated_at TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT NOW(),
         updated_by INT REFERENCES users(user_id)
 );
 
 CREATE TABLE suppliers (
         supplier_id SERIAL PRIMARY KEY,
         name VARCHAR(100) UNIQUE NOT NULL,
-        updated_at TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT NOW(),
         updated_by INT REFERENCES users(user_id)
 );
 
