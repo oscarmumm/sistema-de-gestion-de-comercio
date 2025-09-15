@@ -1,4 +1,4 @@
-import * as UserModel from '../models/UserModel';
+import * as UserModel from '../models/UserModel.js';
 
 export const createUserController = async (req, res) => {
     try {
@@ -32,17 +32,29 @@ export const createUserController = async (req, res) => {
 
 export const getUserController = async (req, res) => {
     try {
-        const users = UserModel.getAllUsers();
+        const users = await UserModel.getAllUsers();
         return res.json(users);
     } catch (error) {
         res.status(500).json({message: 'Error al obtener usuarios', error});
     }
 };
 
+export const getUserByIdController = async(req, res) => {
+    try {
+        const {id} = req.params;
+        const user = await UserModel.getUserById(id);
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({message: 'Error interno del servidor'})
+    }
+}
+
 export const updateUserController = async (req, res) => {
     try {
-        const {user_id} = req.params;
+        const {id} = req.params;
         const fields = req.body;
+        console.log('id:', id);
+        console.log('fields:', fields);
         const updateData = Object.fromEntries(
             Object.entries(fields).filter(([_, value]) => value !== undefined)
         );
@@ -51,7 +63,7 @@ export const updateUserController = async (req, res) => {
                 .status(400)
                 .json({message: 'No se enviaron campos para actualizar'});
         }
-        const updatedUser = await UserModel.updateUser(user_id, updateData);
+        const updatedUser = await UserModel.updateUser(id, updateData);
         res.status(200).json({
             message: 'Usuario actualizado correctamente',
             updatedUser,

@@ -1,4 +1,4 @@
-import pool from '../db';
+import pool from '../db.js';
 import bcrypt from 'bcrypt';
 
 export const createUser = async (
@@ -27,6 +27,17 @@ export const getAllUsers = async () => {
             'SELECT * FROM users ORDER BY username ASC'
         );
         return result.rows;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getUserById = async (user_id) => {
+    try {
+        const result = await pool.query('SELECT * FROM users WHERE user_id = $1', [
+            user_id,
+        ]);
+        return result.rows[0];
     } catch (error) {
         throw error;
     }

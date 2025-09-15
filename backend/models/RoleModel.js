@@ -1,9 +1,9 @@
-import pool from '../db';
+import pool from '../db.js';
 
 export const createRole = async (role_name, updated_by = null) => {
     try {
         const result = await pool.query(
-            'INSERT INTO roles (role_id, role_name, updated_by) VALUES ($1, NOW(), $2) RETURNING *',
+            'INSERT INTO roles (role_name, updated_by) VALUES ($1, $2) RETURNING *',
             [role_name, updated_by]
         );
         return result.rows[0];
@@ -18,6 +18,18 @@ export const getAllRoles = async () => {
             'SELECT * FROM roles ORDER BY role_id ASC'
         );
         return result.rows;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getRoleById = async (role_id) => {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM roles WHERE role_id = $1',
+            [role_id]
+        );
+        return result.rows[0];
     } catch (error) {
         throw error;
     }

@@ -1,8 +1,9 @@
-import * as RoleModel from '../models/RoleModel';
+import * as RoleModel from '../models/RoleModel.js';
 
 export const createRoleController = async (req, res) => {
     try {
         let {role_name} = req.body;
+        console.log('role_name: ', role_name)
         if (!role_name) {
             return res
                 .status(400)
@@ -17,7 +18,7 @@ export const createRoleController = async (req, res) => {
                     'El nombre del rol no puede contener mas de 30 caracteres',
             });
         }
-        const newRole = await RoleModel.createRole({role_name});
+        const newRole = await RoleModel.createRole(role_name);
         res.status(201).json(newRole);
     } catch (error) {
         res.status(500).json({message: 'Error interno del servidor'});
@@ -26,10 +27,20 @@ export const createRoleController = async (req, res) => {
 
 export const getRoleController = async (req, res) => {
     try {
-        const roles = RoleModel.getAllRoles();
+        const roles = await RoleModel.getAllRoles();
         res.json(roles);
     } catch (error) {
         res.status(500).json({message: 'Error al obtener roles', error});
+    }
+};
+
+export const getRoleByIdController = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const role = await RoleModel.getRoleById(id);
+        res.json(role);
+    } catch (error) {
+        res.status(500).json({message: 'Error interno del servidor'});
     }
 };
 
