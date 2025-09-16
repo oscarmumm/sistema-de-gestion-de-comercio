@@ -10,14 +10,13 @@ export const createUser = async (
     name,
     surname,
     username,
-    password,
-    updated_by = null
+    password
 ) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const result = await pool.query(
-            'INSERT INTO users (role_id, name, surname, username, password, updated_by) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-            [role_id, name, surname, username, hashedPassword, updated_by]
+            'INSERT INTO users (role_id, name, surname, username, password) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [role_id, name, surname, username, hashedPassword]
         );
         return result.rows[0];
     } catch (error) {
@@ -38,16 +37,17 @@ export const getAllUsers = async () => {
 
 export const getUserById = async (user_id) => {
     try {
-        const result = await pool.query('SELECT * FROM users WHERE user_id = $1', [
-            user_id,
-        ]);
+        const result = await pool.query(
+            'SELECT * FROM users WHERE user_id = $1',
+            [user_id]
+        );
         return result.rows[0];
     } catch (error) {
         throw error;
     }
 };
 
-export const updateUser = async (user_id, fields) => {
+export const updateUser = async (user_id, fields, updated_by) => {
     try {
         if (fields.password) {
             fields.password = await bcrypt.hash(fields.password, 10);
@@ -62,6 +62,10 @@ export const updateUser = async (user_id, fields) => {
             values.push(value);
             index++;
         }
+        setClauses.push('updated_at = NOW()');
+        setClauses.push(`updated_by = $${index}`);
+        values.push(updated_by);
+        index++;
         // si no hay campos a modificar devolvemos null
         if (setClauses.length === 0) {
             return null;

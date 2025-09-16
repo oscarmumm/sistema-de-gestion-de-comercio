@@ -2,16 +2,8 @@ import * as UserModel from '../models/UserModel.js';
 
 export const createUserController = async (req, res) => {
     try {
-        const {role_id, name, surname, username, password, updated_by} =
-            req.body;
-        if (
-            !role_id ||
-            !name ||
-            !surname ||
-            !username ||
-            !password ||
-            !updated_by
-        ) {
+        const {role_id, name, surname, username, password} = req.body;
+        if (!role_id || !name || !surname || !username || !password) {
             return res
                 .status(400)
                 .json({message: 'Todos los campos son obligatorios'});
@@ -21,8 +13,7 @@ export const createUserController = async (req, res) => {
             name,
             surname,
             username,
-            password,
-            updated_by
+            password
         );
         res.status(201).json(newUser);
     } catch (error) {
@@ -39,22 +30,20 @@ export const getUserController = async (req, res) => {
     }
 };
 
-export const getUserByIdController = async(req, res) => {
+export const getUserByIdController = async (req, res) => {
     try {
         const {id} = req.params;
         const user = await UserModel.getUserById(id);
         res.json(user);
     } catch (error) {
-        res.status(500).json({message: 'Error interno del servidor'})
+        res.status(500).json({message: 'Error interno del servidor'});
     }
-}
+};
 
 export const updateUserController = async (req, res) => {
     try {
         const {id} = req.params;
         const fields = req.body;
-        console.log('id:', id);
-        console.log('fields:', fields);
         const updateData = Object.fromEntries(
             Object.entries(fields).filter(([_, value]) => value !== undefined)
         );

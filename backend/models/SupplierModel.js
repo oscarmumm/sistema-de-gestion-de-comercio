@@ -23,6 +23,28 @@ export const getAllSuppliers = async () => {
     }
 };
 
+export const getSupplierById = async (supplier_id) => {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM suppliers WHERE supplier_id = $1',
+            [supplier_id]
+        );
+        return result.rows[0];
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const updateSupplier = async () => {};
 
-export const deleteSupplier = async () => {};
+export const deleteSupplier = async (supplier_id) => {
+    try {
+        const result = await pool.query(
+            'DELETE FROM suppliers WHERE supplier_id = $1 RETURNING *',
+            [supplier_id]
+        );
+        return result.rows[0];
+    } catch (error) {
+        throw error;
+    }
+};
