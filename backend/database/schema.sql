@@ -7,7 +7,7 @@ CREATE DATABASE store_management;
 ------------------------------
 CREATE TABLE roles (
         role_id SERIAL PRIMARY KEY,
-        role_name VARCHAR(50) UNIQUE NOT NULL,
+        name VARCHAR(50) UNIQUE NOT NULL,
         updated_at TIMESTAMP DEFAULT NOW()
 );
 

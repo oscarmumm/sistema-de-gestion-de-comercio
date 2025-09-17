@@ -1,10 +1,10 @@
 import pool from '../db.js';
 
-export const createRole = async (role_name) => {
+export const createRole = async (name) => {
     try {
         const result = await pool.query(
-            'INSERT INTO roles (role_name) VALUES ($1) RETURNING *',
-            [role_name]
+            'INSERT INTO roles (name) VALUES ($1) RETURNING *',
+            [name]
         );
         return result.rows[0];
     } catch (error) {
@@ -35,11 +35,11 @@ export const getRoleById = async (role_id) => {
     }
 };
 
-export const updateRole = async (role_id, role_name, updated_by) => {
+export const updateRole = async (role_id, name, updated_by) => {
     try {
         const result = await pool.query(
-            'UPDATE roles SET role_name = $1, updated_at = NOW(), updated_by = $2 WHERE role_id = $3 RETURNING *',
-            [role_name, updated_by, role_id]
+            'UPDATE roles SET name = $1, updated_at = NOW(), updated_by = $2 WHERE role_id = $3 RETURNING *',
+            [name, updated_by, role_id]
         );
         return result.rows[0];
     } catch (error) {

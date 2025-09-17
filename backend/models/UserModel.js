@@ -1,10 +1,6 @@
 import pool from '../db.js';
 import bcrypt from 'bcrypt';
 
-// ELIMINAR EL UPDATED_BY EN LAS FUNCIONES DE CREACION, NO TIENE SENTIDO
-// YA QUE NO ESTAMOS ACTUALIZANDO, ESTAMOS CREANDO
-// DEJARLO SOLO EN LAS FUNCIONES DE UPDATE
-// REVISAR ESTO EN LAS TABLAS, MODELOS Y CONTROLADORES
 export const createUser = async (
     role_id,
     name,

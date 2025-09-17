@@ -35,7 +35,16 @@ export const getSupplierById = async (supplier_id) => {
     }
 };
 
-export const updateSupplier = async () => {};
+export const updateSupplier = async (supplier_id, name, updated_by) => {
+    try {
+        const result = await pool.query(
+            'UPDATE suppliers SET name = $1, updated_at = NOW(), updated_by = $2 WHERE supplier_id = $3 RETURNING *',
+            [name, updated_by, supplier_id]
+        );
+    } catch (error) {
+        throw error;
+    }
+};
 
 export const deleteSupplier = async (supplier_id) => {
     try {
