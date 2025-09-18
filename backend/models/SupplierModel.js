@@ -15,7 +15,7 @@ export const createSupplier = async (name) => {
 export const getAllSuppliers = async () => {
     try {
         const result = await pool.query(
-            'SELECT * FROM suppliers ORDER BY name'
+            'SELECT * FROM suppliers ORDER BY name ASC'
         );
         return result.rows;
     } catch (error) {

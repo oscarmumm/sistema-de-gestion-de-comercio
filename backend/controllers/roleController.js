@@ -3,7 +3,6 @@ import * as RoleModel from '../models/RoleModel.js';
 export const createRoleController = async (req, res) => {
     try {
         let { name } = req.body;
-        console.log('name: ', name);
         if (!name) {
             return res
                 .status(400)
@@ -19,18 +18,18 @@ export const createRoleController = async (req, res) => {
             });
         }
         const newRole = await RoleModel.createRole(name);
-        res.status(201).json(newRole);
+        return res.status(201).json(newRole);
     } catch (error) {
-        res.status(500).json({ message: 'Error interno del servidor' });
+        return res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
 
 export const getAllRolesController = async (req, res) => {
     try {
         const roles = await RoleModel.getAllRoles();
-        res.json(roles);
+        return res.json(roles);
     } catch (error) {
-        res.status(500).json({ message: 'Error al obtener roles', error });
+        return res.status(500).json({ message: 'Error al obtener roles', error });
     }
 };
 
@@ -38,9 +37,9 @@ export const getRoleByIdController = async (req, res) => {
     try {
         const { id } = req.params;
         const role = await RoleModel.getRoleById(id);
-        res.json(role);
+        return res.json(role);
     } catch (error) {
-        res.status(500).json({ message: 'Error interno del servidor' });
+        return res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
 
@@ -67,12 +66,12 @@ export const updateRoleController = async (req, res) => {
         if (!updatedRole) {
             return res.status(404).json({ message: 'Rol no encontrado' });
         }
-        res.status(200).json({
+        return res.status(200).json({
             message: 'Rol actualizado correctamente',
             updatedRole,
         });
     } catch (error) {
-        res.status(500).json({ message: 'Error al actualizar el rol' });
+        return res.status(500).json({ message: 'Error al actualizar el rol' });
     }
 };
 
@@ -81,12 +80,12 @@ export const deleteRoleController = async (req, res) => {
         const { id } = req.params;
         const deletedRole = await RoleModel.deleteRole(id);
         if (!deletedRole) {
-            res.status(404).json({ message: 'Rol no encontrado' });
+            return res.status(404).json({ message: 'Rol no encontrado' });
         }
         return res
             .status(200)
             .json({ message: 'Rol eliminado correctamente', rol: deletedRole });
     } catch (error) {
-        res.status(500).json({ messade: 'Error al eliminar el rol' });
+        return res.status(500).json({ messade: 'Error al eliminar el rol' });
     }
 };
