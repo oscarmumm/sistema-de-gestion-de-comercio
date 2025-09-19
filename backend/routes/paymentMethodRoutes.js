@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as PaymentMethodController from '../controllers/paymentMethodController.js';
 
-const router = { Router };
+const router = Router();
 
 router.post('/', PaymentMethodController.createPaymentMethodController);
 router.get('/', PaymentMethodController.getAllPaymentMethodsController);

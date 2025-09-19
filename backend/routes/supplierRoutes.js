@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import * as SupplierController from '../controllers/supplierController.js';
 
-const router = {Router};
+const router = Router();
 
 router.post('/', SupplierController.createSupplierController);
 router.get('/', SupplierController.getAllSuppliersController);

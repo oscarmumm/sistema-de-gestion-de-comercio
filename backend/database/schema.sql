@@ -67,19 +67,19 @@ CREATE TABLE product_entries_header (
         entry_date TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE payment_methods (
+        payment_method_id SERIAL PRIMARY KEY,
+        name VARCHAR(50) UNIQUE NOT NULL,
+        updated_at TIMESTAMP DEFAULT NOW(),
+        updated_by INT REFERENCES users(user_id)
+);
+
 -- This table stores the products and quantities in each inventory entry
 CREATE TABLE product_entries_items (
         id SERIAL PRIMARY KEY,
         product_id INT NOT NULL REFERENCES products(product_id),
         entry_id INT NOT NULL REFERENCES product_entries_header(entry_id) ON DELETE CASCADE,
         boxes INT NOT NULL
-);
-
-CREATE TABLE payment_methods (
-        payment_method_id SERIAL PRIMARY KEY,
-        name VARCHAR(50) UNIQUE NOT NULL,
-        updated_at TIMESTAMP DEFAULT NOW(),
-        updated_by INT REFERENCES users(user_id)
 );
 
 CREATE TABLE sales (
