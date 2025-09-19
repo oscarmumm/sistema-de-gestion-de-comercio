@@ -60,16 +60,19 @@ CREATE TABLE suppliers (
         updated_by INT REFERENCES users(user_id)
 );
 
-CREATE TABLE product_entries_header (
-        entry_id SERIAL PRIMARY KEY,
-        user_id INT REFERENCES users(user_id) NOT NULL,
-        supplier_id INT NOT NULL REFERENCES suppliers(supplier_id),
-        entry_date TIMESTAMP NOT NULL DEFAULT NOW()
-);
 
 CREATE TABLE payment_methods (
         payment_method_id SERIAL PRIMARY KEY,
         name VARCHAR(50) UNIQUE NOT NULL,
+        updated_at TIMESTAMP DEFAULT NOW(),
+        updated_by INT REFERENCES users(user_id)
+);
+
+CREATE TABLE product_entries_header (
+        entry_id SERIAL PRIMARY KEY,
+        user_id INT REFERENCES users(user_id) NOT NULL,
+        supplier_id INT NOT NULL REFERENCES suppliers(supplier_id),
+        entry_date TIMESTAMP NOT NULL DEFAULT NOW(),
         updated_at TIMESTAMP DEFAULT NOW(),
         updated_by INT REFERENCES users(user_id)
 );
@@ -88,7 +91,9 @@ CREATE TABLE sales (
         total NUMERIC(10,2) NOT NULL,
         customer VARCHAR(150),
         payment_method_id INT NOT NULL REFERENCES payment_methods(payment_method_id),
-        created_at TIMESTAMP NOT NULL DEFAULT NOW()
+        created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW(),
+        updated_by INT REFERENCES users(user_id)
 );
 
 -- This table stores the products, quantities, and discounts for each sale tansaction
