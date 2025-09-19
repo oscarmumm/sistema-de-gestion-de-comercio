@@ -15,18 +15,18 @@ export const createUserController = async (req, res) => {
             username,
             password
         );
-        res.status(201).json(newUser);
+        return res.status(201).json(newUser);
     } catch (error) {
-        res.status(500).json({message: 'Error interno del servidor'});
+        return res.status(500).json({message: 'Error interno del servidor'});
     }
 };
 
 export const getUserController = async (req, res) => {
     try {
         const users = await UserModel.getAllUsers();
-        return res.json(users);
+        return res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({message: 'Error al obtener usuarios', error});
+        return res.status(500).json({message: 'Error al obtener usuarios', error});
     }
 };
 
@@ -34,9 +34,9 @@ export const getUserByIdController = async (req, res) => {
     try {
         const {id} = req.params;
         const user = await UserModel.getUserById(id);
-        res.json(user);
+        return res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({message: 'Error interno del servidor'});
+        return res.status(500).json({message: 'Error interno del servidor'});
     }
 };
 
@@ -53,12 +53,12 @@ export const updateUserController = async (req, res) => {
                 .json({message: 'No se enviaron campos para actualizar'});
         }
         const updatedUser = await UserModel.updateUser(id, updateData);
-        res.status(200).json({
+        return res.status(200).json({
             message: 'Usuario actualizado correctamente',
             updatedUser,
         });
     } catch (error) {
-        res.status(500).json({message: 'Error interno del servidor'});
+        return res.status(500).json({message: 'Error interno del servidor'});
     }
 };
 
@@ -74,6 +74,6 @@ export const deleteUserController = async (req, res) => {
             user: deletedUser,
         });
     } catch (error) {
-        res.status(500).json({message: 'Error interno del servidor'});
+        return res.status(500).json({message: 'Error interno del servidor'});
     }
 };

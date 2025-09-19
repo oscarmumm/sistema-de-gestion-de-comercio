@@ -77,7 +77,9 @@ CREATE TABLE product_entries_items (
 
 CREATE TABLE payment_methods (
         payment_method_id SERIAL PRIMARY KEY,
-        name VARCHAR(50) UNIQUE NOT NULL
+        name VARCHAR(50) UNIQUE NOT NULL,
+        updated_at TIMESTAMP DEFAULT NOW(),
+        updated_by INT REFERENCES users(user_id)
 );
 
 CREATE TABLE sales (

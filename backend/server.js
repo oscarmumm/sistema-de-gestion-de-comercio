@@ -5,6 +5,8 @@ import roleRoutes from './routes/roleRoutes.js';
 import supplierRoutes from './routes/supplierRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import brandRoutes from './routes/brandRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import paymentMethodRoutes from './routes/paymentMethodRoutes.js';
 
 dotenv.config();
 
@@ -19,8 +21,10 @@ app.get('/', (req, res) => {
 app.use('/users', userRoutes);
 app.use('/roles', roleRoutes);
 app.use('/suppliers', supplierRoutes);
-app.use('/category', categoryRoutes);
-app.use('/brand', brandRoutes);
+app.use('/categories', categoryRoutes);
+app.use('/brands', brandRoutes);
+app.use('/products', productRoutes);
+app.use('/payment-methods', paymentMethodRoutes);
 
 const PORT = process.env.PORT || 3000;
 

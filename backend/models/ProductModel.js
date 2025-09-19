@@ -53,7 +53,34 @@ export const getProductById = async (product_id) => {
     }
 };
 
-export const updateProduct = async () => {};
+export const updateProduct = async (product_id, fields, updated_by) => {
+    try {
+        const setClauses = [];
+        const values = [];
+        let index = 1;
+
+        for (const [key, value] of Object.entries(fields)) {
+            setClauses.push(`${key} = $${index}`);
+            values.push(value);
+            index++;
+        }
+        setClauses.push('updated_at = NOW()');
+        setClauses.push(`updated_by = $${index}`);
+        values.push(updated_by);
+        index++;
+        if (setClauses.length === 0) {
+            return null;
+        }
+        const query = `UPDATE products SET ${setClauses.join(
+            ', '
+        )} WHERE product_id = ${index} RETURNING *`;
+        values.push(product_id);
+        const result = await pool.query(query, values);
+        return result.rows[0];
+    } catch (error) {
+        throw error;
+    }
+};
 
 export const deleteProduct = async (product_id) => {
     try {

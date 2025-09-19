@@ -5,8 +5,8 @@ const router = {Router};
 
 router.post('/', BrandController.createBrandController);
 router.get('/', BrandController.getAllBrandsController);
-router.get('/', BrandController.getBrandByIdController);
-router.put('/', BrandController.updateBrandController);
-router.delete('/', BrandController.deleteBrandController);
+router.get('/:id', BrandController.getBrandByIdController);
+router.put('/:id', BrandController.updateBrandController);
+router.delete('/:id', BrandController.deleteBrandController);
 
 export default router;
