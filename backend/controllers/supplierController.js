@@ -86,7 +86,7 @@ export const deleteSupplierController = async (req, res) => {
         const {id} = req.params;
         const deletedSupplier = await SupplierModel.deleteSupplier(id);
         if (!deletedSupplier) {
-            res.status(404).json({message: 'Proveedor no encontrado'});
+            return res.status(404).json({message: 'Proveedor no encontrado'});
         }
         return res.status(200).json({
             message: 'Proveedor eliminado correctamente',
