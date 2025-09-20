@@ -1,6 +1,14 @@
 import pool from '../db.js';
 
-export const createProductEntryHeader = async (user_id, supplier) => {};
+export const createProductEntryHeader = async (user_id, supplier) => {
+    try {
+        const result = await pool.query(
+            'INSERT INTO product_entries_header'
+        )
+    } catch (error) {
+        throw error;
+    }
+};
 
 export const getAllProductEntryHeaders = async () => {
     try {
