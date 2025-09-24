@@ -1,4 +1,4 @@
-export default function Home() {
+export const Home = () => {
     return (
         <div>
             <h1 className='text-3xl font-bold underline'>
@@ -6,4 +6,4 @@ export default function Home() {
             </h1>
         </div>
     );
-}
+};
