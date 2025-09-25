@@ -2,6 +2,7 @@ import {Routes, Route, BrowserRouter} from 'react-router';
 import {Home} from '../pages/Home';
 import {Login} from '../pages/Login';
 import {ProtectedRoute} from './ProtectedRoute';
+import Dashboard from '../pages/Dashboard';
 
 export const AppRouter = () => {
     return (
@@ -13,6 +14,14 @@ export const AppRouter = () => {
                     element={
                         <ProtectedRoute>
                             <Home />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
                         </ProtectedRoute>
                     }
                 />

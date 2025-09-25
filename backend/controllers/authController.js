@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import {getUserByUsername} from '../models/UserModel';
+import {getUserByUsername} from '../models/UserModel.js';
 
-export const LoginController = async (req, res) => {
+export const loginController = async (req, res) => {
     const {username, password} = req.body;
 
     if (!username || !password) {
