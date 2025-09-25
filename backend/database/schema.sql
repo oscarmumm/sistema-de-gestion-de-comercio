@@ -8,7 +8,8 @@ CREATE DATABASE store_management;
 CREATE TABLE roles (
         role_id SERIAL PRIMARY KEY,
         name VARCHAR(50) UNIQUE NOT NULL,
-        updated_at TIMESTAMP DEFAULT NOW()
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP
 );
 
 CREATE TABLE users (
@@ -28,14 +29,16 @@ ALTER TABLE users ADD COLUMN updated_by INT REFERENCES users(user_id);
 CREATE TABLE categories (
         category_id SERIAL PRIMARY KEY,
         name VARCHAR(50) UNIQUE NOT NULL,
-        updated_at TIMESTAMP DEFAULT NOW(),
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP,
         updated_by INT REFERENCES users(user_id)
 );
 
 CREATE TABLE brands (
         brand_id SERIAL PRIMARY KEY,
         name VARCHAR(50) UNIQUE NOT NULL,
-        updated_at TIMESTAMP DEFAULT NOW(),
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP,
         updated_by INT REFERENCES users(user_id)
 );
 
@@ -49,14 +52,16 @@ CREATE TABLE products (
         unit_cost NUMERIC(10,2) NOT NULL,
         sale_price NUMERIC (10, 2) NOT NULL,
         units_per_box INT NOT NULL,
-        updated_at TIMESTAMP DEFAULT NOW(),
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP,
         updated_by INT REFERENCES users(user_id)
 );
 
 CREATE TABLE suppliers (
         supplier_id SERIAL PRIMARY KEY,
         name VARCHAR(100) UNIQUE NOT NULL,
-        updated_at TIMESTAMP DEFAULT NOW(),
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP,
         updated_by INT REFERENCES users(user_id)
 );
 
@@ -64,7 +69,8 @@ CREATE TABLE suppliers (
 CREATE TABLE payment_methods (
         payment_method_id SERIAL PRIMARY KEY,
         name VARCHAR(50) UNIQUE NOT NULL,
-        updated_at TIMESTAMP DEFAULT NOW(),
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP,
         updated_by INT REFERENCES users(user_id)
 );
 
@@ -73,7 +79,8 @@ CREATE TABLE product_entries_header (
         user_id INT REFERENCES users(user_id) NOT NULL,
         supplier_id INT NOT NULL REFERENCES suppliers(supplier_id),
         entry_date TIMESTAMP NOT NULL DEFAULT NOW(),
-        updated_at TIMESTAMP DEFAULT NOW(),
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP,
         updated_by INT REFERENCES users(user_id)
 );
 
@@ -92,7 +99,7 @@ CREATE TABLE sales (
         customer VARCHAR(150),
         payment_method_id INT NOT NULL REFERENCES payment_methods(payment_method_id),
         created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-        updated_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP,
         updated_by INT REFERENCES users(user_id)
 );
 
@@ -174,7 +181,7 @@ EXECUTE FUNCTION update_stock_on_entry();
 ----------------------------
 -- INDEXES
 ----------------------------
-CREATE INDEX idx_roles_name ON roles(role_name);
+CREATE INDEX idx_roles_name ON roles(name);
 CREATE INDEX idx_users_username ON users(username);
 CREATE INDEX idx_products_name ON products(name);
 CREATE INDEX idx_categories_name ON categories(name);

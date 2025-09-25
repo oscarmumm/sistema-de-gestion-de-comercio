@@ -40,6 +40,16 @@ export const getUserByIdController = async (req, res) => {
     }
 };
 
+export const getUserByUsernameController = async (req, res) => {
+    try {
+        const {username} = req.body;
+        const user = await UserModel.getUserByUsername(username);
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(500).json({message: 'Error interno del servidor'});
+    }
+};
+
 export const updateUserController = async (req, res) => {
     try {
         const {id} = req.params;

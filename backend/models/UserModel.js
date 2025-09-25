@@ -43,6 +43,18 @@ export const getUserById = async (user_id) => {
     }
 };
 
+export const getUserByUsername = async (username) => {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM users WHERE username = $1',
+            [username]
+        );
+        return result.rows[0];
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const updateUser = async (user_id, fields, updated_by) => {
     try {
         if (fields.password) {
