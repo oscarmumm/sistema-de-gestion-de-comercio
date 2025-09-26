@@ -3,6 +3,7 @@ import {Home} from '../pages/Home';
 import {Login} from '../pages/Login';
 import {ProtectedRoute} from './ProtectedRoute';
 import Dashboard from '../pages/Dashboard';
+import { Categories } from '../pages/Categories';
 
 export const AppRouter = () => {
     return (
@@ -22,6 +23,14 @@ export const AppRouter = () => {
                     element={
                         <ProtectedRoute>
                             <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/categories"
+                    element={
+                        <ProtectedRoute>
+                            <Categories />
                         </ProtectedRoute>
                     }
                 />
