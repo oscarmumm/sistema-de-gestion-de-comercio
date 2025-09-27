@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getCategories } from '../api/categories';
 
 interface Category {
-    id: number;
+    category_id: number;
     name: string;
 }
 
@@ -15,20 +15,34 @@ export const Categories = () => {
                 const data = await getCategories();
                 setCategories(data);
             } catch (error) {
-                console.error(error)
+                console.error(error);
             }
-        }
-        fetchCategories()
+        };
+        fetchCategories();
     }, []);
 
-    return <div>
-        <h2>Categories</h2>
-        <ul>
-            {
-                categories?.map((category) => (
-                    <li key={category.id}>{category.name}</li>
-                ))
-            }
-        </ul>
-    </div>;
+    return (
+        <div>
+            <h2>Categories</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {categories?.map((category) => (
+                        <tr>
+                            <td key={category.category_id}>{category.name}</td>
+                            <td>
+                                <button>Editar</button>
+                                <button>Eliminar</button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
 };
