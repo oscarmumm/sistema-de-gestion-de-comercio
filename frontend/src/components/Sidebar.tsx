@@ -1,38 +1,54 @@
 import { NavLink } from 'react-router';
+import { MdArrowBack } from 'react-icons/md';
 
-export default function Sidebar() {
+interface SideBarProps {
+    onToggleSidebar: () => void;
+}
+
+export default function Sidebar({ onToggleSidebar }: SideBarProps) {
     return (
-        <div className="p-3">
+        <div className='h-screen p-3 px-5 bg-indigo-700 text-slate-50 shadow-lg'>
+            <button onClick={onToggleSidebar} className='text-3xl cursor-pointer'>
+                <MdArrowBack />
+            </button>
+            <h3 className='mt-10 mb-2 font-semibold'>Inventario</h3>
             <ul>
-                <li>
-                    <NavLink to="/categories">Categorías</NavLink>
+                <li className='mb-2'>
+                    <NavLink to='/categories'>- Categorías</NavLink>
                 </li>
-                <li>
-                    <NavLink to="/suppliers">Proveedores</NavLink>
+
+                <li className='mb-2'>
+                    <NavLink to='/suppliers'>- Proveedores</NavLink>
                 </li>
-                <li>
-                    <NavLink to="/brands">Marcas</NavLink>
+                <li className='mb-2'>
+                    <NavLink to='/brands'>- Marcas</NavLink>
                 </li>
-                <li>
-                    <NavLink to="/products">Productos</NavLink>
+                <li className='mb-2'>
+                    <NavLink to='/products'>- Productos</NavLink>
                 </li>
-                <li>
-                    <NavLink to="/payment-methods">Métodos de Pago</NavLink>
+                <li className='mb-2'>
+                    <NavLink to='/stock-entry'>- Ingreso de Mercadería</NavLink>
                 </li>
-                <li>
-                    <NavLink to="/new-sale">Registrar Venta</NavLink>
+            </ul>
+            <h3 className='mt-10 mb-2 font-semibold'>Ventas</h3>
+            <ul>
+                <li className='mb-2'>
+                    <NavLink to='/dashboard'>- Dashboard</NavLink>
                 </li>
-                <li>
-                    <NavLink to="/stock-entry">Ingreso de Mercadería</NavLink>
+                <li className='mb-2'>
+                    <NavLink to='/new-sale'>- Registrar Venta</NavLink>
                 </li>
-                <li>
-                    <NavLink to="/roles">Roles</NavLink>
+                <li className='mb-2'>
+                    <NavLink to='/payment-methods'>- Métodos de Pago</NavLink>
                 </li>
-                <li>
-                    <NavLink to="/users">Usuarios</NavLink>
+            </ul>
+            <h3 className='mt-10 mb-2 font-semibold'>Administración</h3>
+            <ul>
+                <li className='mb-2'>
+                    <NavLink to='/roles'>- Roles</NavLink>
                 </li>
-                <li>
-                    <NavLink to="/dashboard">Dashboard</NavLink>
+                <li className='mb-2'>
+                    <NavLink to='/users'>- Usuarios</NavLink>
                 </li>
             </ul>
         </div>

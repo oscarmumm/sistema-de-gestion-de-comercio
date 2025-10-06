@@ -4,13 +4,12 @@ import { Header } from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { AnimatePresence, motion } from 'motion/react';
 
-const sideBarAnimations = {
-    visible: {
-        opacity: 1,
-    },
-    hidden: {
-        opacity: 0,
-    },
+const sideBarVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0 },
+    transition: {
+        type: 'tween'
+    }
 };
 
 export const AppLayout = () => {
@@ -20,20 +19,25 @@ export const AppLayout = () => {
     };
 
     return (
-        <div className="flex min-h-screen">
+        <div>
+            <Header onToggleSidebar={toggleSidebar} />
             <AnimatePresence>
                 {isSidebarOpen ? (
-                    <motion.div>
-                        <Sidebar />
+                    <motion.div
+                        variants={sideBarVariants}
+                        initial='hidden'
+                        animate='visible'
+                        exit='hidden'
+                        transition={{type: 'tween'}}
+                        className='absolute top-0'
+                    >
+                        <Sidebar onToggleSidebar={toggleSidebar} />
                     </motion.div>
                 ) : null}
             </AnimatePresence>
-            <div className="flex flex-col flex-1">
-                <Header onToggleSidebar={toggleSidebar} />
-                <main className="flex-1 p-6">
-                    <Outlet />
-                </main>
-            </div>
+            <main className='p-6'>
+                <Outlet />
+            </main>
         </div>
     );
 };
