@@ -6,6 +6,12 @@ import { Home } from '../pages/Home';
 import { Dashboard } from '../pages/Dashboard';
 import { Categories } from '../pages/Categories';
 import { Users } from '../pages/Users';
+import { Suppliers } from '../pages/Suppliers';
+import { Brands } from '../pages/Brands';
+import { PaymentMethods } from '../pages/PaymentMethods';
+import { Products } from '../pages/Products';
+import { Roles } from '../pages/Roles';
+
 
 export const AppRouter = () => {
     return (
@@ -21,9 +27,15 @@ export const AppRouter = () => {
                     }
                 >
                     <Route index element={<Home />} />
-                    <Route path='/dashboard' element={<Dashboard />} />
                     <Route path='/categories' element={<Categories />} />
+                    <Route path='/suppliers' element={<Suppliers />} />
+                    <Route path='/brands' element={<Brands />} />
+                    <Route path='/products' element={<Products />} />
+                    <Route path='/payment-methods' element={<PaymentMethods />} />
+                    <Route path='/roles' element={<Roles />} />
                     <Route path='/users' element={<Users />} />
+                    <Route path='/payment-methods' element={<PaymentMethods />} />
+                    <Route path='/dashboard' element={<Dashboard />} />
                 </Route>
             </Routes>
         </BrowserRouter>

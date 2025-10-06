@@ -1,7 +1,11 @@
-import {createContext, useState, useEffect, useContext} from 'react';
-import type {ReactNode} from 'react';
-import {loginRequest, logoutRequest} from '../services/authService';
-import type {LoginResponse} from '../services/authService';
+import { createContext, useState, useEffect, useContext } from 'react';
+import type { ReactNode } from 'react';
+import {
+    loginRequest,
+    logoutRequest,
+    verifyTokenservice,
+} from '../services/authService';
+import type { LoginResponse } from '../services/authService';
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -13,21 +17,29 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider = ({children}: {children: ReactNode}) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [user, setUser] = useState<LoginResponse['user'] | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        const userData = localStorage.getItem('user');
-        if (token) {
-            setIsAuthenticated(true);
-            if (userData) {
-                setUser(JSON.parse(userData));
+        const verify = async () => {
+            const valid = await verifyTokenservice();
+
+            if (valid) {
+                setIsAuthenticated(true);
+                const userData = localStorage.getItem('user');
+                if (userData) {
+                    setUser(JSON.parse(userData));
+                }
+            } else {
+                logoutRequest();
+                setIsAuthenticated(false);
+                setUser(null);
             }
-        }
-        setLoading(false)
+            setLoading(false);
+        };
+        verify();
     }, []);
 
     const login = async (username: string, password: string) => {
@@ -47,7 +59,8 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
     };
 
     return (
-        <AuthContext.Provider value={{isAuthenticated, user, login, logout, loading}}>
+        <AuthContext.Provider
+            value={{ isAuthenticated, user, login, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );

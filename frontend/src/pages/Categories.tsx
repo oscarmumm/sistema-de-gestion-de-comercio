@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { getCategories } from '../api/categories';
-import { BsPencilSquare } from 'react-icons/bs';
-import { BsFillTrash3Fill } from 'react-icons/bs';
 
 interface Category {
     category_id: number;
