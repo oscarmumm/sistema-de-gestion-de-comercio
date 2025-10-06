@@ -1,3 +1,5 @@
+import type { Category } from '../types';
+
 export const getCategories = async () => {
     const token = localStorage.getItem('token');
 
@@ -12,5 +14,9 @@ export const getCategories = async () => {
         throw new Error('Error al obtener categorías');
     }
     const data = await res.json();
-    return data;
+    return data.map((category: Category) => ({
+        ...category,
+        created_at: new Date(category.created_at),
+        updated_at: category.updated_at ? new Date(category.updated_at) : null,
+    }));
 };

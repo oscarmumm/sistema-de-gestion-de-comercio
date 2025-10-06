@@ -1,14 +1,21 @@
 import { useEffect, useState } from 'react';
 import { getCategories } from '../api/categories';
-
-interface Category {
-    category_id: number;
-    name: string;
-    created_at: string;
-}
+import { CategoryModal } from '../components/modals/CategoryModal';
+import type { Category } from '../types';
 
 export const Categories = () => {
     const [categories, setCategories] = useState<Category[]>([]);
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [selectedCategory, setSelectedCategory] = useState<Category>();
+
+    const openModal = (category: Category) => {
+        setSelectedCategory(category);
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+    };
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -23,33 +30,39 @@ export const Categories = () => {
     }, []);
 
     return (
-        <div className='flex flex-col'>
-            <h2 className='text-center my-5 font-semibold text-xl'>
+        <div className="flex flex-col">
+            <h2 className="text-center my-5 font-semibold text-xl">
                 Categorías
             </h2>
-            <table className='text-center shadow-lg overflow-hidden'>
-                <thead className='border border-indigo-400 bg-indigo-400 text-slate-50'>
+            <table className="text-center shadow-lg overflow-hidden">
+                <thead className="border border-indigo-400 bg-indigo-400 text-slate-50">
                     <tr>
-                        <th className='p-3'>Nombre</th>
-                        <th className='p-3'>Creada</th>
+                        <th className="p-3">Nombre</th>
+                        <th className="p-3">Creada</th>
                     </tr>
                 </thead>
                 <tbody>
                     {categories?.map((category) => (
                         <tr
-                            className='cursor-pointer hover:bg-indigo-100'
+                            className="cursor-pointer hover:bg-indigo-100"
                             key={category.category_id}
-                        >
-                            <td className='p-3 border border-indigo-400'>
+                            onClick={() => openModal(category)}>
+                            <td className="p-3 border border-indigo-400">
                                 {category.name}
                             </td>
-                            <td className='p-3 border border-indigo-400'>
-                                {category.created_at}
+                            <td className="p-3 border border-indigo-400">
+                                {category.created_at.toDateString()}
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {showModal && selectedCategory && (
+                <CategoryModal
+                    category={selectedCategory}
+                    closeModal={closeModal}
+                />
+            )}
         </div>
     );
 };
