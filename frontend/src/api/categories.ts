@@ -1,4 +1,4 @@
-import type { Category } from '../types';
+import type { Category, LoggedUser } from '../types';
 
 export const getCategories = async () => {
     const token = sessionStorage.getItem('token');
@@ -19,4 +19,28 @@ export const getCategories = async () => {
         created_at: new Date(category.created_at),
         updated_at: category.updated_at ? new Date(category.updated_at) : null,
     }));
+};
+
+export const editCategory = async (category: Category) => {
+    const token = sessionStorage.getItem('token');
+    const rawUser = sessionStorage.getItem('user');
+    if (!rawUser) return;
+    const user = JSON.parse(rawUser);
+
+    const res = await fetch(
+        `http://localhost:3000/api/categories/${category.category_id}`,
+        {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                name: category.name,
+                updated_by: user.username,
+            }),
+        }
+    );
+    const data = await res.json();
+    return data;
 };

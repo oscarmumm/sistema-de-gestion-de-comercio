@@ -45,7 +45,7 @@ export const Login = () => {
                     }
                 />
                 <button
-                    className="p-3 my-3 shadow-lg rounded-lg bg-indigo-600 text-white"
+                    className="p-3 my-3 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer"
                     type="submit">
                     Entrar
                 </button>

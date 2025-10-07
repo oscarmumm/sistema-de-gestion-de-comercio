@@ -5,3 +5,7 @@ export interface Category {
     updated_at: Date;
     updated_by: number;
 }
+
+export interface LoggedUser {
+    username: string;
+}

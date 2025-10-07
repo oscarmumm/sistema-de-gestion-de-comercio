@@ -38,7 +38,7 @@ export const getCategoryById = async (category_id) => {
 export const updateCategory = async (category_id, name, updated_by) => {
     try {
         const result = await pool.query(
-            'UPDATE brands SET name = $1, updated_at = NOW(), updated_by = $2 WHERE category_id = $3 RETURNING *',
+            'UPDATE categories SET name = $1, updated_at = NOW(), updated_by = $2 WHERE category_id = $3 RETURNING *',
             [name, updated_by, category_id]
         );
         return result.rows[0];
