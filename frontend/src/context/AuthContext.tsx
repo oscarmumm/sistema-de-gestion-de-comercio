@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             if (valid) {
                 setIsAuthenticated(true);
-                const userData = localStorage.getItem('user');
+                const userData = sessionStorage.getItem('user');
                 if (userData) {
                     setUser(JSON.parse(userData));
                 }
@@ -44,9 +44,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const login = async (username: string, password: string) => {
         const data = await loginRequest(username, password);
-        localStorage.setItem('token', data.token);
+        sessionStorage.setItem('token', data.token);
         if (data.user) {
-            localStorage.setItem('user', JSON.stringify(data.user));
+            sessionStorage.setItem('user', JSON.stringify(data.user));
         }
         setUser(data.user || null);
         setIsAuthenticated(true);

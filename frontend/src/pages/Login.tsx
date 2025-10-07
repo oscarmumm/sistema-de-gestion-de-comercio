@@ -23,7 +23,7 @@ export const Login = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-slate-900">
+        <div className="flex items-center justify-center min-h-screen bg-indigo-900">
             <form
                 className=" p-5 flex flex-col w-md shadow-lg rounded-lg bg-slate-100"
                 onSubmit={handleSubmit}>

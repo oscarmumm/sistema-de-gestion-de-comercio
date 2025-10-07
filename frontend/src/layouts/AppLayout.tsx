@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { Outlet } from 'react-router';
 import { Header } from '../components/Header';
 import Sidebar from '../components/Sidebar';
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
 
 const sideBarVariants = {
-    hidden: { opacity: 0, x: -50 },
-    visible: { opacity: 1, x: 0 },
+    hidden: { opacity: 0, marginLeft: -256 },
+    visible: { opacity: 1, marginLeft: 0 },
     transition: {
-        type: 'tween'
-    }
+        type: 'tween',
+    },
 };
 
 export const AppLayout = () => {
@@ -19,25 +19,20 @@ export const AppLayout = () => {
     };
 
     return (
-        <div>
+        <div className="flex flex-col min-h-screen">
             <Header onToggleSidebar={toggleSidebar} />
-            <AnimatePresence>
-                {isSidebarOpen ? (
-                    <motion.div
-                        variants={sideBarVariants}
-                        initial='hidden'
-                        animate='visible'
-                        exit='hidden'
-                        transition={{type: 'tween'}}
-                        className='absolute top-0'
-                    >
-                        <Sidebar onToggleSidebar={toggleSidebar} />
-                    </motion.div>
-                ) : null}
-            </AnimatePresence>
-            <main className='p-6'>
-                <Outlet />
-            </main>
+            <div className="flex flex-1">
+                <motion.div
+                    className="w-64"
+                    variants={sideBarVariants}
+                    animate={isSidebarOpen ? 'hidden' : 'visible'}
+                    transition={{ type: 'tween' }}>
+                    <Sidebar />
+                </motion.div>
+                <main className="p-6 flex-1">
+                    <Outlet />
+                </main>
+            </div>
         </div>
     );
 };

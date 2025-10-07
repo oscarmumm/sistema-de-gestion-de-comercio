@@ -26,14 +26,14 @@ export const loginRequest = async (
 };
 
 export const logoutRequest = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
 };
 
 // función que verifica la validez del token
 export const verifyTokenservice = async (): Promise<boolean> => {
     try {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         if (!token) return false;
 
         const res = await fetch('http://localhost:3000/api/auth/verify', {
