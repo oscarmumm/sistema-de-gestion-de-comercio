@@ -8,7 +8,7 @@ export const createPaymentMethodController = async (req, res) => {
                 message: 'El nombre del método de pago es obligatorio',
             });
         }
-        if (typeof name === string) {
+        if (typeof name === 'string') {
             name = name.trim();
         }
 
@@ -47,15 +47,15 @@ export const getPaymentMethodByIdController = async (req, res) => {
 };
 
 export const updatePaymentMethodController = async (req, res) => {
+    console.log('ID recibido:', req.params.id);
+    console.log('Body recibido:', req.body);
     try {
         const { id } = req.params;
         let { name, updated_by } = req.body;
         if (!name) {
-            return res
-                .status(400)
-                .json({
-                    message: 'El nombre del método de pago es obligatorio',
-                });
+            return res.status(400).json({
+                message: 'El nombre del método de pago es obligatorio',
+            });
         }
         if (typeof name === 'string') {
             name = name.trim();
@@ -78,6 +78,7 @@ export const updatePaymentMethodController = async (req, res) => {
             updatedPaymentMethod,
         });
     } catch (error) {
+        console.error('error en el catch', error);
         return res
             .status(500)
             .json({ message: 'Error al actualizar el método de pago' });
@@ -85,6 +86,8 @@ export const updatePaymentMethodController = async (req, res) => {
 };
 
 export const deletePaymentMethodController = async (req, res) => {
+    console.log('ID recibido:', req.params.id);
+    console.log('Body recibido:', req.body);
     try {
         const { id } = req.params;
         const deletedPaymentMethod =
@@ -99,6 +102,8 @@ export const deletePaymentMethodController = async (req, res) => {
             paymentMethod: deletedPaymentMethod,
         });
     } catch (error) {
+        console.error('error en el catch', error);
+
         return res
             .status(500)
             .json({ message: 'Error al eliminar el método de pago' });

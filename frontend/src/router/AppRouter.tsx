@@ -11,6 +11,8 @@ import { Brands } from '../pages/Brands';
 import { PaymentMethods } from '../pages/PaymentMethods';
 import { Products } from '../pages/Products';
 import { Roles } from '../pages/Roles';
+import { StockEntry } from '../pages/StockEntry';
+import { RegisterSale } from '../pages/RegisterSale';
 
 
 export const AppRouter = () => {
@@ -36,6 +38,8 @@ export const AppRouter = () => {
                     <Route path='/users' element={<Users />} />
                     <Route path='/payment-methods' element={<PaymentMethods />} />
                     <Route path='/dashboard' element={<Dashboard />} />
+                    <Route path='/stock-entry' element={<StockEntry />} />
+                    <Route path='/new-sale' element={<RegisterSale />} />
                 </Route>
             </Routes>
         </BrowserRouter>

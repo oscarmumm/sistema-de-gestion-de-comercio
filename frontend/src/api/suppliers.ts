@@ -44,7 +44,6 @@ export const editSupplier = async (supplier : Supplier) => {
     if (!rawUser) return;
     const user = JSON.parse(rawUser);
 
-    console.log(supplier)
     const res = await fetch(
         `http://localhost:3000/api/suppliers/${supplier.supplier_id}`,
         {

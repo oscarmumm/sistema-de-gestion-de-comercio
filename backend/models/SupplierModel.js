@@ -41,6 +41,7 @@ export const updateSupplier = async (supplier_id, name, updated_by) => {
             'UPDATE suppliers SET name = $1, updated_at = NOW(), updated_by = $2 WHERE supplier_id = $3 RETURNING *',
             [name, updated_by, supplier_id]
         );
+        return result.rows[0];
     } catch (error) {
         throw error;
     }

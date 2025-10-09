@@ -4,7 +4,6 @@ import { getBrands } from '../api/brands';
 import { NewBrandModal } from '../components/modals/NewBrandModal';
 import { BrandModal } from '../components/modals/BrandModal';
 import { AnimatePresence } from 'motion/react';
-import { motion } from 'motion/react';
 
 export const Brands = () => {
     const [brands, setBrands] = useState<Brand[]>([]);

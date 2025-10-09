@@ -5,8 +5,8 @@ const router = Router();
 
 router.post('/', PaymentMethodController.createPaymentMethodController);
 router.get('/', PaymentMethodController.getAllPaymentMethodsController);
-router.get('/', PaymentMethodController.getPaymentMethodByIdController);
-router.put('/', PaymentMethodController.updatePaymentMethodController);
-router.delete('/', PaymentMethodController.deletePaymentMethodController);
+router.get('/:id', PaymentMethodController.getPaymentMethodByIdController);
+router.put('/:id', PaymentMethodController.updatePaymentMethodController);
+router.delete('/:id', PaymentMethodController.deletePaymentMethodController);
 
 export default router;

@@ -41,6 +41,7 @@ export const updatePaymentMethod = async (id, name, updated_by) => {
             'UPDATE payment_methods SET name = $1, updated_at = NOW(), updated_by = $2 WHERE payment_method_id = $3 RETURNING *',
             [name, updated_by, id]
         );
+        return result.rows[0];
     } catch (error) {
         throw error;
     }
@@ -49,7 +50,7 @@ export const updatePaymentMethod = async (id, name, updated_by) => {
 export const deletePaymentMethod = async (id) => {
     try {
         const result = await pool.query(
-            'DELETE FROM pyment_methods WHERE payment_method_id = $1 RETURNING *',
+            'DELETE FROM payment_methods WHERE payment_method_id = $1 RETURNING *',
             [id]
         );
         return result.rows[0];
