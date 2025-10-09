@@ -1,39 +1,58 @@
 import { useEffect, useState } from 'react';
 import { getCategories } from '../api/categories';
+import { NewCategoryModal } from '../components/modals/NewCategoryModal';
 import { CategoryModal } from '../components/modals/CategoryModal';
 import type { Category } from '../types';
+import { AnimatePresence } from 'motion/react';
 
 export const Categories = () => {
     const [categories, setCategories] = useState<Category[]>([]);
-    const [showModal, setShowModal] = useState<boolean>(false);
+    const [showEditModal, setShowEditModal] = useState<boolean>(false);
+    const [showCreationModal, setShowCreationModal] = useState<boolean>(false);
     const [selectedCategory, setSelectedCategory] = useState<Category>();
 
     const openModal = (category: Category) => {
         setSelectedCategory(category);
-        setShowModal(true);
+        setShowEditModal(true);
     };
 
     const closeModal = () => {
-        setShowModal(false);
+        setShowEditModal(false);
+    };
+
+    const openCreationModal = () => {
+        setShowCreationModal(true);
+    };
+
+    const closeCreationModal = () => {
+        setShowCreationModal(false);
     };
 
     useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const data = await getCategories();
-                setCategories(data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
         fetchCategories();
     }, []);
 
+    const fetchCategories = async () => {
+        try {
+            const data = await getCategories();
+            setCategories(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <div className="flex flex-col">
-            <h2 className="text-center my-5 font-semibold text-xl">
-                Categorías
-            </h2>
+            <div className="flex justify-between p-3">
+                <h2 className="text-center my-5 font-semibold text-xl">
+                    Categorías
+                </h2>
+                <button
+                    className="p-3 my-3 min-w-24 shadow-lg rounded-lg bg-emerald-600 text-white cursor-pointer hover:scale-105"
+                    onClick={openCreationModal}>
+                    Nueva categoría
+                </button>
+            </div>
             <table className="text-center shadow-lg overflow-hidden">
                 <thead className="border border-indigo-400 bg-indigo-400 text-slate-50">
                     <tr>
@@ -57,12 +76,23 @@ export const Categories = () => {
                     ))}
                 </tbody>
             </table>
-            {showModal && selectedCategory && (
-                <CategoryModal
-                    category={selectedCategory}
-                    closeModal={closeModal}
-                />
-            )}
+            <AnimatePresence>
+                {showEditModal && selectedCategory && (
+                    <CategoryModal
+                        category={selectedCategory}
+                        closeModal={closeModal}
+                        fetchCategories={fetchCategories}
+                    />
+                )}
+            </AnimatePresence>
+            <AnimatePresence>
+                {showCreationModal && (
+                    <NewCategoryModal
+                        closeCreationModal={closeCreationModal}
+                        fetchCategories={fetchCategories}
+                    />
+                )}
+            </AnimatePresence>
         </div>
     );
 };

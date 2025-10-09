@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const login = async (username: string, password: string) => {
         const data = await loginRequest(username, password);
         sessionStorage.setItem('token', data.token);
+        console.log(data)
         if (data.user) {
             sessionStorage.setItem('user', JSON.stringify(data.user));
         }

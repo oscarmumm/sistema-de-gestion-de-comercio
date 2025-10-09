@@ -6,7 +6,7 @@ interface HeaderProps {
 
 export const Header = ({ onToggleSidebar }: HeaderProps) => {
     return (
-        <header className='flex items-center justify-between p-3 bg-indigo-600 text-slate-50 shadow-lg'>
+        <header className='flex items-center h-16 justify-between p-3 bg-indigo-600 text-slate-50 shadow-lg'>
             <button className='text-3xl cursor-pointer' onClick={onToggleSidebar}>
                 <MdMenu />
             </button>

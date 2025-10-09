@@ -1,7 +1,7 @@
 export interface LoginResponse {
     token: string;
     user?: {
-        id: number;
+        user_id: number;
         username: string;
         role?: string;
     };

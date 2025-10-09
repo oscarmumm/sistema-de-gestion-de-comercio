@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '../Input';
-import type { Category } from '../../types';
+import type { Brand } from '../../types';
 import { MdClose } from 'react-icons/md';
-import { editCategory, deleteCategory } from '../../api/categories';
+import { editBrand, deleteBrand } from '../../api/brands';
 import { motion } from 'motion/react';
 import {
     modalBackgroundVariants,
     modalFormVariants,
 } from '../../animations/animations';
 
-interface CategoryModalProps {
+interface BrandModalProps {
     closeModal: () => void;
-    category?: Category;
-    fetchCategories: () => void;
+    brand?: Brand;
+    fetchBrands: () => void;
 }
 
-export const CategoryModal = ({
+export const BrandModal = ({
     closeModal,
-    category,
-    fetchCategories,
-}: CategoryModalProps) => {
+    brand,
+    fetchBrands,
+}: BrandModalProps) => {
     const [name, setName] = useState<string>('');
     const [editModeOn, setEditModeOn] = useState<boolean>(false);
 
     useEffect(() => {
-        if (category) {
-            setName(category.name);
+        if (brand) {
+            setName(brand.name);
         }
-    }, [category]);
+    }, [brand]);
 
     return (
         <motion.div
@@ -45,7 +45,7 @@ export const CategoryModal = ({
                 exit="exit"
                 transition={{ duration: 0.2 }}>
                 <div className="flex justify-between mb-12">
-                    <h2 className="text-xl font-semibold">Editar categoría</h2>
+                    <h2 className="text-xl font-semibold">Editar marca</h2>
                     <button className="text-3xl cursor-pointer self-end">
                         <MdClose onClick={closeModal} />
                     </button>
@@ -76,12 +76,12 @@ export const CategoryModal = ({
                                 className="p-3 my-3 ml-3 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105"
                                 onClick={async (e) => {
                                     e.preventDefault();
-                                    if (category) {
-                                        await editCategory({
-                                            ...category,
+                                    if (brand) {
+                                        await editBrand({
+                                            ...brand,
                                             name: name,
                                         });
-                                        await fetchCategories();
+                                        await fetchBrands();
                                     }
                                     closeModal();
                                 }}>
@@ -93,9 +93,9 @@ export const CategoryModal = ({
                                 className="p-3 my-3 ml-3 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105"
                                 onClick={async (e) => {
                                     e.preventDefault();
-                                    if (category) {
-                                        await deleteCategory(category);
-                                        await fetchCategories();
+                                    if (brand) {
+                                        await deleteBrand(brand);
+                                        await fetchBrands();
                                     }
                                     closeModal();
                                 }}>

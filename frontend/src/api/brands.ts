@@ -1,9 +1,9 @@
-import type { Category } from '../types';
+import type { Brand } from '../types';
 
-export const createCategory = async (name: string) => {
+export const createBrand = async (name: string) => {
     const token = sessionStorage.getItem('token');
 
-    const res = await fetch(`http://localhost:3000/api/categories`, {
+    const res = await fetch(`http://localhost:3000/api/brands`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -17,10 +17,10 @@ export const createCategory = async (name: string) => {
     return data;
 };
 
-export const getCategories = async () => {
+export const getBrands = async () => {
     const token = sessionStorage.getItem('token');
 
-    const res = await fetch('http://localhost:3000/api/categories', {
+    const res = await fetch(`http://localhost:3000/api/brands`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -28,25 +28,25 @@ export const getCategories = async () => {
         },
     });
     if (!res.ok) {
-        throw new Error('Error al obtener categorías');
+        throw new Error('Error al obtener las marcas');
     }
     const data = await res.json();
-    return data.map((category: Category) => ({
-        ...category,
-        created_at: new Date(category.created_at),
-        updated_at: category.updated_at ? new Date(category.updated_at) : null,
+    return data.map((brand: Brand) => ({
+        ...brand,
+        created_at: new Date(brand.created_at),
+        updated_at: brand.updated_at ? new Date(brand.updated_at) : null,
     }));
 };
 
-export const editCategory = async (category: Category) => {
+export const editBrand = async (brand: Brand) => {
     const token = sessionStorage.getItem('token');
     const rawUser = sessionStorage.getItem('user');
     if (!rawUser) return;
     const user = JSON.parse(rawUser);
 
-    console.log(user)
+    console.log(brand)
     const res = await fetch(
-        `http://localhost:3000/api/categories/${category.category_id}`,
+        `http://localhost:3000/api/brands/${brand.brand_id}`,
         {
             method: 'PUT',
             headers: {
@@ -54,7 +54,7 @@ export const editCategory = async (category: Category) => {
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-                name: category.name,
+                name: brand.name,
                 updated_by: user.user_id,
             }),
         }
@@ -63,11 +63,11 @@ export const editCategory = async (category: Category) => {
     return data;
 };
 
-export const deleteCategory = async (category: Category) => {
+export const deleteBrand = async (brand: Brand) => {
     const token = sessionStorage.getItem('token');
 
     const res = await fetch(
-        `http://localhost:3000/api/categories/${category.category_id}`,
+        `http://localhost:3000/api/brands/${brand.brand_id}`,
         {
             method: 'DELETE',
             headers: {
