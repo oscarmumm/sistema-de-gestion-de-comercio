@@ -29,7 +29,7 @@ export const AppLayout = () => {
                     transition={{ type: 'tween' }}>
                     <Sidebar />
                 </motion.div>
-                <main className="p-6 flex-1 max-h-[calc(100vh-64px)] overflow-y-auto">
+                <main className="p-6 flex-1 max-h-[calc(100vh-64px)] overflow-y-auto flex flex-col items-center">
                     <Outlet />
                 </main>
             </div>

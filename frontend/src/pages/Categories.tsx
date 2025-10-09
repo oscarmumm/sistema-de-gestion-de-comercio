@@ -42,7 +42,7 @@ export const Categories = () => {
     };
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col min-w-3xl max-w-6xl">
             <div className="flex justify-between p-3">
                 <h2 className="text-center my-5 font-semibold text-xl">
                     Categorías
@@ -57,7 +57,8 @@ export const Categories = () => {
                 <thead className="border border-indigo-400 bg-indigo-400 text-slate-50">
                     <tr>
                         <th className="p-3">Nombre</th>
-                        <th className="p-3">Creada</th>
+                        <th className="p-3">Fecha creación</th>
+                        <th className="p-3">Fecha modificación</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,6 +72,9 @@ export const Categories = () => {
                             </td>
                             <td className="p-3 border border-indigo-400">
                                 {category.created_at.toDateString()}
+                            </td>
+                            <td className="p-3 border border-indigo-400">
+                                {category.updated_at ? category.created_at.toDateString() : '-'}
                             </td>
                         </tr>
                     ))}
