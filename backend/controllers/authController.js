@@ -26,9 +26,9 @@ export const loginController = async (req, res) => {
 
         const token = jwt.sign(
             {
-                id: user.id,
+                user_id: user.id,
                 username: user.username,
-                role: user.role,
+                role_id: user.role,
             },
             process.env.JWT_SECRET,
             {
@@ -40,9 +40,9 @@ export const loginController = async (req, res) => {
             message: 'Inicio de sesión exitoso',
             token,
             user: {
-                id: user.id,
+                user_id: user.user_id,
                 username: user.username,
-                role: user.role,
+                role_id: user.role_id,
             },
         });
         

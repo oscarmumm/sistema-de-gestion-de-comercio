@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const {Pool} = pg;
+const { Pool } = pg;
 
 const pool = new Pool({
     user: process.env.DB_USER,
@@ -12,5 +12,7 @@ const pool = new Pool({
     port: process.env.DB_PORT,
     database: process.env.DB_NAME,
 });
+
+await pool.query("SET client_encoding TO 'UTF8'");
 
 export default pool;

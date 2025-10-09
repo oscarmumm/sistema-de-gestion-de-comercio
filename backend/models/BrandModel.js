@@ -38,7 +38,7 @@ export const getBrandById = async (brand_id) => {
 export const updateBrand = async (brand_id, name, updated_by) => {
     try {
         const result = await pool.query(
-            'UPDATE brands SET name = $1, updated_at = NOW(), updated_by = $2 WHERE role_id = $3 RETURNING *',
+            'UPDATE brands SET name = $1, updated_at = NOW(), updated_by = $2 WHERE brand_id = $3 RETURNING *',
             [name, updated_by, brand_id]
         );
         return result.rows[0];

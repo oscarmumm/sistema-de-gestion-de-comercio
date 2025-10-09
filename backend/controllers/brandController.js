@@ -80,7 +80,7 @@ export const deleteBrandController = async (req, res) => {
         if (!deletedBrand) {
             res.status(404).json({message: 'Marca no encontrada'});
         }
-        return res(200).json({
+        return res.status(200).json({
             message: 'Marca eliminada',
             brand: deletedBrand,
         });
