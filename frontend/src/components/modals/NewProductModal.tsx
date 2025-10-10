@@ -1,10 +1,7 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '../Input';
-import type { Product } from '../../types';
-import type { Category } from '../../types';
-import type { Brand } from '../../types';
 import { MdClose } from 'react-icons/md';
-import { updateProduct, deleteProduct } from '../../api/products';
+import { createProduct } from '../../api/products';
 import { getCategories } from '../../api/categories';
 import { getBrands } from '../../api/brands';
 import { motion } from 'motion/react';
@@ -12,33 +9,37 @@ import {
     modalBackgroundVariants,
     modalFormVariants,
 } from '../../animations/animations';
+import type { Category } from '../../types';
+import type { Brand } from '../../types';
 
-interface ProductModalProps {
-    closeModal: () => void;
-    product?: Product;
+interface NewProductModalProps {
+    closeCreationModal: () => void;
     fetchProducts: () => void;
 }
 
-export const ProductModal = ({
-    closeModal,
-    product,
+const newProductFormat = {
+    category_id: 0,
+    brand_id: 0,
+    name: '',
+    description: '',
+    stock: 0,
+    unit_cost: 0,
+    sale_price: 0,
+    units_per_box: 0,
+};
+
+export const NewProductModal = ({
+    closeCreationModal,
     fetchProducts,
-}: ProductModalProps) => {
-    const [activeProduct, setActiveProduct] = useState<Product >();
-    const [editModeOn, setEditModeOn] = useState<boolean>(false);
-    const [categories, setCategories] = useState<Category[]>();
-    const [brands, setBrands] = useState<Brand[]>();
+}: NewProductModalProps) => {
+    const [newProduct, setNewProduct] = useState(newProductFormat);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [brands, setBrands] = useState<Brand[]>([]);
 
     useEffect(() => {
         fetchCategories();
         fetchBrands();
     }, []);
-
-    useEffect(() => {
-        if (product) {
-            setActiveProduct(product);
-        }
-    }, [product]);
 
     const fetchCategories = async () => {
         try {
@@ -69,9 +70,8 @@ export const ProductModal = ({
             'sale_price',
             'unit_cost',
         ];
-        if(!activeProduct) return 
-        setActiveProduct({
-            ...activeProduct,
+        setNewProduct({
+            ...newProduct,
             [name]: numericFields.includes(name) ? Number(value) : value,
         });
     };
@@ -92,20 +92,19 @@ export const ProductModal = ({
                 exit="exit"
                 transition={{ duration: 0.2 }}>
                 <div className="flex justify-between mb-12">
-                    <h2 className="text-xl font-semibold">Editar producto</h2>
+                    <h2 className="text-xl font-semibold">Nuevo producto</h2>
                     <button className="text-3xl cursor-pointer self-end">
-                        <MdClose onClick={closeModal} />
+                        <MdClose onClick={closeCreationModal} />
                     </button>
                 </div>
-                <form>
+                <form className="flex flex-col" autoComplete="off">
                     <div className="grid grid-cols-2 gap-3">
                         <div className="flex flex-col">
                             <label className="px-1">Categoría</label>
                             <select
                                 className="p-3 my-3 outline-none shadow-lg rounded-lg bg-white"
                                 name="category_id"
-                                disabled={!editModeOn}
-                                value={activeProduct?.category_id ?? ''}
+                                value={newProduct.category_id}
                                 onChange={handleChange}>
                                 <option>Seleccionar categoría</option>
                                 {categories?.map((category) => (
@@ -122,8 +121,7 @@ export const ProductModal = ({
                             <select
                                 className="p-3 my-3 outline-none shadow-lg rounded-lg bg-white"
                                 name="brand_id"
-                                disabled={!editModeOn}
-                                value={activeProduct?.brand_id ?? ''}
+                                value={newProduct.brand_id}
                                 onChange={handleChange}>
                                 <option>Seleccionar marca</option>
                                 {brands?.map((brand) => (
@@ -137,96 +135,63 @@ export const ProductModal = ({
                         </div>
                         <Input
                             label="Nombre"
-                            disabled={!editModeOn}
                             name="name"
                             type="text"
-                            value={activeProduct?.name ?? ''}
+                            value={newProduct.name}
                             onChange={handleChange}
                         />
                         <Input
                             label="Descripción"
-                            disabled={!editModeOn}
                             name="description"
                             type="text"
-                            value={activeProduct?.description ?? ''}
+                            value={newProduct.description}
                             onChange={handleChange}
                         />
                         <Input
                             label="Stock"
-                            disabled={!editModeOn}
                             name="stock"
                             type="number"
                             min={0}
-                            value={activeProduct?.stock ?? ''}
+                            value={newProduct.stock}
                             onChange={handleChange}
                         />
                         <Input
                             label="Costo unitario"
-                            disabled={!editModeOn}
                             name="unit_cost"
                             type="number"
                             min={0}
-                            value={activeProduct?.unit_cost ?? ''}
+                            value={newProduct.unit_cost}
                             onChange={handleChange}
                         />
                         <Input
                             label="Precio de venta"
-                            disabled={!editModeOn}
                             name="sale_price"
                             type="number"
                             min={0}
-                            value={activeProduct?.sale_price ?? ''}
+                            value={newProduct.sale_price}
                             onChange={handleChange}
                         />
                         <Input
                             label="Unidades por caja"
-                            disabled={!editModeOn}
                             name="units_per_box"
                             type="number"
                             min={0}
-                            value={activeProduct?.units_per_box ?? ''}
+                            value={newProduct.units_per_box}
                             onChange={handleChange}
                         />
                     </div>
                     <div className="flex justify-end mt-10">
-                        {editModeOn ? null : (
-                            <button
-                                className="p-3 my-3 ml-3 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setEditModeOn(true);
-                                }}>
-                                Editar
-                            </button>
-                        )}
-                        {editModeOn ? (
-                            <button
-                                className="p-3 my-3 ml-3 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105"
-                                onClick={async (e) => {
-                                    e.preventDefault();
-                                    if (activeProduct) {
-                                        await updateProduct(activeProduct);
-                                        await fetchProducts();
-                                    }
-                                    closeModal();
-                                }}>
-                                Guardar
-                            </button>
-                        ) : null}
-                        {editModeOn ? null : (
-                            <button
-                                className="p-3 my-3 ml-3 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105"
-                                onClick={async (e) => {
-                                    e.preventDefault();
-                                    if (product) {
-                                        await deleteProduct(product);
-                                        await fetchProducts();
-                                    }
-                                    closeModal();
-                                }}>
-                                Eliminar
-                            </button>
-                        )}
+                        <button
+                            className="p-3 my-3 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105"
+                            onClick={async (e) => {
+                                e.preventDefault();
+                                console.log(newProduct)
+                                await createProduct(newProduct);
+                                await fetchProducts();
+                                closeCreationModal();
+                            }}>
+                            Guardar
+                        </button>
                     </div>
                 </form>
             </motion.div>

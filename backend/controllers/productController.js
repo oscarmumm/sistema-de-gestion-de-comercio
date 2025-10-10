@@ -64,19 +64,11 @@ export const getProductByIdController = async (req, res) => {
 export const updateProductController = async (req, res) => {
     try {
         const { id } = req.params;
-        const fields = req.body;
-        const updatedData = Object.fromEntries(
-            Object.entries(fields).filter(([_, value]) => value !== undefined)
-        );
-        if (Object.keys(updatedData).length === 0) {
-            return res
-                .status(400)
-                .json({ message: 'No se enviaron campos para actualizar' });
+        const product = req.body;
+        const updatedProduct = await ProductModel.updateProduct(id, product);
+        if(!updatedProduct) {
+            return res.status(404).json({message: 'Producto no encontrado'})
         }
-        const updatedProduct = await ProductModel.updateProduct(
-            id,
-            updatedData
-        );
         return res
             .status(200)
             .json({
@@ -84,6 +76,7 @@ export const updateProductController = async (req, res) => {
                 updatedProduct,
             });
     } catch (error) {
+        console.error(error)
         return res.status(500).json({ message: 'Error interno del servidor' });
     }
 };

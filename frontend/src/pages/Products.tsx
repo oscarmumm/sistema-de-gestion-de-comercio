@@ -1,5 +1,106 @@
+import { useEffect, useState } from 'react';
+import type { Product } from '../types';
+import { getProducts } from '../api/products';
+import { AnimatePresence } from 'motion/react';
+import { NewProductModal } from '../components/modals/NewProductModal';
+import { ProductModal } from '../components/modals/ProductModal';
+
 export const Products = () => {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [showEditModal, setShowEditModal] = useState<boolean>(false);
+    const [showCreationModal, setShowCreationModal] = useState<boolean>(false);
+    const [selectedProduct, setSelectedProduct] = useState<Product>();
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const fetchProducts = async () => {
+        try {
+            const data = await getProducts();
+            setProducts(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const openCreationModal = () => {
+        setShowCreationModal(true);
+    };
+
+    const closeCreationModal = () => {
+        setShowCreationModal(false);
+    };
+
+    const openModal = (product: Product) => {
+        setSelectedProduct(product);
+        setShowEditModal(true);
+    };
+
+    const closeModal = () => {
+        setShowEditModal(false);
+    };
+
     return (
-        <div>Products</div>
-    )
-}
+        <div className="flex flex-col min-w-3xl max-w-6xl">
+            <div className="flex justify-between p-3">
+                <h2 className="text-center my-5 font-semibold text-xl">
+                    Productos
+                </h2>
+                <button
+                    className="p-3 my-3 min-w-24 shadow-lg rounded-lg bg-emerald-600 text-white cursor-pointer hover:scale-105"
+                    onClick={openCreationModal}>
+                    Nuevo producto
+                </button>
+            </div>
+            <table className="text-center shadow-lg overflow-hidden">
+                <thead className="border border-indigo-400 bg-indigo-400 text-slate-50">
+                    <tr>
+                        <th className="p-3">Nombre</th>
+                        <th className="p-3">Stock</th>
+                        <th className="p-3">Costo unitario</th>
+                        <th className="p-3">Precio de venta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {products?.map((product) => (
+                        <tr
+                            className="cursor-pointer hover:bg-indigo-100"
+                            key={product.product_id}
+                            onClick={() => openModal(product)}>
+                            <td className="p-3 border border-indigo-400">
+                                {product.name}
+                            </td>
+                            <td className="p-3 border border-indigo-400">
+                                {product.stock}
+                            </td>
+                            <td className="p-3 border border-indigo-400">
+                                {product.unit_cost}
+                            </td>
+                            <td className="p-3 border border-indigo-400">
+                                {product.sale_price}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <AnimatePresence>
+                {showCreationModal && (
+                    <NewProductModal
+                        closeCreationModal={closeCreationModal}
+                        fetchProducts={fetchProducts}
+                    />
+                )}
+            </AnimatePresence>
+            <AnimatePresence>
+                {showEditModal && (
+                    <ProductModal
+                        closeModal={closeModal}
+                        product={selectedProduct}
+                        fetchProducts={fetchProducts}
+                    />
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};

@@ -53,31 +53,43 @@ export const getProductById = async (product_id) => {
     }
 };
 
-export const updateProduct = async (product_id, fields, updated_by) => {
+export const updateProduct = async (product_id, product) => {
+    console.log(product_id)
+    console.log(product)
+    const {
+        category_id,
+        brand_id,
+        name,
+        description,
+        stock,
+        unit_cost,
+        sale_price,
+        units_per_box,
+        updated_by,
+    } = product;
     try {
-        const setClauses = [];
-        const values = [];
-        let index = 1;
-
-        for (const [key, value] of Object.entries(fields)) {
-            setClauses.push(`${key} = $${index}`);
-            values.push(value);
-            index++;
-        }
-        setClauses.push('updated_at = NOW()');
-        setClauses.push(`updated_by = $${index}`);
-        values.push(updated_by);
-        index++;
-        if (setClauses.length === 0) {
-            return null;
-        }
-        const query = `UPDATE products SET ${setClauses.join(
-            ', '
-        )} WHERE product_id = ${index} RETURNING *`;
-        values.push(product_id);
-        const result = await pool.query(query, values);
+        const result = await pool.query(
+            `
+            UPDATE products SET
+                category_id = $1, brand_id = $2, name = $3, description = $4, stock = $5, unit_cost = $6, sale_price = $7, units_per_box = $8, updated_by = $9
+                WHERE product_id = $10 RETURNING *
+            `,
+            [
+                category_id,
+                brand_id,
+                name,
+                description,
+                stock,
+                unit_cost,
+                sale_price,
+                units_per_box,
+                updated_by,
+                product_id,
+            ]
+        );
         return result.rows[0];
     } catch (error) {
+        console.log(error);
         throw error;
     }
 };
