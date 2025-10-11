@@ -3,7 +3,10 @@ import { AuthContext } from '../context/AuthContext';
 import { Input } from '../components/Input';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
-import { modalFormVariants } from '../animations/animations';
+import {
+    modalFormVariants,
+    modalBackgroundVariants,
+} from '../animations/animations';
 
 export const Login = () => {
     const navigate = useNavigate();
@@ -25,13 +28,19 @@ export const Login = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-indigo-900 to-indigo-500">
+        <motion.div
+            className="flex items-center justify-center min-h-screen bg-gradient-to-b from-indigo-900 to-indigo-500"
+            variants={modalBackgroundVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{ duration: 0.5 }}>
             <div>
                 <h1 className="text-3xl text-slate-50 font-semibold text-center mb-10">
                     Sistema de Gestión de Comercio
                 </h1>
                 <motion.form
-                    className=" p-5 mb-10 flex flex-col w-md shadow-lg rounded-lg bg-slate-100"
+                    className="p-5 mb-10 flex flex-col w-md shadow-lg rounded-lg bg-slate-100"
                     onSubmit={handleSubmit}
                     variants={modalFormVariants}
                     initial="hidden"
@@ -64,6 +73,6 @@ export const Login = () => {
                     </button>
                 </motion.form>
             </div>
-        </div>
+        </motion.div>
     );
 };
