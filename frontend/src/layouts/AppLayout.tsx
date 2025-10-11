@@ -21,7 +21,7 @@ export const AppLayout = () => {
     return (
         <div className="flex flex-col min-h-screen">
             <Header onToggleSidebar={toggleSidebar} />
-            <div className="flex flex-1">
+            <div className="flex flex-1 bg-gradient-to-b from-indigo-300 to-indigo-50">
                 <motion.div
                     className="w-64"
                     variants={sideBarVariants}

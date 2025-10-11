@@ -27,8 +27,8 @@ export const Users = () => {
     return (
         <div className='flex flex-col'>
             <h2 className='text-center my-5 font-semibold text-xl'>Usuarios</h2>
-            <table className='text-center shadow-lg overflow-hidden'>
-                <thead className='border border-indigo-400 bg-indigo-400 text-slate-50'>
+            <table className='text-center shadow-lg overflow-hidden bg-slate-50'>
+                <thead className='border border-indigo-600 bg-indigo-600 text-slate-50'>
                     <tr>
                         <th className='p-3'>Nombre</th>
                         <th className='p-3'>Apellido</th>
@@ -41,13 +41,13 @@ export const Users = () => {
                             className='cursor-pointer hover:bg-indigo-100'
                             key={user.user_id}
                         >
-                            <td className='p-3 border border-indigo-400'>
+                            <td className='p-3 border border-indigo-600'>
                                 {user.name}
                             </td>
-                            <td className='p-3 border border-indigo-400'>
+                            <td className='p-3 border border-indigo-600'>
                                 {user.surname}
                             </td>
-                            <td className='p-3 border border-indigo-400'>
+                            <td className='p-3 border border-indigo-600'>
                                 {user.username}
                             </td>
                         </tr>

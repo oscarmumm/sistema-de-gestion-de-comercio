@@ -53,8 +53,8 @@ export const Products = () => {
                     Nuevo producto
                 </button>
             </div>
-            <table className="text-center shadow-lg overflow-hidden">
-                <thead className="border border-indigo-400 bg-indigo-400 text-slate-50">
+            <table className="text-center shadow-lg overflow-hidden bg-slate-50">
+                <thead className="border border-indigo-600 bg-indigo-600 text-slate-50">
                     <tr>
                         <th className="p-3">Nombre</th>
                         <th className="p-3">Stock</th>
@@ -68,16 +68,16 @@ export const Products = () => {
                             className="cursor-pointer hover:bg-indigo-100"
                             key={product.product_id}
                             onClick={() => openModal(product)}>
-                            <td className="p-3 border border-indigo-400">
+                            <td className="p-3 border border-indigo-600">
                                 {product.name}
                             </td>
-                            <td className="p-3 border border-indigo-400">
+                            <td className="p-3 border border-indigo-600">
                                 {product.stock}
                             </td>
-                            <td className="p-3 border border-indigo-400">
+                            <td className="p-3 border border-indigo-600">
                                 {product.unit_cost}
                             </td>
-                            <td className="p-3 border border-indigo-400">
+                            <td className="p-3 border border-indigo-600">
                                 {product.sale_price}
                             </td>
                         </tr>

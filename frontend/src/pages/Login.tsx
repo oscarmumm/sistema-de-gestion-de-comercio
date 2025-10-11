@@ -2,6 +2,8 @@ import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Input } from '../components/Input';
 import { useNavigate } from 'react-router';
+import { motion } from 'motion/react';
+import { modalFormVariants } from '../animations/animations';
 
 export const Login = () => {
     const navigate = useNavigate();
@@ -23,12 +25,19 @@ export const Login = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-indigo-900">
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-indigo-900 to-indigo-500">
             <div>
-                <h1 className='text-3xl text-slate-50 font-semibold text-center mb-10'>Sistema de Gestión de Comercio</h1>
-                <form
+                <h1 className="text-3xl text-slate-50 font-semibold text-center mb-10">
+                    Sistema de Gestión de Comercio
+                </h1>
+                <motion.form
                     className=" p-5 mb-10 flex flex-col w-md shadow-lg rounded-lg bg-slate-100"
-                    onSubmit={handleSubmit}>
+                    onSubmit={handleSubmit}
+                    variants={modalFormVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{ duration: 0.5 }}>
                     <h2 className="text-3xl mb-5 text-center">
                         Iniciar sesión
                     </h2>
@@ -53,7 +62,7 @@ export const Login = () => {
                         type="submit">
                         Entrar
                     </button>
-                </form>
+                </motion.form>
             </div>
         </div>
     );

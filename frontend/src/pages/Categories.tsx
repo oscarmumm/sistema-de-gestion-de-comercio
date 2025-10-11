@@ -53,8 +53,8 @@ export const Categories = () => {
                     Nueva categoría
                 </button>
             </div>
-            <table className="text-center shadow-lg overflow-hidden">
-                <thead className="border border-indigo-400 bg-indigo-400 text-slate-50">
+            <table className="text-center shadow-lg overflow-hidden bg-slate-50">
+                <thead className="border border-indigo-600 bg-indigo-600 text-slate-50">
                     <tr>
                         <th className="p-3">Nombre</th>
                         <th className="p-3">Fecha creación</th>
@@ -67,13 +67,13 @@ export const Categories = () => {
                             className="cursor-pointer hover:bg-indigo-100"
                             key={category.category_id}
                             onClick={() => openModal(category)}>
-                            <td className="p-3 border border-indigo-400">
+                            <td className="p-3 border border-indigo-600">
                                 {category.name}
                             </td>
-                            <td className="p-3 border border-indigo-400">
+                            <td className="p-3 border border-indigo-600">
                                 {category.created_at.toDateString()}
                             </td>
-                            <td className="p-3 border border-indigo-400">
+                            <td className="p-3 border border-indigo-600">
                                 {category.updated_at ? category.created_at.toDateString() : '-'}
                             </td>
                         </tr>
