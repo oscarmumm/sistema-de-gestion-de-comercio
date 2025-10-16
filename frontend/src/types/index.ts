@@ -64,3 +64,26 @@ export interface Product {
     updated_at: Date;
     updated_by: number;
 }
+
+export interface SaleItem {
+    sale_id: number;
+    product_id: number;
+    quantity: number;
+    discount: number;
+    price_type: string;
+}
+
+export interface SaleItemView extends SaleItem {
+    product_name: string;
+    unit_price: number;
+}
+
+export interface Sale {
+    user_id: number;
+    total: number;
+    customer: string;
+    payment_method_id: number;
+    created_at: Date;
+    updated_at: Date;
+    updated_by: number;
+}
