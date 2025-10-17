@@ -50,7 +50,7 @@ export const EditItemOnSaleModal = ({
                     label="Editar cantidad"
                     type="number"
                     min={0}
-                    value={itemQuantity}
+                    value={itemQuantity ?? ''}
                     onChange={(e) => {
                         e.target.value === ''
                             ? setItemQuantity(undefined)
@@ -61,7 +61,6 @@ export const EditItemOnSaleModal = ({
                     className="p-3 my-3 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105"
                     onClick={() => {
                         item && itemQuantity && editItem(item, itemQuantity);
-                        console.log(item, itemQuantity)
                         closeModal();
                     }}>
                     Guardar

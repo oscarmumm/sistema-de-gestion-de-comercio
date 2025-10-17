@@ -51,13 +51,15 @@ export const SaleSearchProductModal = ({
                 exit='exit'
                 transition={{ duration: 0.2 }}
             >
-                <button className='text-3xl cursor-pointer self-end'>
-                    <MdClose onClick={closeModal} />
-                </button>
-                <h2 className='text-lg font-semibold my-3'>
-                    Búsqueda de producto
-                </h2>
-                <div className='flex justify-center'>
+                <div className='flex justify-between mb-5'>
+                    <h2 className='text-lg font-semibold'>
+                        Búsqueda de producto
+                    </h2>
+                    <button className='text-3xl cursor-pointer self-end'>
+                        <MdClose onClick={closeModal} />
+                    </button>
+                </div>
+                <div className='flex'>
                     <Input
                         label=''
                         placeholder='Buscar Producto'
@@ -80,6 +82,7 @@ export const SaleSearchProductModal = ({
                         <MdSearch />
                     </button>
                 </div>
+
                 <ul className='rounded-lg bg-slate-50 shadow-lg'>
                     <AnimatePresence>
                         {searchValue.length > 2 &&

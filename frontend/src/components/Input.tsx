@@ -4,7 +4,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const Input = ({ label, ...props }: InputProps) => {
     return (
-        <div className='flex flex-col'>
+        <div className='flex flex-col w-full'>
             <label className="px-1">{label}</label>
             <input
                 {...props}
