@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Input } from '../components/Input';
-import type { Product, Sale, SaleItem, SaleItemView } from '../types';
+import type { Product, SaleItem, SaleItemView } from '../types';
 import { SaleSearchProductModal } from '../components/modals/SaleSearchProductModal';
 import { AnimatePresence } from 'motion/react';
 import { MdEdit, MdDelete } from 'react-icons/md';
@@ -10,7 +10,6 @@ import { PaymentModal } from '../components/modals/PaymentModal';
 
 export const RegisterSale = () => {
     const tempSaleId = useMemo(() => Date.now(), []);
-    const [saleId, setSaleId] = useState<number | null>(null);
     const [searchProductModalActive, setSearchModalProductActive] =
         useState<boolean>(false);
     const [selectedProduct, setSelectedProduct] = useState<Product>();
@@ -19,9 +18,7 @@ export const RegisterSale = () => {
     >();
     const [saleItems, setSaleItems] = useState<SaleItem[]>([]);
     const [saleItemsView, setSaleItemsView] = useState<SaleItemView[]>([]);
-    const [totalOfSale, setTotalOfSale] = useState<number | undefined>(
-        undefined
-    );
+    const [totalOfSale, setTotalOfSale] = useState<number>(0);
     const [itemToEdit, setItemToEdit] = useState<SaleItemView | undefined>(
         undefined
     );
@@ -178,8 +175,8 @@ export const RegisterSale = () => {
                                     e.target.value === ''
                                         ? setSelectedQuantity(undefined)
                                         : setSelectedQuantity(
-                                            parseInt(e.target.value)
-                                        );
+                                              parseInt(e.target.value)
+                                          );
                                 }}
                             />
                             <button
@@ -307,6 +304,7 @@ export const RegisterSale = () => {
                         total={totalOfSale}
                         closeModal={closePaymentModal}
                         saleItemsView={saleItemsView}
+                        saleItems={saleItems}
                     />
                 )}
             </AnimatePresence>

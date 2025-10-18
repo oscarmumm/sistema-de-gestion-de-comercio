@@ -16,3 +16,15 @@ export const createSale = async (
         throw error;
     }
 };
+
+export const getSalesByDate = async (from, until) => {
+    try {
+        const result = await pool.query(
+            `SELECT * FROM sales WHERE created_at BETWEEN $1 AND $2`,
+            [from, until]
+        );
+        return result.rows;
+    } catch (error) {
+        throw error;
+    }
+};

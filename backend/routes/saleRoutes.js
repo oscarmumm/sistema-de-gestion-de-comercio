@@ -5,5 +5,6 @@ import { verifyToken } from '../middleware/authMiddleware.js';
 const router = Router();
 
 router.post('/', verifyToken, SaleController.createSaleController);
+router.get('/', verifyToken, SaleController.getSalesByDateController);
 
 export default router;

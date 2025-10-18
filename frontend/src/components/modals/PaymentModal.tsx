@@ -4,28 +4,41 @@ import {
     modalFormVariants,
 } from '../../animations/animations';
 import { MdClose } from 'react-icons/md';
-import type { SaleItemView, PaymentMethod } from '../../types';
+import type { SaleItemView, SaleItem, Sale, PaymentMethod } from '../../types';
 import { useEffect, useState } from 'react';
 import { getPaymentMethods } from '../../api/paymentMethods';
+import { getUserIdFromSession } from '../../utils/utils';
+import { createSale } from '../../api/sales';
+import { Input } from '../Input';
 
 interface PaymentModalProps {
-    total?: number;
+    total: number;
     closeModal: () => void;
     saleItemsView: SaleItemView[];
+    saleItems: SaleItem[];
 }
+
+type PaymentMethodSelection = Pick<PaymentMethod, 'name' | 'payment_method_id'>
 
 export const PaymentModal = ({
     total,
     closeModal,
     saleItemsView,
+    saleItems,
 }: PaymentModalProps) => {
     const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
-        PaymentMethod | undefined
-    >(undefined);
+    const [user, setUser] = useState<number>(0);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] =
+        useState<PaymentMethodSelection>({
+            payment_method_id: 0,
+            name: 'Sin método seleccionado'
+
+        });
+    const [customer, setCustomer] = useState<string>('');
 
     useEffect(() => {
         fetchPaymentMethods();
+        setUser(getUserIdFromSession);
     }, []);
 
     const fetchPaymentMethods = async () => {
@@ -111,7 +124,21 @@ export const PaymentModal = ({
                                 </option>
                             ))}
                         </select>
-                        <button className="p-3 my-3 flex-1 max-h-12 min-w-24 shadow-lg rounded-lg bg-emerald-600 text-white cursor-pointer hover:scale-105">
+                        <Input label='Cliente' value={customer} onChange={(e) => setCustomer(e.target.value)} />
+                        <button
+                            className="p-3 my-3 flex-1 max-h-12 min-w-24 shadow-lg rounded-lg bg-emerald-600 text-white cursor-pointer hover:scale-105"
+                            onClick={async (e) => {
+                                e.preventDefault();
+                                const newSale = {
+                                    total: total,
+                                    customer: customer,
+                                    payment_method_id:
+                                        selectedPaymentMethod.payment_method_id,
+                                    user_id: user,
+                                };
+                                console.log('newSale', newSale);
+                                await createSale(newSale);
+                            }}>
                             Confirmar Pago
                         </button>
                     </form>
