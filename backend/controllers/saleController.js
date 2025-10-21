@@ -6,7 +6,7 @@ export const createSaleController = async (req, res) => {
         if (!user_id || !total || !customer || !payment_method_id) {
             return res
                 .status(400)
-                .json({ message: 'Todos los campos son obligatorios' });
+                .json({ message: 'Parámetros faltantes' });
         }
         const newSale = await SaleModel.createSale(
             user_id,
