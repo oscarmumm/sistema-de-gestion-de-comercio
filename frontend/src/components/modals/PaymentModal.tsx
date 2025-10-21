@@ -4,7 +4,7 @@ import {
     modalFormVariants,
 } from '../../animations/animations';
 import { MdClose } from 'react-icons/md';
-import type { SaleItemView, SaleItem, Sale, PaymentMethod } from '../../types';
+import type { SaleItemView, SaleItem, PaymentMethod } from '../../types';
 import { useEffect, useState } from 'react';
 import { getPaymentMethods } from '../../api/paymentMethods';
 import { getUserIdFromSession } from '../../utils/utils';
@@ -18,6 +18,7 @@ interface PaymentModalProps {
     saleItemsView: SaleItemView[];
     saleItems: SaleItem[];
     clearSaleItems: () => void;
+    successfulSale: () => void;
 }
 
 type PaymentMethodSelection = Pick<PaymentMethod, 'name' | 'payment_method_id'>;
@@ -28,6 +29,7 @@ export const PaymentModal = ({
     saleItemsView,
     saleItems,
     clearSaleItems,
+    successfulSale
 }: PaymentModalProps) => {
     const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
     const [user, setUser] = useState<number>(0);
@@ -165,6 +167,7 @@ export const PaymentModal = ({
                                     setCustomer('');
                                     clearSaleItems();
                                     closeModal();
+                                    successfulSale();
                                 } catch (error) {
                                     console.error(error);
                                 }

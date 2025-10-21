@@ -7,6 +7,7 @@ import { MdEdit, MdDelete } from 'react-icons/md';
 import { EditItemOnSaleModal } from '../components/modals/EditItemOnSaleModal';
 import { NotificationModal } from '../components/modals/NotificationModal';
 import { PaymentModal } from '../components/modals/PaymentModal';
+import { useNotificationModal } from '../hooks/useNotification';
 
 export const RegisterSale = () => {
     const tempSaleId = useMemo(() => Date.now(), []);
@@ -24,14 +25,14 @@ export const RegisterSale = () => {
     );
     const [editProductModalActive, setEditProductModalActive] =
         useState<boolean>(false);
-    const [notificationModalActive, setNotificationModalActive] =
-        useState<boolean>(false);
-    const [notificationModalMsg, setNotificationModalMsg] =
-        useState<string>('');
-    const [notificationModalType, setNotificationModalType] =
-        useState<string>('');
     const [paymentModalActive, setPaymentModalActive] =
         useState<boolean>(false);
+    const {
+        notificationModalMsg,
+        notificationModalType,
+        notificationModalActive,
+        showNotification,
+    } = useNotificationModal();
 
     useEffect(() => {
         setTotalOfSale(calcTotal(saleItemsView));
@@ -56,10 +57,6 @@ export const RegisterSale = () => {
 
     const closeEditItemModal = () => {
         setEditProductModalActive(false);
-    };
-
-    const closeNotificationModal = () => {
-        setNotificationModalActive(false);
     };
 
     const calcTotal = (products: SaleItemView[]) => {
@@ -88,13 +85,6 @@ export const RegisterSale = () => {
         );
         setSaleItemsView(updatedSaleItemsView);
         setSaleItems(updatedSaleItems);
-    };
-
-    const showNotification = (message: string, type: string) => {
-        setNotificationModalMsg(message);
-        setNotificationModalType(type);
-        setNotificationModalActive(true);
-        setTimeout(() => setNotificationModalActive(false), 2000);
     };
 
     const addProductToSale = () => {
@@ -140,6 +130,10 @@ export const RegisterSale = () => {
     const clearSaleItems = () => {
         setSaleItems([]);
         setSaleItemsView([]);
+    };
+
+    const successfulSale = () => {
+        showNotification('Venta registrada con éxito', 'success');
     };
 
     const closePaymentModal = () => {
@@ -298,7 +292,6 @@ export const RegisterSale = () => {
                 {notificationModalActive && (
                     <NotificationModal
                         message={notificationModalMsg}
-                        closeModal={closeNotificationModal}
                         notificationType={notificationModalType}
                     />
                 )}
@@ -311,6 +304,7 @@ export const RegisterSale = () => {
                         saleItemsView={saleItemsView}
                         saleItems={saleItems}
                         clearSaleItems={clearSaleItems}
+                        successfulSale={successfulSale}
                     />
                 )}
             </AnimatePresence>

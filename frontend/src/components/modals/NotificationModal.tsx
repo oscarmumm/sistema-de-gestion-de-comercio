@@ -12,13 +12,11 @@ import {
 
 interface NotificationModalProps {
     message: string;
-    closeModal: () => void;
     notificationType: string;
 }
 
 export const NotificationModal = ({
     message,
-    closeModal,
     notificationType,
 }: NotificationModalProps) => {
     return (

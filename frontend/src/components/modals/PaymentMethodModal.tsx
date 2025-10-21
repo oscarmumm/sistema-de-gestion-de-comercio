@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { Input } from '../Input';
 import type { PaymentMethod } from '../../types';
 import { MdClose } from 'react-icons/md';
-import { editPaymentMethod, deletePaymentMethod } from '../../api/paymentMethods';
+import {
+    editPaymentMethod,
+    deletePaymentMethod,
+} from '../../api/paymentMethods';
 import { motion } from 'motion/react';
 import {
     modalBackgroundVariants,
@@ -22,6 +25,7 @@ export const PaymentMethodModal = ({
 }: PaymentMethodModalProps) => {
     const [name, setName] = useState<string>('');
     const [editModeOn, setEditModeOn] = useState<boolean>(false);
+    
 
     useEffect(() => {
         if (paymentMethod) {
@@ -45,7 +49,9 @@ export const PaymentMethodModal = ({
                 exit="exit"
                 transition={{ duration: 0.2 }}>
                 <div className="flex justify-between mb-12">
-                    <h2 className="text-xl font-semibold">Editar métodos de pago</h2>
+                    <h2 className="text-xl font-semibold">
+                        Editar métodos de pago
+                    </h2>
                     <button className="text-3xl cursor-pointer self-end">
                         <MdClose onClick={closeModal} />
                     </button>
@@ -94,7 +100,9 @@ export const PaymentMethodModal = ({
                                 onClick={async (e) => {
                                     e.preventDefault();
                                     if (paymentMethod) {
-                                        await deletePaymentMethod(paymentMethod);
+                                        await deletePaymentMethod(
+                                            paymentMethod
+                                        );
                                         await fetchPaymentMethods();
                                     }
                                     closeModal();
