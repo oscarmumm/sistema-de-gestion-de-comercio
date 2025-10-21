@@ -14,7 +14,7 @@ export const createSaleController = async (req, res) => {
             customer,
             payment_method_id
         );
-        return res.status(200).json(newSale);
+        return res.status(200).json({newSale});
     } catch (error) {
         console.error('Error en createSaleController', error);
         return res.status(500).json({ message: 'Error interno del servidor' });

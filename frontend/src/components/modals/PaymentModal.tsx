@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { getPaymentMethods } from '../../api/paymentMethods';
 import { getUserIdFromSession } from '../../utils/utils';
 import { createSale } from '../../api/sales';
+import { insertSaleItems } from '../../api/saleItems';
 import { Input } from '../Input';
 
 interface PaymentModalProps {
@@ -16,23 +17,24 @@ interface PaymentModalProps {
     closeModal: () => void;
     saleItemsView: SaleItemView[];
     saleItems: SaleItem[];
+    clearSaleItems: () => void;
 }
 
-type PaymentMethodSelection = Pick<PaymentMethod, 'name' | 'payment_method_id'>
+type PaymentMethodSelection = Pick<PaymentMethod, 'name' | 'payment_method_id'>;
 
 export const PaymentModal = ({
     total,
     closeModal,
     saleItemsView,
     saleItems,
+    clearSaleItems,
 }: PaymentModalProps) => {
     const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
     const [user, setUser] = useState<number>(0);
     const [selectedPaymentMethod, setSelectedPaymentMethod] =
         useState<PaymentMethodSelection>({
             payment_method_id: 0,
-            name: 'Sin método seleccionado'
-
+            name: 'Sin método seleccionado',
         });
     const [customer, setCustomer] = useState<string>('');
 
@@ -46,7 +48,7 @@ export const PaymentModal = ({
             const data = await getPaymentMethods();
             setPaymentMethods(data);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -124,20 +126,48 @@ export const PaymentModal = ({
                                 </option>
                             ))}
                         </select>
-                        <Input label='Cliente' value={customer} onChange={(e) => setCustomer(e.target.value)} />
+                        <Input
+                            label="Cliente"
+                            value={customer}
+                            onChange={(e) => setCustomer(e.target.value)}
+                        />
                         <button
                             className="p-3 my-3 flex-1 max-h-12 min-w-24 shadow-lg rounded-lg bg-emerald-600 text-white cursor-pointer hover:scale-105"
                             onClick={async (e) => {
                                 e.preventDefault();
                                 const newSale = {
                                     total: total,
-                                    customer: customer,
+                                    customer: customer || 'Consumidor Final',
                                     payment_method_id:
                                         selectedPaymentMethod.payment_method_id,
                                     user_id: user,
                                 };
-                                console.log('newSale', newSale);
-                                await createSale(newSale);
+                                try {
+                                    const response = await createSale(newSale);
+                                    const saleId = response.newSale.sale_id;
+                                    const saleItemsPayload = saleItems.map(
+                                        (item) => ({
+                                            sale_id: saleId,
+                                            product_id: item.product_id,
+                                            quantity: item.quantity,
+                                            discount: item.discount || 0,
+                                            price_type: item.price_type || '',
+                                        })
+                                    );
+                                    await insertSaleItems({
+                                        saleId,
+                                        itemsArray: saleItemsPayload,
+                                    });
+                                    setSelectedPaymentMethod({
+                                        payment_method_id: 0,
+                                        name: 'Sin método seleccionado',
+                                    });
+                                    setCustomer('');
+                                    clearSaleItems();
+                                    closeModal();
+                                } catch (error) {
+                                    console.error(error);
+                                }
                             }}>
                             Confirmar Pago
                         </button>

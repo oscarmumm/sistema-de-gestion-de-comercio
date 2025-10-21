@@ -137,6 +137,11 @@ export const RegisterSale = () => {
         }
     };
 
+    const clearSaleItems = () => {
+        setSaleItems([]);
+        setSaleItemsView([]);
+    };
+
     const closePaymentModal = () => {
         setPaymentModalActive(false);
     };
@@ -305,6 +310,7 @@ export const RegisterSale = () => {
                         closeModal={closePaymentModal}
                         saleItemsView={saleItemsView}
                         saleItems={saleItems}
+                        clearSaleItems={clearSaleItems}
                     />
                 )}
             </AnimatePresence>
