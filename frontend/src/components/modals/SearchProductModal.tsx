@@ -9,15 +9,15 @@ import { Input } from '../Input';
 import { MdSearch, MdClose } from 'react-icons/md';
 import { useProducts } from '../../hooks/useProducts';
 
-interface SaleSearchProductModalProps {
+interface SearchProductModalProps {
     closeModal: () => void;
     selectProduct: (product: Product) => void;
 }
 
-export const SaleSearchProductModal = ({
+export const SearchProductModal = ({
     closeModal,
     selectProduct,
-}: SaleSearchProductModalProps) => {
+}: SearchProductModalProps) => {
     const [searchValue, setSearchValue] = useState<string>('');
     const [searchResults, setSearchResults] = useState<Product[]>([]);
 

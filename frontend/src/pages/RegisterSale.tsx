@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Input } from '../components/Input';
 import type { Product, SaleItem, SaleItemView } from '../types';
-import { SaleSearchProductModal } from '../components/modals/SaleSearchProductModal';
+import { SearchProductModal } from '../components/modals/SearchProductModal';
 import { AnimatePresence } from 'motion/react';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import { EditItemOnSaleModal } from '../components/modals/EditItemOnSaleModal';
@@ -273,7 +273,7 @@ export const RegisterSale = () => {
             </div>
             <AnimatePresence>
                 {searchProductModalActive && (
-                    <SaleSearchProductModal
+                    <SearchProductModal
                         selectProduct={selectProduct}
                         closeModal={closeModal}
                     />
