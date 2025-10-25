@@ -1,13 +1,13 @@
 import pool from '../db.js';
 
-export const createProductEntryHeader = async (
+export const createStockEntry = async (
     user_id,
     supplier_id,
     entry_date
 ) => {
     try {
         const result = await pool.query(
-            'INSERT INTO product_entries_header (user_id, supplier_id, entry_date) VALUES ($1, $2 , $3) RETURNING *',
+            'INSERT INTO stock_entries (user_id, supplier_id, entry_date) VALUES ($1, $2 , $3) RETURNING *',
             [user_id, supplier_id, entry_date]
         );
         return result.rows[0];
@@ -16,19 +16,19 @@ export const createProductEntryHeader = async (
     }
 };
 
-export const getAllProductEntryHeaders = async () => {
+export const getAllStockEntries = async () => {
     try {
-        const result = await pool.query('SELECT * FROM product_entries_header');
+        const result = await pool.query('SELECT * FROM stock_entries');
         return result.rows;
     } catch (error) {
         throw error;
     }
 };
 
-export const getProductEntryHeaderById = async (id) => {
+export const getStockEntryById = async (id) => {
     try {
         const result = await pool.query(
-            'SELECT * FROM product_entries_header WHERE entry_id = $1',
+            'SELECT * FROM stock_entries WHERE entry_id = $1',
             [id]
         );
         return result.rows[0];
@@ -37,7 +37,7 @@ export const getProductEntryHeaderById = async (id) => {
     }
 };
 
-export const updateProductEntryHeader = async (
+export const updateStockEntry = async (
     id,
     user_id,
     supplier_id,
@@ -46,7 +46,7 @@ export const updateProductEntryHeader = async (
 ) => {
     try {
         const result = await pool.query(
-            'UPDATE product_entries_header SET user_id = $1, supplier_id = $2, entry_date = $3, updated_by = $4, WHERE entry_id = $5 RETURNING *',
+            'UPDATE stock_entries SET user_id = $1, supplier_id = $2, entry_date = $3, updated_by = $4, WHERE entry_id = $5 RETURNING *',
             [user_id, supplier_id, entry_date, updated_by, id]
         );
         return result.rows[0];
@@ -55,10 +55,10 @@ export const updateProductEntryHeader = async (
     }
 };
 
-export const deleteProductEntryHeader = async (id) => {
+export const deleteStockEntry = async (id) => {
     try {
         const result = await pool.query(
-            'DELETE FROM product_entries_header WHERE entry_id = $1 RETURNING *',
+            'DELETE FROM stock_entries WHERE entry_id = $1 RETURNING *',
             [id]
         );
         return result.rows[0];

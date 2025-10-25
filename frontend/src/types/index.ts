@@ -87,3 +87,23 @@ export interface Sale {
     updated_at: Date;
     updated_by: number;
 }
+
+export interface StockEntry {
+    user_id: number;
+    supplier_id: number;
+    entry_date: Date;
+    created_at: Date;
+    updated_at: Date;
+    updated_by: number;
+}
+
+export interface StockEntryItem {
+    entry_id: number;
+    product_id: number;
+    boxes: number;
+}
+
+export interface StockEntryItemView extends StockEntryItem {
+    product_name: string;
+    box_price: number;
+}

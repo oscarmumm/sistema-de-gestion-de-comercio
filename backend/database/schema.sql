@@ -74,7 +74,7 @@ CREATE TABLE payment_methods (
         updated_by INT REFERENCES users(user_id)
 );
 
-CREATE TABLE product_entries_header (
+CREATE TABLE stock_entries (
         entry_id SERIAL PRIMARY KEY,
         user_id INT REFERENCES users(user_id) NOT NULL,
         supplier_id INT NOT NULL REFERENCES suppliers(supplier_id),
@@ -85,10 +85,10 @@ CREATE TABLE product_entries_header (
 );
 
 -- This table stores the products and quantities in each inventory entry
-CREATE TABLE product_entries_items (
+CREATE TABLE stock_entry_items (
         id SERIAL PRIMARY KEY,
         product_id INT NOT NULL REFERENCES products(product_id),
-        entry_id INT NOT NULL REFERENCES product_entries_header(entry_id) ON DELETE CASCADE,
+        entry_id INT NOT NULL REFERENCES stock_entries(entry_id) ON DELETE CASCADE,
         boxes INT NOT NULL
 );
 
@@ -174,7 +174,7 @@ EXECUTE FUNCTION update_stock_on_sale();
 
 -- Trigger to update stock on entries
 CREATE TRIGGER add_stock_on_entry
-AFTER INSERT ON product_entries_items
+AFTER INSERT ON stock_entry_items
 FOR EACH ROW
 EXECUTE FUNCTION update_stock_on_entry();
 
@@ -187,5 +187,5 @@ CREATE INDEX idx_products_name ON products(name);
 CREATE INDEX idx_categories_name ON categories(name);
 CREATE INDEX idx_brands_name ON brands(name);
 CREATE INDEX idx_payment_methods_name ON payment_methods(name);
-CREATE INDEX idx_product_entries_header_entry_date ON product_entries_header(entry_date);
+CREATE INDEX idx_stock_entries_entry_date ON stock_entries(entry_date);
 CREATE INDEX idx_sales_created_at ON sales(created_at);
