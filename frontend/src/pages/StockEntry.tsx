@@ -9,11 +9,11 @@ import type {
 import { SearchProductModal } from '../components/modals/SearchProductModal';
 import { AnimatePresence } from 'motion/react';
 import { MdEdit, MdDelete } from 'react-icons/md';
-import { EditItemOnSaleModal } from '../components/modals/EditItemOnSaleModal';
 import { NotificationModal } from '../components/modals/NotificationModal';
 import { useNotificationModal } from '../hooks/useNotification';
 import { ConfirmStockEntryModal } from '../components/modals/ConfirmStockEntryModal';
 import { getSuppliers } from '../api/suppliers';
+import { EditItemOnEntryModal } from '../components/modals/EditItemOnEntryModal';
 
 type SupplierSelection = Pick<Supplier, 'name' | 'supplier_id'>;
 
@@ -97,25 +97,22 @@ export const StockEntry = () => {
         }, 0);
     };
 
-    const deleteItemFromSale = (item: StockEntryItemView) => {
+    const deleteItemFromEntries = (item: StockEntryItemView) => {
         const temp = stockEntryItemsView.filter(
             (product) => product.product_id !== item.product_id
         );
         setStockEntryItemsView(temp);
     };
 
-    const editItemFromSale = (
-        item: StockEntryItemView,
-        newQuantity: number
-    ) => {
+    const editItem = (item: StockEntryItemView, newQuantity: number) => {
         const updatedStockEntryItemsView = stockEntryItemsView.map((itemView) =>
             itemView.product_id === item.product_id
-                ? { ...item, quantity: newQuantity }
+                ? { ...item, boxes: newQuantity }
                 : itemView
         );
         const updatedStockEntryItems = stockEntryItems.map((entryItem) =>
             entryItem.product_id === item.product_id
-                ? { ...item, quantity: newQuantity }
+                ? { ...item, boxes: newQuantity }
                 : entryItem
         );
         setStockEntryItemsView(updatedStockEntryItemsView);
@@ -347,7 +344,9 @@ export const StockEntry = () => {
                                                 <button
                                                     className='p-2 mx-1 bg-red-600 text-slate-50 text-xl rounded-lg shadow-lg cursor-pointer'
                                                     onClick={() =>
-                                                        deleteItemFromSale(item)
+                                                        deleteItemFromEntries(
+                                                            item
+                                                        )
                                                     }
                                                 >
                                                     <MdDelete />
@@ -377,13 +376,13 @@ export const StockEntry = () => {
                 )}
             </AnimatePresence>
             <AnimatePresence>
-                {/* {editProductModalActive && (
-                    <EditItemOnSaleModal
+                {editProductModalActive && (
+                    <EditItemOnEntryModal
                         item={itemToEdit}
                         closeModal={closeEditItemModal}
-                        editItem={editItemFromSale}
+                        editItem={editItem}
                     />
-                )} */}
+                )}
             </AnimatePresence>
             <AnimatePresence>
                 {notificationModalActive && (
