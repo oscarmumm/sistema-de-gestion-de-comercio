@@ -2,12 +2,13 @@ import type { StockEntry } from '../types';
 
 type createStockEntryProps = Pick<
     StockEntry,
-    'user_id' | 'supplier_id'
+    'user_id' | 'supplier_id' | 'goods_receipt'
 >;
 
 export const createStockEntry = async ({
     user_id,
     supplier_id,
+    goods_receipt,
 }: createStockEntryProps) => {
     const token = sessionStorage.getItem('token');
     const res = await fetch(`http://localhost:3000/api/product-entry`, {
@@ -19,6 +20,7 @@ export const createStockEntry = async ({
         body: JSON.stringify({
             user_id: user_id,
             supplier_id: supplier_id,
+            goods_receipt: goods_receipt,
         }),
     });
     if (!res.ok) {

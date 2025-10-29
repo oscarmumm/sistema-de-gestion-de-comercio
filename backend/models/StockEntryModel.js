@@ -2,12 +2,13 @@ import pool from '../db.js';
 
 export const createStockEntry = async (
     user_id,
-    supplier_id
+    supplier_id,
+    goods_receipt
 ) => {
     try {
         const result = await pool.query(
-            'INSERT INTO stock_entries (user_id, supplier_id) VALUES ($1, $2) RETURNING *',
-            [user_id, supplier_id]
+            'INSERT INTO stock_entries (user_id, supplier_id, goods_receipt) VALUES ($1, $2, $3) RETURNING *',
+            [user_id, supplier_id, goods_receipt]
         );
         return result.rows[0];
     } catch (error) {

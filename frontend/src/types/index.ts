@@ -91,6 +91,7 @@ export interface Sale {
 export interface StockEntry {
     user_id: number;
     supplier_id: number;
+    goods_receipt: string;
     entry_date: Date;
     created_at: Date;
     updated_at: Date;

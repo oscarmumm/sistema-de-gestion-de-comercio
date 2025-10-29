@@ -1,6 +1,6 @@
 CREATE DATABASE store_management;
 
-\c store_management;
+\ c store_management;
 
 ------------------------------
 -- TABLES
@@ -23,8 +23,15 @@ CREATE TABLE users (
         updated_at TIMESTAMP
 );
 
-ALTER TABLE roles ADD COLUMN updated_by INT REFERENCES users(user_id);
-ALTER TABLE users ADD COLUMN updated_by INT REFERENCES users(user_id);
+ALTER TABLE
+        roles
+ADD
+        COLUMN updated_by INT REFERENCES users(user_id);
+
+ALTER TABLE
+        users
+ADD
+        COLUMN updated_by INT REFERENCES users(user_id);
 
 CREATE TABLE categories (
         category_id SERIAL PRIMARY KEY,
@@ -49,7 +56,7 @@ CREATE TABLE products (
         name VARCHAR(100) NOT NULL,
         description VARCHAR(1000),
         stock INT NOT NULL,
-        unit_cost NUMERIC(10,2) NOT NULL,
+        unit_cost NUMERIC(10, 2) NOT NULL,
         sale_price NUMERIC (10, 2) NOT NULL,
         units_per_box INT NOT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
@@ -65,7 +72,6 @@ CREATE TABLE suppliers (
         updated_by INT REFERENCES users(user_id)
 );
 
-
 CREATE TABLE payment_methods (
         payment_method_id SERIAL PRIMARY KEY,
         name VARCHAR(50) UNIQUE NOT NULL,
@@ -79,6 +85,7 @@ CREATE TABLE stock_entries (
         user_id INT REFERENCES users(user_id) NOT NULL,
         supplier_id INT NOT NULL REFERENCES suppliers(supplier_id),
         entry_date TIMESTAMP NOT NULL DEFAULT NOW(),
+        goods_receipt VARCHAR(30) NOT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP,
         updated_by INT REFERENCES users(user_id)
@@ -95,7 +102,7 @@ CREATE TABLE stock_entry_items (
 CREATE TABLE sales (
         sale_id SERIAL PRIMARY KEY,
         user_id INT REFERENCES users(user_id) NOT NULL,
-        total NUMERIC(10,2) NOT NULL,
+        total NUMERIC(10, 2) NOT NULL,
         customer VARCHAR(150),
         payment_method_id INT NOT NULL REFERENCES payment_methods(payment_method_id),
         created_at TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -110,82 +117,104 @@ CREATE TABLE sale_items (
         product_id INT NOT NULL REFERENCES products(product_id),
         quantity INT NOT NULL CHECK (quantity > 0),
         discount NUMERIC(10, 2) NOT NULL DEFAULT 0 CHECK (discount >= 0),
-        price_type VARCHAR(20) 
+        price_type VARCHAR(20)
 );
 
 ----------------------------
 -- FUNCTIONS
 ----------------------------
-
 -- Function to update stock on sales
-CREATE OR REPLACE FUNCTION update_stock_on_sale()
-RETURNS TRIGGER AS $$
-DECLARE
-        current_stock INT;
+CREATE
+OR REPLACE FUNCTION update_stock_on_sale() RETURNS TRIGGER AS $ $ DECLARE current_stock INT;
+
 BEGIN
-        SELECT stock INTO current_stock
-        FROM products
-        WHERE product_id = NEW.product_id;
+SELECT
+        stock INTO current_stock
+FROM
+        products
+WHERE
+        product_id = NEW.product_id;
 
-        IF current_stock < NEW.quantity THEN
-                RAISE EXCEPTION 'Stock insuficiente para el producto %: disponible %, solicitado %',
-                        NEW.product_id, current_stock, NEW.quantity;
-        END IF;
+IF current_stock < NEW.quantity THEN RAISE EXCEPTION 'Stock insuficiente para el producto %: disponible %, solicitado %',
+NEW.product_id,
+current_stock,
+NEW.quantity;
 
-        UPDATE products
-        SET stock = stock - NEW.quantity
-        WHERE product_id = NEW.product_id;
+END IF;
 
-        RETURN NEW;
+UPDATE
+        products
+SET
+        stock = stock - NEW.quantity
+WHERE
+        product_id = NEW.product_id;
+
+RETURN NEW;
+
 END;
-$$ LANGUAGE plpgsql;
+
+$ $ LANGUAGE plpgsql;
 
 -- Function to update stock on entries
-CREATE OR REPLACE FUNCTION update_stock_on_entry()
-RETURNS TRIGGER AS $$
-DECLARE
-        v_units_per_box INT;
+CREATE
+OR REPLACE FUNCTION update_stock_on_entry() RETURNS TRIGGER AS $ $ DECLARE v_units_per_box INT;
+
 BEGIN
-        SELECT units_per_box INTO v_units_per_box
-        FROM products
-        WHERE product_id = NEW.product_id;
+SELECT
+        units_per_box INTO v_units_per_box
+FROM
+        products
+WHERE
+        product_id = NEW.product_id;
 
-        IF v_units_per_box IS NULL THEN
-                RAISE EXCEPTION 'Producto % no tiene definido units_per_box', NEW.product_id;
-        END IF;
+IF v_units_per_box IS NULL THEN RAISE EXCEPTION 'Producto % no tiene definido units_per_box',
+NEW.product_id;
 
-        UPDATE products
-        SET stock = stock + (NEW.boxes * v_units_per_box)
-        WHERE product_id = NEW.product_id;
+END IF;
 
-        RETURN NEW;
+UPDATE
+        products
+SET
+        stock = stock + (NEW.boxes * v_units_per_box)
+WHERE
+        product_id = NEW.product_id;
+
+RETURN NEW;
+
 END;
-$$ LANGUAGE plpgsql;
+
+$ $ LANGUAGE plpgsql;
 
 ----------------------------
 -- TRIGGERS
 ----------------------------
-
 -- Triggers to update stock on sales
 CREATE TRIGGER discount_stock_sale
-AFTER INSERT ON sale_items
-FOR EACH ROW
-EXECUTE FUNCTION update_stock_on_sale();
+AFTER
+INSERT
+        ON sale_items FOR EACH ROW EXECUTE FUNCTION update_stock_on_sale();
 
 -- Trigger to update stock on entries
 CREATE TRIGGER add_stock_on_entry
-AFTER INSERT ON stock_entry_items
-FOR EACH ROW
-EXECUTE FUNCTION update_stock_on_entry();
+AFTER
+INSERT
+        ON stock_entry_items FOR EACH ROW EXECUTE FUNCTION update_stock_on_entry();
 
 ----------------------------
 -- INDEXES
 ----------------------------
 CREATE INDEX idx_roles_name ON roles(name);
+
 CREATE INDEX idx_users_username ON users(username);
+
 CREATE INDEX idx_products_name ON products(name);
+
 CREATE INDEX idx_categories_name ON categories(name);
+
 CREATE INDEX idx_brands_name ON brands(name);
+
 CREATE INDEX idx_payment_methods_name ON payment_methods(name);
+
 CREATE INDEX idx_stock_entries_entry_date ON stock_entries(entry_date);
+
 CREATE INDEX idx_sales_created_at ON sales(created_at);

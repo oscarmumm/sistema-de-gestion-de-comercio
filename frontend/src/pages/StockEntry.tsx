@@ -150,26 +150,39 @@ export const StockEntry = () => {
     };
 
     const openConfirmStockEntryModal = () => {
-        if (selectedSupplier.supplier_id === 0) {
-            showNotification('No ha seleccionado el proveedor', 'warning');
-            return
-        } else if (totalOfSale) {
-            setConfirmStockEntryModalActive(true);
-        } else {
-            showNotification(
+        if (!totalOfSale) {
+            return showNotification(
                 'Debe agregar al menos un producto para realizar la venta',
                 'error'
             );
         }
+        if (selectedSupplier.supplier_id === 0) {
+            return showNotification(
+                'No ha seleccionado el proveedor',
+                'warning'
+            );
+        }
+        if (goodsReceipt.length < 1) {
+            return showNotification(
+                'Debe ingresar el número de comprobante',
+                'warning'
+            );
+        }
+        setConfirmStockEntryModalActive(true);
     };
 
     const clearStockEntry = () => {
         setStockEntryItems([]);
         setStockEntryItemsView([]);
+        setGoodsReceipt('');
+        setSelectedSupplier({
+            supplier_id: 0,
+            name: 'Sin proveedor seleccionado',
+        });
     };
 
     const successfulEntry = () => {
-        showNotification('Venta registrada con éxito', 'success');
+        showNotification('Ingreso registrado con éxito', 'success');
     };
 
     const closePaymentModal = () => {
@@ -177,33 +190,34 @@ export const StockEntry = () => {
     };
 
     return (
-        <div className="flex flex-col items-center">
-            <div className="flex min-w-4xl">
-                <div className="flex flex-col">
-                    <h2 className="text-center my-5 font-semibold text-lg">
+        <div className='flex flex-col items-center'>
+            <div className='flex min-w-4xl'>
+                <div className='flex flex-col'>
+                    <h2 className='text-center my-5 font-semibold text-lg'>
                         Agregar Productos
                     </h2>
-                    <form className="p-5 mb-10 flex flex-col w-sm shadow-lg rounded-lg bg-slate-100">
+                    <form className='p-5 mb-10 flex flex-col w-sm shadow-lg rounded-lg bg-slate-100'>
                         <button
-                            className="p-3 my-3 flex-1 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105"
+                            className='p-3 my-3 flex-1 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105'
                             onClick={(e) => {
                                 e.preventDefault();
                                 openModal();
-                            }}>
+                            }}
+                        >
                             Buscar Producto
                         </button>
-                        <div className="flex flex-col">
-                            <label className="px-1">
+                        <div className='flex flex-col'>
+                            <label className='px-1'>
                                 Producto seleccionado
                             </label>
-                            <div className="p-3 my-3 min-h-12 outline-none shadow-lg rounded-lg bg-white text-center">
+                            <div className='p-3 my-3 min-h-12 outline-none shadow-lg rounded-lg bg-white text-center'>
                                 {selectedProduct?.name}
                             </div>
                         </div>
-                        <div className="flex items-end justify-between">
+                        <div className='flex items-end justify-between'>
                             <Input
-                                label="Cantidad"
-                                type="number"
+                                label='Cantidad'
+                                type='number'
                                 min={0}
                                 value={selectedQuantity ?? ''}
                                 onChange={(e) => {
@@ -215,54 +229,51 @@ export const StockEntry = () => {
                                 }}
                             />
                             <button
-                                className="h-12 p-3 my-3 ml-3 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105"
+                                className='h-12 p-3 my-3 ml-3 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105'
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    if (selectedProduct && selectedQuantity) {
-                                        addProductToSale();
-                                    } else if (
-                                        selectedProduct &&
-                                        !selectedQuantity
-                                    ) {
-                                        showNotification(
-                                            'Debe especificar una cantidad',
-                                            'warning'
-                                        );
-                                    } else if (
-                                        !selectedProduct &&
-                                        selectedQuantity
-                                    ) {
-                                        showNotification(
-                                            'Debe especificar el producto',
-                                            'warning'
-                                        );
-                                    } else {
-                                        showNotification(
+                                    if (!selectedProduct && !selectedQuantity) {
+                                        return showNotification(
                                             'No ha ingresado ningún dato',
                                             'warning'
                                         );
                                     }
-                                }}>
+                                    if (!selectedProduct) {
+                                        return showNotification(
+                                            'Debe especificar el producto',
+                                            'warning'
+                                        );
+                                    }
+                                    if (!selectedQuantity) {
+                                        return showNotification(
+                                            'Debe especificar la cantidad',
+                                            'warning'
+                                        );
+                                    }
+                                    addProductToSale();
+                                }}
+                            >
                                 Agregar
                             </button>
                         </div>
                     </form>
                     <button
-                        className="p-3 my-3 flex-1 max-h-12 min-w-24 shadow-lg rounded-lg bg-emerald-600 text-white cursor-pointer hover:scale-105"
-                        onClick={openConfirmStockEntryModal}>
+                        className='p-3 my-3 flex-1 max-h-12 min-w-24 shadow-lg rounded-lg bg-emerald-600 text-white cursor-pointer hover:scale-105'
+                        onClick={openConfirmStockEntryModal}
+                    >
                         Registrar Ingreso
                     </button>
                 </div>
-                <div className="ml-5 w-xl">
-                    <h3 className="text-center my-5 font-semibold text-lg">
+                <div className='ml-5 w-xl'>
+                    <h3 className='text-center my-5 font-semibold text-lg'>
                         Detalle del Ingreso
                     </h3>
-                    <div className="bg-slate-50 rounded-lg shadox-lg p-3">
-                        <div className="grid grid-cols-2 gap-3">
-                            <div className="flex flex-col">
-                                <label className="px-1">Proveedor</label>
+                    <div className='bg-slate-50 rounded-lg shadox-lg p-3'>
+                        <div className='grid grid-cols-2 gap-3'>
+                            <div className='flex flex-col'>
+                                <label className='px-1'>Proveedor</label>
                                 <select
-                                    className="p-3 my-3 outline-none shadow-lg rounded-lg bg-white"
+                                    className='p-3 my-3 outline-none shadow-lg rounded-lg bg-white'
                                     value={selectedSupplier.supplier_id}
                                     onChange={(e) => {
                                         const selectedId = Number(
@@ -273,34 +284,36 @@ export const StockEntry = () => {
                                         );
                                         if (supplier)
                                             setSelectedSupplier(supplier);
-                                    }}>
+                                    }}
+                                >
                                     <option>Seleccione el proveedor</option>
                                     {suppliers?.map((supplier) => (
                                         <option
                                             key={supplier.supplier_id}
-                                            value={supplier.supplier_id}>
+                                            value={supplier.supplier_id}
+                                        >
                                             {supplier.name}
                                         </option>
                                     ))}
                                 </select>
                             </div>
                             <Input
-                                label="Número de comprobante"
-                                type="text"
+                                label='Número de comprobante'
+                                type='text'
                                 value={goodsReceipt}
                                 onChange={(e) =>
                                     setGoodsReceipt(e.target.value)
                                 }
                             />
                         </div>
-                        <table className="text-center w-full shadow-lg overflow-hidden bg-slate-50 rounded-lg">
-                            <thead className="border border-indigo-600 bg-indigo-600 text-slate-50">
+                        <table className='text-center w-full shadow-lg overflow-hidden bg-slate-50 rounded-lg'>
+                            <thead className='border border-indigo-600 bg-indigo-600 text-slate-50'>
                                 <tr>
-                                    <th className="p-3">Cajas</th>
-                                    <th className="p-3">Descripción</th>
-                                    <th className="p-3">Precio p/caja</th>
-                                    <th className="p-3">Importe</th>
-                                    <th className="p-3">Acciones</th>
+                                    <th className='p-3'>Cajas</th>
+                                    <th className='p-3'>Descripción</th>
+                                    <th className='p-3'>Precio p/caja</th>
+                                    <th className='p-3'>Importe</th>
+                                    <th className='p-3'>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -308,44 +321,47 @@ export const StockEntry = () => {
                                     (item: StockEntryItemView) => (
                                         <tr
                                             key={item.product_id}
-                                            className="border border-indigo-600">
-                                            <td className="p-3">
+                                            className='border border-indigo-600'
+                                        >
+                                            <td className='p-3'>
                                                 {item.boxes}
                                             </td>
-                                            <td className="p-3">
+                                            <td className='p-3'>
                                                 {item.product_name}
                                             </td>
-                                            <td className="p-3">
+                                            <td className='p-3'>
                                                 ${item.box_price}
                                             </td>
-                                            <td className="p-3">
+                                            <td className='p-3'>
                                                 ${item.box_price * item.boxes}
                                             </td>
                                             <td>
                                                 <button
-                                                    className="p-2 mx-1 bg-yellow-400 text-slate-50 text-xl rounded-lg shadow-lg cursor-pointer"
+                                                    className='p-2 mx-1 bg-yellow-400 text-slate-50 text-xl rounded-lg shadow-lg cursor-pointer'
                                                     onClick={() =>
                                                         openEditItemModal(item)
-                                                    }>
+                                                    }
+                                                >
                                                     <MdEdit />
                                                 </button>
                                                 <button
-                                                    className="p-2 mx-1 bg-red-600 text-slate-50 text-xl rounded-lg shadow-lg cursor-pointer"
+                                                    className='p-2 mx-1 bg-red-600 text-slate-50 text-xl rounded-lg shadow-lg cursor-pointer'
                                                     onClick={() =>
                                                         deleteItemFromSale(item)
-                                                    }>
+                                                    }
+                                                >
                                                     <MdDelete />
                                                 </button>
                                             </td>
                                         </tr>
                                     )
                                 )}
-                                <tr className="border border-t-slate-50 border-indigo-600 bg-indigo-600 text-slate-50 font-bold">
-                                    <td colSpan={3} className="p-3">
+                                <tr className='border border-t-slate-50 border-indigo-600 bg-indigo-600 text-slate-50 font-bold'>
+                                    <td colSpan={3} className='p-3'>
                                         Total
                                     </td>
-                                    <td className="p-3">${totalOfSale}</td>
-                                    <td className="p-3"></td>
+                                    <td className='p-3'>${totalOfSale}</td>
+                                    <td className='p-3'></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -387,6 +403,7 @@ export const StockEntry = () => {
                         clearStockEntryItems={clearStockEntry}
                         successfulEntry={successfulEntry}
                         selectedSupplier={selectedSupplier}
+                        goodsReceipt={goodsReceipt}
                     />
                 )}
             </AnimatePresence>
