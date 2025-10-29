@@ -53,7 +53,7 @@ export const Products = () => {
                     Nuevo producto
                 </button>
             </div>
-            <table className="text-center shadow-lg overflow-hidden bg-slate-50">
+            <table className="text-center rounded-lg shadow-lg overflow-hidden bg-slate-50">
                 <thead className="border border-indigo-600 bg-indigo-600 text-slate-50">
                     <tr>
                         <th className="p-3">Nombre</th>
@@ -65,19 +65,19 @@ export const Products = () => {
                 <tbody>
                     {products?.map((product) => (
                         <tr
-                            className="cursor-pointer hover:bg-indigo-100"
+                            className="cursor-pointer border-b border-indigo-600 last:border-0 hover:bg-indigo-100"
                             key={product.product_id}
                             onClick={() => openModal(product)}>
-                            <td className="p-3 border border-indigo-600">
+                            <td className="p-3">
                                 {product.name}
                             </td>
-                            <td className="p-3 border border-indigo-600">
+                            <td className="p-3">
                                 {product.stock}
                             </td>
-                            <td className="p-3 border border-indigo-600">
+                            <td className="p-3">
                                 {product.unit_cost}
                             </td>
-                            <td className="p-3 border border-indigo-600">
+                            <td className="p-3">
                                 {product.sale_price}
                             </td>
                         </tr>

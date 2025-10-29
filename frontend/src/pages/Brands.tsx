@@ -42,46 +42,29 @@ export const Brands = () => {
     };
 
     return (
-        <div className="flex flex-col min-w-3xl max-w-6xl">
-            <div className="flex justify-between p-3">
-                <h2 className="text-center my-5 font-semibold text-xl">
+        <div className='flex flex-col min-w-xl max-w-6xl'>
+            <div className='flex justify-between p-3'>
+                <h2 className='text-center my-5 font-semibold text-xl'>
                     Marcas
                 </h2>
                 <button
-                    className="p-3 my-3 min-w-24 shadow-lg rounded-lg bg-emerald-600 text-white cursor-pointer hover:scale-105"
-                    onClick={openCreationModal}>
+                    className='p-3 my-3 min-w-24 shadow-lg rounded-lg bg-emerald-600 text-white cursor-pointer hover:scale-105'
+                    onClick={openCreationModal}
+                >
                     Nueva marca
                 </button>
             </div>
-            <table className="text-center shadow-lg overflow-hidden bg-slate-50">
-                <thead className="border border-indigo-600 bg-indigo-600 text-slate-50">
-                    <tr>
-                        <th className="p-3">Nombre</th>
-                        <th className="p-3">Fecha creación</th>
-                        <th className="p-3">Fecha modificación</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {brands?.map((brand) => (
-                        <tr
-                            className="cursor-pointer hover:bg-indigo-100"
-                            key={brand.brand_id}
-                            onClick={() => openModal(brand)}>
-                            <td className="p-3 border border-indigo-600">
-                                {brand.name}
-                            </td>
-                            <td className="p-3 border border-indigo-600">
-                                {brand.created_at.toDateString()}
-                            </td>
-                            <td className="p-3 border border-indigo-600">
-                                {brand.updated_at
-                                    ? brand.updated_at.toDateString()
-                                    : '-'}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <ul className='bg-slate-50 rounded-lg shadow-lg'>
+                {brands?.map((brand: Brand) => (
+                    <li
+                        key={brand.brand_id}
+                        className='p-3 text-center cursor-pointer hover:bg-indigo-100 border-b border-indigo-600 last:border-0'
+                        onClick={() => openModal(brand)}
+                    >
+                        {brand.name}
+                    </li>
+                ))}
+            </ul>
             <AnimatePresence>
                 {showEditModal && selectedBrand && (
                     <BrandModal

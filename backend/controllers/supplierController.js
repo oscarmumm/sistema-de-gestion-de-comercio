@@ -8,7 +8,7 @@ export const createSupplierController = async (req, res) => {
                 .status(400)
                 .json({message: 'El nombre del proveedor es obligatorio'});
         }
-        if (typeof name === string) {
+        if (typeof name === 'string') {
             name = name.trim();
         }
 
@@ -21,6 +21,7 @@ export const createSupplierController = async (req, res) => {
         const newSupplier = await SupplierModel.createSupplier(name);
         return res.status(201).json(newSupplier);
     } catch (error) {
+        console.error(error)
         return res.status(500).json({message: 'Error interno del servidor'});
     }
 };

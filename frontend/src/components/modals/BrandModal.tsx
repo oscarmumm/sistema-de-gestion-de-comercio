@@ -11,7 +11,7 @@ import {
 
 interface BrandModalProps {
     closeModal: () => void;
-    brand?: Brand;
+    brand: Brand;
     fetchBrands: () => void;
 }
 
@@ -49,6 +49,16 @@ export const BrandModal = ({
                     <button className="text-3xl cursor-pointer self-end">
                         <MdClose onClick={closeModal} />
                     </button>
+                </div>
+                <div className='mb-10'>
+                    <span className='font-semibold'>Fecha de creación: </span>
+                    <span>{brand.created_at.toDateString()}</span>
+                    {brand.updated_at && (
+                        <div>
+                            <span className='font-semibold'>Última edición: </span>
+                            <span>{brand.updated_at.toDateString()}</span>
+                        </div>
+                    )}
                 </div>
                 <form>
                     <Input
