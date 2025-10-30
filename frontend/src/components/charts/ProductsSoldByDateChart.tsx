@@ -10,7 +10,6 @@ import {
     BarChart,
     Bar,
 } from 'recharts';
-import { formatMoney } from '../../utils/utils';
 
 type ProductsSoldByDateChartProps = {
     from: string;

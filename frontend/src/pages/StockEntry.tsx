@@ -188,14 +188,17 @@ export const StockEntry = () => {
 
     return (
         <div className='flex flex-col items-center'>
+            <h2 className='w-full my-5 font-semibold text-xl'>
+                Registrar Ingreso de Mercadería
+            </h2>
             <div className='flex min-w-4xl'>
                 <div className='flex flex-col'>
-                    <h2 className='text-center my-5 font-semibold text-lg'>
-                        Agregar Productos
-                    </h2>
                     <form className='p-5 mb-10 flex flex-col w-sm shadow-lg rounded-lg bg-slate-100'>
+                        <h2 className='text-center mb-5 font-semibold text-lg'>
+                            Agregar Productos
+                        </h2>
                         <button
-                            className='p-3 my-3 flex-1 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105'
+                            className='font-bold p-3 my-3 flex-1 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105'
                             onClick={(e) => {
                                 e.preventDefault();
                                 openModal();
@@ -226,7 +229,7 @@ export const StockEntry = () => {
                                 }}
                             />
                             <button
-                                className='h-12 p-3 my-3 ml-3 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105'
+                                className='font-bold h-12 p-3 my-3 ml-3 min-w-24 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105'
                                 onClick={(e) => {
                                     e.preventDefault();
                                     if (!selectedProduct && !selectedQuantity) {
@@ -255,17 +258,17 @@ export const StockEntry = () => {
                         </div>
                     </form>
                     <button
-                        className='p-3 my-3 flex-1 max-h-12 min-w-24 shadow-lg rounded-lg bg-emerald-600 text-white cursor-pointer hover:scale-105'
+                        className='font-bold p-3 my-3 flex-1 max-h-12 min-w-24 shadow-lg rounded-lg bg-emerald-600 text-white cursor-pointer hover:scale-105'
                         onClick={openConfirmStockEntryModal}
                     >
                         Registrar Ingreso
                     </button>
                 </div>
                 <div className='ml-5 w-xl'>
-                    <h3 className='text-center my-5 font-semibold text-lg'>
-                        Detalle del Ingreso
-                    </h3>
-                    <div className='bg-slate-50 rounded-lg shadox-lg p-3'>
+                    <div className='bg-slate-50 rounded-lg shadox-lg p-5'>
+                        <h3 className='text-center mb-5 font-semibold text-lg'>
+                            Detalle del Ingreso
+                        </h3>
                         <div className='grid grid-cols-2 gap-3'>
                             <div className='flex flex-col'>
                                 <label className='px-1'>Proveedor</label>
