@@ -10,6 +10,7 @@ import {
     Legend,
     ResponsiveContainer,
 } from 'recharts';
+import { formatMoney } from '../../utils/utils';
 
 type SalesByDateLineChartProps = {
     from: string;
@@ -20,10 +21,10 @@ type SalesByDateLineChartProps = {
 export const SalesByDateLineChart = ({
     from,
     until,
-    period
+    period,
 }: SalesByDateLineChartProps) => {
     const [periodSales, setPeriodSales] = useState([]);
-    const [totalSales, setTotalSales] = useState<number>();
+    const [totalSales, setTotalSales] = useState<string>();
 
     type fetchSaleByDayProps = {
         from: string;
@@ -48,7 +49,7 @@ export const SalesByDateLineChart = ({
                     acc + parseInt(cur.total),
                 0
             );
-            setTotalSales(total);
+            setTotalSales(formatMoney(total));
             setPeriodSales(formattedData);
         } catch (error) {
             console.error(error);
@@ -70,7 +71,7 @@ export const SalesByDateLineChart = ({
             </ResponsiveContainer>
             <div>
                 <span className='font-semibold'>Total: </span>
-                <span>${totalSales}</span>
+                <span>{totalSales}</span>
             </div>
         </div>
     );

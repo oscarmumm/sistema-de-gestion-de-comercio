@@ -108,3 +108,8 @@ export interface StockEntryItemView extends StockEntryItem {
     product_name: string;
     box_price: number;
 }
+
+export interface DateRange {
+    from: string;
+    until: string;
+}

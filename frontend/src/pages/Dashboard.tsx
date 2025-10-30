@@ -1,32 +1,40 @@
 import { SalesByDateLineChart } from '../components/charts/SalesByDateLineChart';
+import { getDateRange } from '../utils/utils';
+import type { DateRange } from '../types';
+import { useState } from 'react';
 
 export const Dashboard = () => {
+    const [currentWeek] = useState<DateRange>(getDateRange('currentWeek'));
+    const [previousWeek] = useState<DateRange>(getDateRange('previousWeek'));
+    const [currentMonth] = useState<DateRange>(getDateRange('currentMonth'));
+    const [previousMonth] = useState<DateRange>(getDateRange('previousMonth'));
+
     return (
         <div className='min-h-12 min-w-12'>
-            <h2 className='text-center text-2xl font-semibold mb-5'>Ventas</h2>
+            <h2 className='text-center text-2xl font-semibold mb-5'>Dashboard</h2>
             <div className='flex flex-col'>
                 <div className='flex flex-col'>
                     <div className='flex gap-4'>
                         <SalesByDateLineChart
-                            from='2025-10-27'
-                            until='2025-10-29'
+                            from={currentWeek.from}
+                            until={currentWeek.until}
                             period='Semana Actual'
                         />
                         <SalesByDateLineChart
-                            from='2025-10-20'
-                            until='2025-10-26'
+                            from={previousWeek.from}
+                            until={previousWeek.until}
                             period='Semana Anterior'
                         />
                     </div>
                     <div className='flex gap-4'>
                         <SalesByDateLineChart
-                            from='2025-10-01'
-                            until='2025-10-29'
+                            from={currentMonth.from}
+                            until={currentMonth.until}
                             period='Mes Actual'
                         />
                         <SalesByDateLineChart
-                            from='2025-09-01'
-                            until='2025-09-30'
+                            from={previousMonth.from}
+                            until={previousMonth.until}
                             period='Mes Anterior'
                         />
                     </div>
