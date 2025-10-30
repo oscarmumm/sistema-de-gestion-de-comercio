@@ -1,6 +1,6 @@
 import pool from '../db.js';
 
-(async () => {
+export const seedPaymentMethods = async () => {
     try {
         await pool.query(
             `INSERT INTO payment_methods (name)
@@ -9,4 +9,4 @@ import pool from '../db.js';
     } catch (error) {
         console.log(error);
     }
-})();
+};

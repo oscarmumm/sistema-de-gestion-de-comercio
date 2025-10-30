@@ -1,6 +1,6 @@
 import pool from '../db.js';
 
-(async () => {
+export const seedCategories = async () => {
     try {
         await pool.query(
             `INSERT INTO categories (name)
@@ -18,4 +18,4 @@ import pool from '../db.js';
     } catch (error) {
         console.log(error);
     }
-})();
+};

@@ -7,12 +7,12 @@ export const Dashboard = () => {
     return (
         <div className="min-h-12 min-w-12">
             <h2 className="text-center text-2xl font-semibold mb-5">Ventas</h2>
-            <div className="grid grid-cols-2 gap-5">
-                <div className="flex flex-col">
+            <div className="flex flex-col">
+                <div className="flex">
                     <CurrentWeekSales />
                     <LastWeekSales />
                 </div>
-                <div className="flex flex-col">
+                <div className="flex">
                     <CurrenttMonthSales />
                     <LastMonthSales />
                 </div>

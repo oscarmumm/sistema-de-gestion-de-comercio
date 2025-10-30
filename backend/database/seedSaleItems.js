@@ -1,7 +1,7 @@
 // seeds/seedSaleItems.js
 import pool from '../db.js';
 
-(async () => {
+export const seedSaleItems = async () => {
     try {
         const sales = (await pool.query('SELECT sale_id FROM sales')).rows;
         const products = (await pool.query('SELECT product_id FROM products'))
@@ -30,4 +30,4 @@ import pool from '../db.js';
     } catch (error) {
         console.error('Error en seedSaleItems:', error);
     }
-})();
+};

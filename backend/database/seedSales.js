@@ -1,8 +1,8 @@
 import pool from '../db.js';
 
-const NUM_SALES = 30;
+const NUM_SALES = 90;
 
-(async () => {
+export const seedSales = async () => {
     try {
         const users = (await pool.query('SELECT user_id FROM users')).rows;
         const methods = (
@@ -17,7 +17,7 @@ const NUM_SALES = 30;
                     .payment_method_id;
             const customer = `Cliente_${i + 1}`;
             const total = (Math.random() * 5000 + 1000).toFixed(2);
-            const daysAgo = Math.floor(Math.random() * 30);
+            const daysAgo = Math.floor(Math.random() * 60);
             const created_at = new Date(Date.now() - daysAgo * 86400000);
 
             await pool.query(
@@ -29,4 +29,4 @@ const NUM_SALES = 30;
     } catch (error) {
         console.error('Error en seedSales:', error);
     }
-})();
+};

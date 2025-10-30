@@ -1,6 +1,6 @@
 import pool from '../db.js';
 
-(async () => {
+export const seedRoles = async () => {
     try {
         await pool.query(
             `INSERT INTO roles (name)
@@ -9,4 +9,4 @@ import pool from '../db.js';
     } catch (error) {
         console.log(error);
     }
-})();
+};

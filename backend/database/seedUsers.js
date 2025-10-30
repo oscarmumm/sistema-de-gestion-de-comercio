@@ -1,7 +1,7 @@
 import pool from '../db.js';
 import bcrypt from 'bcrypt';
 
-(async () => {
+export const seedUsers = async () => {
     try {
         const passwordAdmin = await bcrypt.hash('admin1234', 10);
         const passwordEncargado = await bcrypt.hash('encargado1234', 10);
@@ -17,8 +17,8 @@ import bcrypt from 'bcrypt';
             'nickvalentine',
             passwordAdmin,
         ]);
-        console.log('Usuario Nick insertado')
-        
+        console.log('Usuario Nick insertado');
+
         await pool.query(insertUserQuery, [
             2,
             'Piper',
@@ -26,8 +26,8 @@ import bcrypt from 'bcrypt';
             'piperwright',
             passwordEncargado,
         ]);
-        console.log('Usuario Piper insertado')
-        
+        console.log('Usuario Piper insertado');
+
         await pool.query(insertUserQuery, [
             3,
             'Preston',
@@ -35,11 +35,8 @@ import bcrypt from 'bcrypt';
             'prestongarvey',
             passwordVendedor,
         ]);
-        console.log('Usuario preston insertado')
-        
+        console.log('Usuario preston insertado');
     } catch (error) {
         console.log(error);
-    } finally {
-        await pool.end();
     }
-})();
+};

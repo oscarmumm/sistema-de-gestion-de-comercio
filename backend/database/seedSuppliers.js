@@ -1,6 +1,6 @@
 import pool from '../db.js';
 
-(async () => {
+export const seedSuppliers = async () => {
     try {
         await pool.query("SET client_encoding TO 'UTF8'");
 
@@ -11,4 +11,4 @@ import pool from '../db.js';
     } catch (error) {
         console.log(error);
     }
-})();
+};
