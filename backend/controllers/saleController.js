@@ -21,7 +21,7 @@ export const createSaleController = async (req, res) => {
     }
 };
 
-export const getSalesByDateController = async (req, res) => {
+export const getSalesByDayController = async (req, res) => {
     try {
         const { from, until } = req.query;
         if (
@@ -39,7 +39,7 @@ export const getSalesByDateController = async (req, res) => {
         }
         const fromTimestamp = `${from}T00:00:00`;
         const untilTimestamp = `${until}T23:59:59`;
-        const sales = await SaleModel.getSalesByDate(
+        const sales = await SaleModel.getSalesByDay(
             fromTimestamp,
             untilTimestamp
         );
@@ -49,7 +49,7 @@ export const getSalesByDateController = async (req, res) => {
                 data: [],
             });
         }
-        return res.status(200).json(sales);
+        return res.status(200).json({data: sales});
     } catch (error) {
         console.error('Error en getSalesByDateController', error);
         return res.status(500).json({ message: 'Error interno del servidor' });

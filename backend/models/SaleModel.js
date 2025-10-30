@@ -17,14 +17,15 @@ export const createSale = async (
     }
 };
 
-export const getSalesByDate = async (from, until) => {
+export const getSalesByDay = async (from, to) => {
     try {
         const result = await pool.query(
-            `SELECT * FROM sales WHERE created_at BETWEEN $1 AND $2`,
-            [from, until]
+            `SELECT DATE(created_at) AS fecha, SUM(total) AS total FROM sales WHERE created_at BETWEEN $1 AND $2 GROUP BY fecha ORDER BY fecha ASC`,
+            [from, to]
         );
         return result.rows;
     } catch (error) {
+        console.error('Error en saleModel.', error);
         throw error;
     }
 };

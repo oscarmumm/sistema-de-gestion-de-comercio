@@ -1,6 +1,6 @@
 CREATE DATABASE store_management;
 
-\ c store_management;
+\c store_management
 
 ------------------------------
 -- TABLES
@@ -125,7 +125,7 @@ CREATE TABLE sale_items (
 ----------------------------
 -- Function to update stock on sales
 CREATE
-OR REPLACE FUNCTION update_stock_on_sale() RETURNS TRIGGER AS $ $ DECLARE current_stock INT;
+OR REPLACE FUNCTION update_stock_on_sale() RETURNS TRIGGER AS $$ DECLARE current_stock INT;
 
 BEGIN
 SELECT
@@ -153,11 +153,11 @@ RETURN NEW;
 
 END;
 
-$ $ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 -- Function to update stock on entries
 CREATE
-OR REPLACE FUNCTION update_stock_on_entry() RETURNS TRIGGER AS $ $ DECLARE v_units_per_box INT;
+OR REPLACE FUNCTION update_stock_on_entry() RETURNS TRIGGER AS $$ DECLARE v_units_per_box INT;
 
 BEGIN
 SELECT
@@ -183,7 +183,7 @@ RETURN NEW;
 
 END;
 
-$ $ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 ----------------------------
 -- TRIGGERS

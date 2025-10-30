@@ -29,8 +29,8 @@ import pool from '../db.js';
                 (7, 10, 'Tijera metálica 18cm', 'Tijera profesional de acero inoxidable.', 20, 200.00, 300.00, 6),
                 (8, 8, 'Regla plástica 30cm', 'Regla transparente con medidas en cm.', 50, 60.00, 100.00, 20),
                 (8, 8, 'Regla metálica 20cm', 'Regla de acero para trazos precisos.', 30, 90.00, 150.00, 10),
-                (9, 9, 'Mochila escolar básica', 'Mochila con dos compartimentos y tiras acolchadas.', 15, 1200.00, 1800.00, 2),
-                (9, 9, 'Mochila con ruedas', 'Mochila reforzada con ruedas y manija extensible.', 10, 1800.00, 2500.00, 1);`
+                (9, 9, 'Mochila escolar básica', 'Mochila con dos compartimentos y tiras acolchadas.', 35, 1200.00, 1800.00, 2),
+                (9, 9, 'Mochila con ruedas', 'Mochila reforzada con ruedas y manija extensible.', 30, 1800.00, 2500.00, 1);`
         );
     } catch (error) {
         console.log(error);
