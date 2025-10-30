@@ -12,5 +12,6 @@ router.post(
     SaleItemController.createSaleItemsController
 );
 router.get('/daily', verifyToken, SaleController.getSalesByDayController);
+router.get('/daily/products', verifyToken, SaleController.getProductsSoldByDateController);
 
 export default router;

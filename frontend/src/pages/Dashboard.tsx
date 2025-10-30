@@ -2,6 +2,7 @@ import { SalesByDateLineChart } from '../components/charts/SalesByDateLineChart'
 import { getDateRange } from '../utils/utils';
 import type { DateRange } from '../types';
 import { useState } from 'react';
+import { ProductsSoldByDateChart } from '../components/charts/ProductsSoldByDateChart';
 
 export const Dashboard = () => {
     const [currentWeek] = useState<DateRange>(getDateRange('currentWeek'));
@@ -10,9 +11,12 @@ export const Dashboard = () => {
     const [previousMonth] = useState<DateRange>(getDateRange('previousMonth'));
 
     return (
-        <div className='min-h-12 min-w-12'>
-            <h2 className='text-center text-2xl font-semibold mb-5'>Dashboard</h2>
+        <div className=''>
             <div className='flex flex-col'>
+                <h2 className='my-5 font-semibold text-xl'>Dashboard</h2>
+                <h3 className='text-center text-2xl font-semibold mb-5'>
+                    Ventas
+                </h3>
                 <div className='flex flex-col'>
                     <div className='flex gap-4'>
                         <SalesByDateLineChart
@@ -40,9 +44,21 @@ export const Dashboard = () => {
                     </div>
                 </div>
             </div>
-            <h2 className='text-center text-2xl font-semibold mb-5'>
-                Productos
-            </h2>
+            <div className='mb-3'>
+                <h3 className='text-center text-2xl font-semibold mb-5'>
+                    Productos
+                </h3>
+                <ProductsSoldByDateChart
+                    from={previousMonth.from}
+                    until={previousMonth.until}
+                    title='Productos Mas Vendidos Último Mes (por unidad)'
+                />
+                <ProductsSoldByDateChart
+                    from={currentMonth.from}
+                    until={currentMonth.until}
+                    title='Productos Mas Vendidos Este Mes (por unidad)'
+                />
+            </div>
         </div>
     );
 };

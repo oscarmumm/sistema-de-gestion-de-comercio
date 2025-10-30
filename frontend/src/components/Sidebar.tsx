@@ -29,6 +29,23 @@ export default function Sidebar() {
         <div className='flex-1 h-full p-3 px-5 bg-indigo-700 text-slate-50 shadow-lg overflow-y-auto flex flex-col justify-between'>
             <div>
                 <div className='mt-10 mb-2 font-semibold flex items-center'>
+                    <MdAttachMoney className='text-xl' />
+                    <span className='ml-3'>Ventas</span>
+                </div>
+                <ul>
+                    <li className='mb-2'>
+                        <NavLink to='/dashboard'>- Dashboard</NavLink>
+                    </li>
+                    <li className='mb-2'>
+                        <NavLink to='/new-sale'>- Registrar Venta</NavLink>
+                    </li>
+                    <li className='mb-2'>
+                        <NavLink to='/payment-methods'>
+                            - Métodos de Pago
+                        </NavLink>
+                    </li>
+                </ul>
+                <div className='mt-10 mb-2 font-semibold flex items-center'>
                     <MdOutlineInventory className='text-xl' />
                     <span className='ml-3'>Inventario</span>
                 </div>
@@ -49,23 +66,6 @@ export default function Sidebar() {
                     <li className='mb-2'>
                         <NavLink to='/stock-entry'>
                             - Ingreso de Mercadería
-                        </NavLink>
-                    </li>
-                </ul>
-                <div className='mt-10 mb-2 font-semibold flex items-center'>
-                    <MdAttachMoney className='text-xl' />
-                    <span className='ml-3'>Ventas</span>
-                </div>
-                <ul>
-                    <li className='mb-2'>
-                        <NavLink to='/dashboard'>- Dashboard</NavLink>
-                    </li>
-                    <li className='mb-2'>
-                        <NavLink to='/new-sale'>- Registrar Venta</NavLink>
-                    </li>
-                    <li className='mb-2'>
-                        <NavLink to='/payment-methods'>
-                            - Métodos de Pago
                         </NavLink>
                     </li>
                 </ul>

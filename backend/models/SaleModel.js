@@ -29,3 +29,26 @@ export const getSalesByDay = async (from, to) => {
         throw error;
     }
 };
+
+export const getProductsSoldByDate = async (from, until) => {
+    try {
+        const result = await pool.query(
+            `
+            SELECT 
+            p.name,
+            SUM(si.quantity) AS total_sold
+            FROM sale_items si
+            JOIN products p ON si.product_id = p.product_id
+            JOIN sales s ON si.sale_id = s.sale_id
+            WHERE s.created_at BETWEEN $1 AND $2
+            GROUP BY p.name
+            ORDER BY total_sold DESC;
+        `,
+            [from, until]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error('Error en saleModel ', error);
+        throw error;
+    }
+};
