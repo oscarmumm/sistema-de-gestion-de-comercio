@@ -26,16 +26,16 @@ export const SalesByDateLineChart = ({
     const [periodSales, setPeriodSales] = useState([]);
     const [totalSales, setTotalSales] = useState<string>();
 
-    type fetchSaleByDayProps = {
+    type fetchSalesProps = {
         from: string;
         until: string;
     };
 
     useEffect(() => {
-        fetchLastWeekSales({ from, until });
+        fetchSales({ from, until });
     }, []);
 
-    const fetchLastWeekSales = async ({ from, until }: fetchSaleByDayProps) => {
+    const fetchSales = async ({ from, until }: fetchSalesProps) => {
         try {
             const res = await getSalesByDay({ from, until });
             const formattedData = res.data.map(

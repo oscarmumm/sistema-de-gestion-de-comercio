@@ -30,6 +30,27 @@ export const getSalesByDay = async (from, to) => {
     }
 };
 
+export const getSalesByPaymentMethod = async (from, until) => {
+    try {
+        const result = await pool.query(
+            `
+                SELECT 
+                pm.name,
+                SUM(s.total) AS total
+                FROM sales s
+                JOIN payment_methods pm ON s.payment_method_id = pm.payment_method_id
+                WHERE s.created_at BETWEEN $1 AND $2
+                GROUP BY pm.name;
+            `,
+            [from, until]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error('Error en saleModel.', error);
+        throw error;
+    }
+};
+
 export const getProductsSoldByDate = async (from, until) => {
     try {
         const result = await pool.query(

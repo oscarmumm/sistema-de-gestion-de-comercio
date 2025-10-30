@@ -60,6 +60,27 @@ export const getSalesByDay = async ({ from, until }: getSalesByDayProps) => {
     return data;
 };
 
+export const getPaymentMethodsByDate = async ({ from, until }: getSalesByDayProps) => {
+    const token = sessionStorage.getItem('token');
+
+    const res = await fetch(
+        `http://localhost:3000/api/sales/daily/payment-methods?from=${from}&until=${until}`,
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+    if (!res.ok) {
+        const errorMsg = await res.text();
+        throw new Error(`Error al obtener los datos de ventas: ${errorMsg}`);
+    }
+    const data = await res.json();
+    return data;
+};
+
 export const getProductsSoldByDate = async ({ from, until }: getSalesByDayProps) => {
     const token = sessionStorage.getItem('token');
 
