@@ -11,12 +11,20 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 
-export const LastWeekSales = () => {
-    const [weekSales, setWeekSales] = useState([]);
-    const [totalWeekSales, setTotalWeekSales] = useState<number>();
+type SalesByDateLineChartProps = {
+    from: string;
+    until: string;
+    period: string;
+};
 
-    const from = '2025-10-20';
-    const until = '2025-10-26';
+export const SalesByDateLineChart = ({
+    from,
+    until,
+    period
+}: SalesByDateLineChartProps) => {
+    const [periodSales, setPeriodSales] = useState([]);
+    const [totalSales, setTotalSales] = useState<number>();
+
     type fetchSaleByDayProps = {
         from: string;
         until: string;
@@ -36,33 +44,33 @@ export const LastWeekSales = () => {
                 })
             );
             const total = formattedData.reduce(
-                (acc: number, cur: { fecha: string; total: string }) =>
+                (acc: number, cur: { fecha: String; total: string }) =>
                     acc + parseInt(cur.total),
                 0
             );
-            setTotalWeekSales(total);
-            setWeekSales(formattedData);
+            setTotalSales(total);
+            setPeriodSales(formattedData);
         } catch (error) {
             console.error(error);
         }
     };
 
     return (
-        <div className="text-sm bg-slate-50 rounded-lg shadow-lg p-5 w-2xl mb-5">
-            <h3 className="font-semibold mb-3">Ventas Semana Anterior</h3>
-            <ResponsiveContainer width="100%" aspect={3}>
-                <LineChart data={weekSales}>
-                    <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
-                    <XAxis stroke="#000" dataKey="fecha" />
-                    <YAxis stroke="#000" />
+        <div className='text-sm bg-slate-50 rounded-lg shadow-lg p-5 w-xl mb-5'>
+            <h3 className='font-semibold mb-3'>Ventas {period}</h3>
+            <ResponsiveContainer width='100%' aspect={3}>
+                <LineChart data={periodSales}>
+                    <CartesianGrid stroke='#ccc' strokeDasharray='3 3' />
+                    <XAxis stroke='#000' dataKey='fecha' />
+                    <YAxis stroke='#000' />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="total" stroke="#8884d8" />
+                    <Line type='monotone' dataKey='total' stroke='#8884d8' />
                 </LineChart>
             </ResponsiveContainer>
             <div>
                 <span className='font-semibold'>Total: </span>
-                <span>${totalWeekSales}</span>
+                <span>${totalSales}</span>
             </div>
         </div>
     );
