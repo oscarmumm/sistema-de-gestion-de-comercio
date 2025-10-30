@@ -11,12 +11,12 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 
-export const LastWeekSales = () => {
-    const [weekSales, setWeekSales] = useState([]);
-    const [totalWeekSales, setTotalWeekSales] = useState<number>();
+export const CurrenttMonthSales = () => {
+    const [monthSales, setMonthSales] = useState([]);
+    const [totalMonthSales, setTotalMonthSales] = useState<number>();
 
-    const from = '2025-10-20';
-    const until = '2025-10-26';
+    const from = '2025-10-01';
+    const until = '2025-10-29';
     type fetchSaleByDayProps = {
         from: string;
         until: string;
@@ -36,12 +36,12 @@ export const LastWeekSales = () => {
                 })
             );
             const total = formattedData.reduce(
-                (acc: number, cur: { fecha: string; total: string }) =>
+                (acc: number, cur: { fecha: String; total: string }) =>
                     acc + parseInt(cur.total),
                 0
             );
-            setTotalWeekSales(total);
-            setWeekSales(formattedData);
+            setTotalMonthSales(total);
+            setMonthSales(formattedData);
         } catch (error) {
             console.error(error);
         }
@@ -49,9 +49,9 @@ export const LastWeekSales = () => {
 
     return (
         <div className="text-sm bg-slate-50 rounded-lg shadow-lg p-5 w-2xl mb-5">
-            <h3 className="font-semibold mb-3">Ventas Semana Anterior</h3>
+            <h3 className="font-semibold mb-3">Ventas Mes Actual</h3>
             <ResponsiveContainer width="100%" aspect={3}>
-                <LineChart data={weekSales}>
+                <LineChart data={monthSales}>
                     <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
                     <XAxis stroke="#000" dataKey="fecha" />
                     <YAxis stroke="#000" />
@@ -62,7 +62,7 @@ export const LastWeekSales = () => {
             </ResponsiveContainer>
             <div>
                 <span className='font-semibold'>Total: </span>
-                <span>${totalWeekSales}</span>
+                <span>${totalMonthSales}</span>
             </div>
         </div>
     );

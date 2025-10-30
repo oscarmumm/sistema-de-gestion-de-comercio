@@ -11,12 +11,12 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 
-export const LastWeekSales = () => {
+export const CurrentWeekSales = () => {
     const [weekSales, setWeekSales] = useState([]);
     const [totalWeekSales, setTotalWeekSales] = useState<number>();
 
-    const from = '2025-10-20';
-    const until = '2025-10-26';
+    const from = '2025-10-27';
+    const until = '2025-10-29';
     type fetchSaleByDayProps = {
         from: string;
         until: string;
@@ -49,7 +49,7 @@ export const LastWeekSales = () => {
 
     return (
         <div className="text-sm bg-slate-50 rounded-lg shadow-lg p-5 w-2xl mb-5">
-            <h3 className="font-semibold mb-3">Ventas Semana Anterior</h3>
+            <h3 className="font-semibold mb-3">Ventas Semana Actual</h3>
             <ResponsiveContainer width="100%" aspect={3}>
                 <LineChart data={weekSales}>
                     <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
