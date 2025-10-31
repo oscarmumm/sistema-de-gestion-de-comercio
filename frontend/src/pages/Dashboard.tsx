@@ -4,6 +4,7 @@ import type { DateRange } from '../types';
 import { useState } from 'react';
 import { ProductsSoldByDateChart } from '../components/charts/ProductsSoldByDateChart';
 import { PaymentMethodParticipationChart } from '../components/charts/PaymentMethodParticipationChart';
+import { CategoriesParticipationChart } from '../components/charts/CategoriesParticipationChart';
 
 export const Dashboard = () => {
     const [currentWeek] = useState<DateRange>(getDateRange('currentWeek'));
@@ -49,7 +50,7 @@ export const Dashboard = () => {
                 <PaymentMethodParticipationChart
                     from={previousMonth.from}
                     until={previousMonth.until}
-                    title="Mes Anterior"
+                    title="Participación de Métodos de Pago Mes Anterior"
                 />
             </div>
             <div className="mb-3">
@@ -65,6 +66,11 @@ export const Dashboard = () => {
                     from={currentMonth.from}
                     until={currentMonth.until}
                     title="Productos Mas Vendidos Este Mes (por unidad)"
+                />
+                <CategoriesParticipationChart
+                    from={previousMonth.from}
+                    until={previousMonth.until}
+                    title="Participación de Categorías de Productos Mes Anterior"
                 />
             </div>
         </div>

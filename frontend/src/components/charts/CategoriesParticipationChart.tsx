@@ -1,8 +1,8 @@
 import { PieChart, ResponsiveContainer, Pie } from 'recharts';
-import { getPaymentMethodsByDate } from '../../api/sales';
 import { useEffect, useState } from 'react';
+import { getCategoriesSoldByDate } from '../../api/sales';
 
-type PaymentMethodParticipationChartProps = {
+type CategoriesParticipationChartProps = {
     from: string;
     until: string;
     title: string;
@@ -13,12 +13,12 @@ type fetchSalesProps = {
     until: string;
 };
 
-export const PaymentMethodParticipationChart = ({
+export const CategoriesParticipationChart = ({
     from,
     until,
     title,
-}: PaymentMethodParticipationChartProps) => {
-    const [paymentMethodSalesData, setPaymentMethodSalesData] = useState([]);
+}: CategoriesParticipationChartProps) => {
+    const [categoriesSalesData, setCategoriesSalesData] = useState([]);
 
     useEffect(() => {
         const loadData = async () => {
@@ -29,14 +29,15 @@ export const PaymentMethodParticipationChart = ({
 
     const fetchSales = async ({ from, until }: fetchSalesProps) => {
         try {
-            const res = await getPaymentMethodsByDate({ from, until });
+            const res = await getCategoriesSoldByDate({ from, until });
             const formattedData = res.data.map(
                 (el: { name: string; total: string }) => ({
                     name: el.name,
                     total: parseFloat(el.total),
                 })
             );
-            setPaymentMethodSalesData(formattedData);
+            console.log(formattedData);
+            setCategoriesSalesData(formattedData);
         } catch (error) {
             console.error(error);
         }
@@ -48,7 +49,7 @@ export const PaymentMethodParticipationChart = ({
             <ResponsiveContainer width="100%" aspect={2}>
                 <PieChart>
                     <Pie
-                        data={paymentMethodSalesData}
+                        data={categoriesSalesData}
                         dataKey="total"
                         nameKey="name"
                         fill="#8884d8"

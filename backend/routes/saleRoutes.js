@@ -22,5 +22,10 @@ router.get(
     verifyToken,
     SaleController.getSalesByPaymentMethodController
 );
+router.get(
+    '/daily/categories',
+    verifyToken,
+    SaleController.getSalesByCategoryController
+);
 
 export default router;

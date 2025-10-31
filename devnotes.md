@@ -13,3 +13,13 @@ DESKTOP
 
 LAPTOP
 \i 'C:/workspace/sistema-de-gestion-de-comercio/backend/database/schema.sql'
+
+TEST QUERY
+
+SELECT categories.name, SUM(total) as total
+FROM sales
+JOIN sale_items ON sales.sale_id = sale_items.sale_id
+JOIN products ON sale_items.product_id = products.product_id
+JOIN categories ON categories.category_id = products.category_id
+WHERE sales.created_at BETWEEN '2025-09-01T00:00:00' AND '2025-09-30T23:59:59'
+GROUP BY categories.name;

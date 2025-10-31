@@ -51,6 +51,27 @@ export const getSalesByPaymentMethod = async (from, until) => {
     }
 };
 
+export const getSalesByCategory = async (from, until) => {
+    try {
+        const result = await pool.query(
+            `
+                SELECT categories.name, SUM(total) AS total
+                FROM sales
+                JOIN sale_items ON sales.sale_id = sale_items.sale_id
+                JOIN products ON sale_items.product_id = products.product_id
+                JOIN categories ON categories.category_id = products.category_id
+                WHERE sales.created_at BETWEEN $1 AND $2
+                GROUP BY categories.name;
+            `,
+            [from, until]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error('Error en saleModel.', error);
+        throw error;
+    }
+};
+
 export const getProductsSoldByDate = async (from, until) => {
     try {
         const result = await pool.query(
