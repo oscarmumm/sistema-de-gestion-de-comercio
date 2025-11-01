@@ -44,7 +44,7 @@ export const Products = () => {
     return (
         <div className="flex flex-col min-w-3xl max-w-6xl">
             <div className="flex justify-between p-3">
-                <h2 className="text-center my-5 font-semibold text-xl">
+                <h2 className="text-center my-5 font-bold text-2xl">
                     Productos
                 </h2>
                 <button

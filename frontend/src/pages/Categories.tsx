@@ -44,7 +44,7 @@ export const Categories = () => {
     return (
         <div className='flex flex-col min-w-xl max-w-6xl'>
             <div className='flex justify-between p-3'>
-                <h2 className='text-center my-5 font-semibold text-xl'>
+                <h2 className='text-center my-5 font-bold text-2xl'>
                     Categorías
                 </h2>
                 <button

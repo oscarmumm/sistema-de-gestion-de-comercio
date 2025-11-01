@@ -76,6 +76,7 @@ export interface SaleItem {
 export interface SaleItemView extends SaleItem {
     product_name: string;
     unit_price: number;
+    current_stock: number;
 }
 
 export interface Sale {

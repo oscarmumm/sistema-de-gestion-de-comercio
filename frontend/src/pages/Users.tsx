@@ -26,7 +26,7 @@ export const Users = () => {
     }, []);
     return (
         <div className='flex flex-col'>
-            <h2 className='text-center my-5 font-semibold text-xl'>Usuarios</h2>
+            <h2 className='text-center my-5 font-bold text-2xl'>Usuarios</h2>
             <table className='text-center rounded-lg shadow-lg overflow-hidden bg-slate-50'>
                 <thead className='border border-indigo-600 bg-indigo-600 text-slate-50'>
                     <tr>

@@ -19,7 +19,7 @@ export const AppLayout = () => {
     };
 
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen text-slate-900">
             <Header onToggleSidebar={toggleSidebar} />
             <div className="flex flex-1 bg-gradient-to-b from-indigo-300 to-indigo-50">
                 <motion.div

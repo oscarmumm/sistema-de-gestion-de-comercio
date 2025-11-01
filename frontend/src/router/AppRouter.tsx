@@ -13,6 +13,8 @@ import { Products } from '../pages/Products';
 import { Roles } from '../pages/Roles';
 import { StockEntry } from '../pages/StockEntry';
 import { RegisterSale } from '../pages/RegisterSale';
+import { SalesHistory } from '../pages/SalesHistory';
+import { GoodsReceiptHistory } from '../pages/GoodsReceiptHistory';
 
 
 export const AppRouter = () => {
@@ -40,6 +42,8 @@ export const AppRouter = () => {
                     <Route path='/dashboard' element={<Dashboard />} />
                     <Route path='/stock-entry' element={<StockEntry />} />
                     <Route path='/new-sale' element={<RegisterSale />} />
+                    <Route path='/sales-history' element={<SalesHistory />} />
+                    <Route path='/goods-receipt-history' element={<GoodsReceiptHistory />} />
                 </Route>
             </Routes>
         </BrowserRouter>

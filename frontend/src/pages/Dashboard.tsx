@@ -13,9 +13,9 @@ export const Dashboard = () => {
     const [previousMonth] = useState<DateRange>(getDateRange('previousMonth'));
 
     return (
-        <div className="">
+        <div>
             <div className="flex flex-col">
-                <h2 className="my-5 font-semibold text-xl">Dashboard</h2>
+                <h2 className="my-5 font-bold text-2xl ">Dashboard</h2>
                 <h3 className="text-center text-2xl font-semibold mb-5">
                     Ventas
                 </h3>

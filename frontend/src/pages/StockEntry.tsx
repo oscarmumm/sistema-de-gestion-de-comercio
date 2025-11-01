@@ -188,7 +188,7 @@ export const StockEntry = () => {
 
     return (
         <div className='flex flex-col items-center'>
-            <h2 className='w-full my-5 font-semibold text-xl'>
+            <h2 className='w-full my-5 font-bold text-2xl'>
                 Registrar Ingreso de Mercadería
             </h2>
             <div className='flex min-w-4xl'>

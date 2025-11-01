@@ -36,7 +36,6 @@ export const CategoriesParticipationChart = ({
                     total: parseFloat(el.total),
                 })
             );
-            console.log(formattedData);
             setCategoriesSalesData(formattedData);
         } catch (error) {
             console.error(error);

@@ -1,5 +1,5 @@
 import type { SaleItemView } from '../../types';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
     modalBackgroundVariants,
     modalFormVariants,
@@ -7,6 +7,8 @@ import {
 import { Input } from '../Input';
 import { useState } from 'react';
 import { MdClose } from 'react-icons/md';
+import { useNotificationModal } from '../../hooks/useNotification';
+import { NotificationModal } from './NotificationModal';
 
 interface EditItemOnSaleModalProps {
     item: SaleItemView | undefined;
@@ -22,6 +24,21 @@ export const EditItemOnSaleModal = ({
     const [itemQuantity, setItemQuantity] = useState<number | undefined>(
         item && item.quantity
     );
+
+    const {
+        notificationModalMsg,
+        notificationModalType,
+        notificationModalActive,
+        showNotification,
+    } = useNotificationModal();
+
+    if (itemQuantity && item && itemQuantity > item.current_stock) {
+        setItemQuantity(item.current_stock);
+        showNotification(
+            `Stock insuficiente. Stock disponible: ${item.current_stock}`,
+            'error'
+        );
+    }
 
     return (
         <motion.div
@@ -66,6 +83,14 @@ export const EditItemOnSaleModal = ({
                     Guardar
                 </button>
             </motion.div>
+            <AnimatePresence>
+                {notificationModalActive && (
+                    <NotificationModal
+                        message={notificationModalMsg}
+                        notificationType={notificationModalType}
+                    />
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 };
