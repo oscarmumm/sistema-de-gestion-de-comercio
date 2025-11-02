@@ -46,11 +46,16 @@ export const Dashboard = () => {
                     </div>
                 </div>
             </div>
-            <div>
+            <div className='flex gap-4'>
                 <PaymentMethodParticipationChart
                     from={previousMonth.from}
                     until={previousMonth.until}
                     title="Participación de Métodos de Pago Mes Anterior"
+                />
+                <PaymentMethodParticipationChart
+                    from={currentMonth.from}
+                    until={currentMonth.until}
+                    title="Participación de Métodos de Pago Mes Actual"
                 />
             </div>
             <div className="mb-3">
