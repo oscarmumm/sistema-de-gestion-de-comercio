@@ -1,23 +1,38 @@
 import { useEffect, useState } from 'react';
 import type { Product } from '../types';
-import { getProducts } from '../api/products';
+import { getAllProducts, getPaginatedProducts } from '../api/products';
 import { AnimatePresence } from 'motion/react';
 import { NewProductModal } from '../components/modals/NewProductModal';
 import { ProductModal } from '../components/modals/ProductModal';
+import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
 
 export const Products = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const [showCreationModal, setShowCreationModal] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState();
     const [selectedProduct, setSelectedProduct] = useState<Product>();
 
     useEffect(() => {
-        fetchProducts();
-    }, []);
+        fetchPaginatedProducts(page);
+    }, [page]);
+
+    const fetchPaginatedProducts = async (currentPage: number) => {
+        try {
+            const data = await getPaginatedProducts(currentPage);
+            console.log(data);
+            setProducts(data.products);
+            setPage(data.page);
+            setTotalPages(data.totalPages);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const fetchProducts = async () => {
         try {
-            const data = await getProducts();
+            const data = await getAllProducts();
             setProducts(data);
         } catch (error) {
             console.error(error);
@@ -39,6 +54,22 @@ export const Products = () => {
 
     const closeModal = () => {
         setShowEditModal(false);
+    };
+
+    const clickOnBackButton = () => {
+        if (page !== totalPages) {
+            setPage((prev) => prev - 1);
+        } else {
+            return;
+        }
+    };
+
+    const clickOnForwardButton = () => {
+        if (page === totalPages) {
+            return;
+        } else {
+            setPage((prev) => prev + 1);
+        }
     };
 
     return (
@@ -68,22 +99,35 @@ export const Products = () => {
                             className="cursor-pointer border-b border-indigo-600 last:border-0 hover:bg-indigo-100"
                             key={product.product_id}
                             onClick={() => openModal(product)}>
-                            <td className="p-3">
-                                {product.name}
-                            </td>
-                            <td className="p-3">
-                                {product.stock}
-                            </td>
-                            <td className="p-3">
-                                {product.unit_cost}
-                            </td>
-                            <td className="p-3">
-                                {product.sale_price}
-                            </td>
+                            <td className="p-3">{product.name}</td>
+                            <td className="p-3">{product.stock}</td>
+                            <td className="p-3">{product.unit_cost}</td>
+                            <td className="p-3">{product.sale_price}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <div className="w-full flex justify-evenly items-center my-3">
+                {page !== 1 && (
+                    <button
+                        className="p-3 bg-slate-50 rounded-lg shadow-lg"
+                        onClick={clickOnBackButton}>
+                        <MdArrowBackIos />
+                    </button>
+                )}
+                <div>
+                    <span className="mr-3">{page} </span>
+                    <span> . . . </span>
+                    <span className="ml-3"> {totalPages}</span>
+                </div>
+                {page !== totalPages && (
+                    <button
+                        className="p-3 bg-slate-50 rounded-lg shadow-lg"
+                        onClick={clickOnForwardButton}>
+                        <MdArrowForwardIos />
+                    </button>
+                )}
+            </div>
             <AnimatePresence>
                 {showCreationModal && (
                     <NewProductModal

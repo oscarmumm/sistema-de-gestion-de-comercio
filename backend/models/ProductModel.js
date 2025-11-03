@@ -41,6 +41,27 @@ export const getAllProdcuts = async () => {
     }
 };
 
+export const getPaginatedProducts = async (page, pageSize) => {
+    const offset = (page - 1) * pageSize;
+    try {
+        const products = await pool.query(
+            'SELECT * FROM products ORDER BY name LIMIT $1 OFFSET $2',
+            [pageSize, offset]
+        );
+        const total = await pool.query('SELECT COUNT(*) FROM products');
+        return {
+            products: products.rows,
+            total: parseInt(total.rows[0].count),
+            page,
+            pageSize,
+            totalPages: Math.ceil(total.rows[0].count / pageSize),
+        };
+    } catch (error) {
+        console.error('Error en productModel', error);
+        throw error;
+    }
+};
+
 export const getProductById = async (product_id) => {
     try {
         const result = await pool.query(
@@ -54,8 +75,8 @@ export const getProductById = async (product_id) => {
 };
 
 export const updateProduct = async (product_id, product) => {
-    console.log(product_id)
-    console.log(product)
+    console.log(product_id);
+    console.log(product);
     const {
         category_id,
         brand_id,

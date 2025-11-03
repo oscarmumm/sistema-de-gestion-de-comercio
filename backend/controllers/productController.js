@@ -51,6 +51,21 @@ export const getAllProdcutsController = async (req, res) => {
     }
 };
 
+export const getPaginatedproductsController = async (req, res) => {
+    const rawPage = parseInt(req.query.page) || 1;
+    const rawPageSize = parseInt(req.query.pageSize) || 20;
+    const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
+    const pageSize =
+        Number.isFinite(rawPageSize) && rawPageSize > 0 ? rawPageSize : 20;
+    try {
+        const result = await ProductModel.getPaginatedProducts(page, pageSize);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error en getPaginatedProductsController ', error);
+        return res.status(500).json({ message: 'Error al obtener productos' });
+    }
+};
+
 export const getProductByIdController = async (req, res) => {
     try {
         const { id } = req.params;
@@ -66,17 +81,15 @@ export const updateProductController = async (req, res) => {
         const { id } = req.params;
         const product = req.body;
         const updatedProduct = await ProductModel.updateProduct(id, product);
-        if(!updatedProduct) {
-            return res.status(404).json({message: 'Producto no encontrado'})
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Producto no encontrado' });
         }
-        return res
-            .status(200)
-            .json({
-                message: 'Producto actualizado correctamente',
-                updatedProduct,
-            });
+        return res.status(200).json({
+            message: 'Producto actualizado correctamente',
+            updatedProduct,
+        });
     } catch (error) {
-        console.error(error)
+        console.error(error);
         return res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
