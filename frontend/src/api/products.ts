@@ -113,6 +113,22 @@ export const getPaginatedProducts = async (
     };
 };
 
+export const getLowestStockProducts = async () => {
+    const token = sessionStorage.getItem('token');
+    const res = await fetch(`http://localhost:3000/api/products/lowest-stock`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!res.ok) {
+        throw new Error('Error al obtener los productos con menor stock');
+    }
+    const data = await res.json();
+    return data;
+};
+
 export const updateProduct = async (product: Product) => {
     const token = sessionStorage.getItem('token');
     const rawUser = sessionStorage.getItem('user');

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { ProductsSoldByDateChart } from '../components/charts/ProductsSoldByDateChart';
 import { PaymentMethodParticipationChart } from '../components/charts/PaymentMethodParticipationChart';
 import { CategoriesParticipationChart } from '../components/charts/CategoriesParticipationChart';
+import { LowestStockProductsChart } from '../components/charts/LowestStockProductsChart';
 
 export const Dashboard = () => {
     const [currentWeek] = useState<DateRange>(getDateRange('currentWeek'));
@@ -85,6 +86,7 @@ export const Dashboard = () => {
                         title="Participación de Categorías de Productos MES ACTUAL"
                     />
                 </div>
+                <LowestStockProductsChart />
             </div>
         </div>
     );

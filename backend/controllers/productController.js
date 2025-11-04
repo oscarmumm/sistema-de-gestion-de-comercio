@@ -90,6 +90,18 @@ export const getProductByIdController = async (req, res) => {
     }
 };
 
+export const getLowestStockProductsController = async (req, res) => {
+    try {
+        const products = await ProductModel.getLowestStockProducts();
+        return res.status(200).json(products);
+    } catch (error) {
+        console.error('Error en getLowestStockProductsController: ', error);
+        return res.status(500).json({
+            message: 'Error al obtener lso productos con menor stock',
+        });
+    }
+};
+
 export const updateProductController = async (req, res) => {
     try {
         const { id } = req.params;

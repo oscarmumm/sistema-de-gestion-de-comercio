@@ -52,11 +52,7 @@ export const getAllProductNames = async () => {
     }
 };
 
-export const getPaginatedProducts = async (
-    search,
-    page = 1,
-    pageSize = 20
-) => {
+export const getPaginatedProducts = async (search, page = 1, pageSize = 20) => {
     const offset = (page - 1) * pageSize;
     try {
         if (search !== '') {
@@ -106,6 +102,21 @@ export const getProductById = async (product_id) => {
         );
         return result.rows[0];
     } catch (error) {
+        throw error;
+    }
+};
+
+export const getLowestStockProducts = async () => {
+    try {
+        const result = await pool.query(
+            'SELECT name, stock FROM products ORDER BY stock ASC LIMIT 20'
+        );
+        return result.rows;
+    } catch (error) {
+        console.error(
+            'Error en productsModel - getLowestStockProducts: ',
+            error
+        );
         throw error;
     }
 };
