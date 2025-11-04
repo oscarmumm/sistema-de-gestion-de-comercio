@@ -111,7 +111,7 @@ export interface StockEntryItemView extends StockEntryItem {
 }
 
 export interface GoodsReceipt extends StockEntry {
-    products: Product[];
+    products: StockEntryItemView[];
 }
 
 export interface DateRange {
