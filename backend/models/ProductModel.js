@@ -109,7 +109,7 @@ export const getProductById = async (product_id) => {
 export const getLowestStockProducts = async () => {
     try {
         const result = await pool.query(
-            'SELECT name, stock FROM products ORDER BY stock ASC LIMIT 20'
+            'SELECT name, stock FROM products ORDER BY stock ASC LIMIT 10'
         );
         return result.rows;
     } catch (error) {

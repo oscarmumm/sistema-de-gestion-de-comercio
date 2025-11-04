@@ -7,6 +7,7 @@ import {
     modalFormVariants,
     modalBackgroundVariants,
 } from '../animations/animations';
+import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 
 export const Login = () => {
     const navigate = useNavigate();
@@ -14,6 +15,7 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const auth = useContext(AuthContext);
+    const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,6 +27,10 @@ export const Login = () => {
         } catch (error: any) {
             setError(error.message);
         }
+    };
+
+    const toggleShowPassword = () => {
+        setPasswordVisible(!passwordVisible);
     };
 
     return (
@@ -50,22 +56,38 @@ export const Login = () => {
                     <h2 className="text-3xl mb-5 text-center">
                         Iniciar sesión
                     </h2>
-                    <Input
-                        label="Usuario"
-                        type="text"
-                        value={username}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            setUsername(e.target.value)
-                        }
-                    />
-                    <Input
-                        label="Contraseña"
-                        type="password"
-                        value={password}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            setPassword(e.target.value)
-                        }
-                    />
+                    <div className="flex flex-col w-full">
+                        <label className="px-1">Usuario</label>
+                        <input
+                            className="p-3 my-3 outline-none shadow-lg rounded-lg bg-white"
+                            type="text"
+                            value={username}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) => setUsername(e.target.value)}
+                        />
+                    </div>
+                    <div className="flex flex-col w-full">
+                        <label className="px-1">Contraseña</label>
+                        <div className="flex p-3 my-3 outline-none shadow-lg rounded-lg bg-white text-center">
+                            <input
+                                className="outline-none w-full"
+                                type={passwordVisible ? 'text' : 'password'}
+                                value={password}
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) => setPassword(e.target.value)}
+                            />
+                            <button
+                                className="text-2xl cursor-pointer"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    toggleShowPassword();
+                                }}>
+                                {passwordVisible ? <IoMdEye /> : <IoMdEyeOff />}
+                            </button>
+                        </div>
+                    </div>
                     <button
                         className="p-3 my-3 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer"
                         type="submit">
