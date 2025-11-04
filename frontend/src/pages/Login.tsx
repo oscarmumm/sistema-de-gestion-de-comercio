@@ -1,6 +1,5 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { Input } from '../components/Input';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import {

@@ -14,6 +14,7 @@ export const useProducts = () => {
     const fetchProducts = async () => {
         try {
             const data = await getAllProducts();
+            console.log('hook use products', data)
             setProducts(data);
         } catch (error) {
             const message =

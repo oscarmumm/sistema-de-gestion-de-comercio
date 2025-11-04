@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { Product } from '../../types';
 import { AnimatePresence, motion } from 'motion/react';
 import {
@@ -7,7 +7,8 @@ import {
 } from '../../animations/animations';
 import { Input } from '../Input';
 import { MdSearch, MdClose } from 'react-icons/md';
-import { useProducts } from '../../hooks/useProducts';
+import { getPaginatedProducts } from '../../api/products';
+import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
 
 interface SearchProductModalProps {
     closeModal: () => void;
@@ -19,20 +20,43 @@ export const SearchProductModal = ({
     selectProduct,
 }: SearchProductModalProps) => {
     const [searchValue, setSearchValue] = useState<string>('');
-    const [searchResults, setSearchResults] = useState<Product[]>([]);
+    const [page, setPage] = useState<number>(1);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [totalPages, setTotalPages] = useState();
+
+    const searchAction = () => {
+        fetchPaginatedProducts(1);
+    };
 
     const chooseProduct = (product: Product) => {
         selectProduct(product);
     };
 
-    const { products, loading, error } = useProducts();
+    const fetchPaginatedProducts = async (currentPage: number) => {
+        try {
+            const data = await getPaginatedProducts(searchValue, currentPage);
+            setProducts(data.products);
+            setPage(data.page);
+            setTotalPages(data.totalPages);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const clickOnBackButton = () => {
+        if (page === 1) {
+            return;
+        } else {
+            setPage((prev) => prev - 1);
+        }
+    };
 
-    useEffect(() => {
-        const filteredProducts = products.filter((product) =>
-            product.name.toLowerCase().includes(searchValue.toLowerCase())
-        );
-        setSearchResults(filteredProducts);
-    }, [products, searchValue]);
+    const clickOnForwardButton = () => {
+        if (page === totalPages) {
+            return;
+        } else {
+            setPage((prev) => prev + 1);
+        }
+    };
 
     return (
         <motion.div
@@ -63,40 +87,36 @@ export const SearchProductModal = ({
                         placeholder="Buscar Producto"
                         type="text"
                         value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
+                        onChange={(e) => {
+                            setSearchValue(e.target.value);
+                        }}
                     />
                     <button
                         className="p-3 my-3 ml-3 text-xl shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer hover:scale-105"
-                        onClick={() => {
-                            const filteredProducts = products.filter(
-                                (product) =>
-                                    product.name
-                                        .toLowerCase()
-                                        .includes(searchValue.toLowerCase())
-                            );
-                            setSearchResults(filteredProducts);
-                        }}>
+                        onClick={searchAction}>
                         <MdSearch />
                     </button>
                 </div>
 
                 <ul className="rounded-lg bg-slate-50 shadow-lg">
                     <AnimatePresence>
-                        {searchValue.length > 2 && searchResults.length > 0 && (
+                        {products.length && (
                             <motion.table
-                            className='text-center w-full shadow-lg overflow-hidden bg-slate-50 rounded-lg'
+                                className="text-center w-full shadow-lg overflow-hidden bg-slate-50 rounded-lg"
                                 variants={modalFormVariants}
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit">
-                                <thead className='border border-indigo-600 bg-indigo-600 text-slate-50'>
+                                <thead className="border border-indigo-600 bg-indigo-600 text-slate-50">
                                     <tr>
-                                        <th className='p-3'>Nombre</th>
-                                        <th className='p-3'>Stock disponible</th>
+                                        <th className="p-3">Nombre</th>
+                                        <th className="p-3">
+                                            Stock disponible
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {searchResults.map((product) => (
+                                    {products.map((product) => (
                                         <tr
                                             key={product.product_id}
                                             onClick={() => {
@@ -104,11 +124,43 @@ export const SearchProductModal = ({
                                                 closeModal();
                                             }}
                                             className="cursor-pointer text-center p-3 hover:bg-indigo-200">
-                                            <td className='p-3'>{product.name}</td>
-                                            <td className='p-3'>{product.stock}</td>
+                                            <td className="p-3">
+                                                {product.name}
+                                            </td>
+                                            <td className="p-3">
+                                                {product.stock}
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
+                                {totalPages && totalPages > 1 && (
+                                    <div className="w-full flex justify-center items-center my-3">
+                                        {page !== 1 && (
+                                            <button
+                                                className="p-3 bg-slate-50 rounded-lg shadow-lg cursor-pointer"
+                                                onClick={clickOnBackButton}>
+                                                <MdArrowBackIos />
+                                            </button>
+                                        )}
+                                        <div className="font-semibold">
+                                            <span className="mr-3 ml-36">
+                                                {page}{' '}
+                                            </span>
+                                            <span> . . . </span>
+                                            <span className="ml-3 mr-36">
+                                                {' '}
+                                                {totalPages}
+                                            </span>
+                                        </div>
+                                        {page !== totalPages && (
+                                            <button
+                                                className="p-3 bg-slate-50 rounded-lg shadow-lg cursor-pointer"
+                                                onClick={clickOnForwardButton}>
+                                                <MdArrowForwardIos />
+                                            </button>
+                                        )}
+                                    </div>
+                                )}
                             </motion.table>
                         )}
                     </AnimatePresence>

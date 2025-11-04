@@ -110,6 +110,10 @@ export interface StockEntryItemView extends StockEntryItem {
     box_price: number;
 }
 
+export interface GoodsReceipt extends StockEntry {
+    products: Product[];
+}
+
 export interface DateRange {
     from: string;
     until: string;

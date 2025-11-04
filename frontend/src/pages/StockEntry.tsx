@@ -14,6 +14,7 @@ import { useNotificationModal } from '../hooks/useNotification';
 import { ConfirmStockEntryModal } from '../components/modals/ConfirmStockEntryModal';
 import { getSuppliers } from '../api/suppliers';
 import { EditItemOnEntryModal } from '../components/modals/EditItemOnEntryModal';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 type SupplierSelection = Pick<Supplier, 'name' | 'supplier_id'>;
 
