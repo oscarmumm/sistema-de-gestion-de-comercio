@@ -5,6 +5,7 @@ import { AnimatePresence } from 'motion/react';
 import { NewProductModal } from '../components/modals/NewProductModal';
 import { ProductModal } from '../components/modals/ProductModal';
 import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
+import { ProductSearchBar } from '../components/ProductSearchBar';
 
 export const Products = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -13,6 +14,7 @@ export const Products = () => {
     const [page, setPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState();
     const [selectedProduct, setSelectedProduct] = useState<Product>();
+    const [searchValue, setSearchValue] = useState<string>('');
 
     useEffect(() => {
         fetchPaginatedProducts(page);
@@ -20,14 +22,17 @@ export const Products = () => {
 
     const fetchPaginatedProducts = async (currentPage: number) => {
         try {
-            const data = await getPaginatedProducts(currentPage);
-            console.log(data);
+            const data = await getPaginatedProducts(searchValue, currentPage);
             setProducts(data.products);
             setPage(data.page);
             setTotalPages(data.totalPages);
         } catch (error) {
             console.error(error);
         }
+    };
+
+    const searchAction = () => {
+        fetchPaginatedProducts(page);
     };
 
     const fetchProducts = async () => {
@@ -57,10 +62,10 @@ export const Products = () => {
     };
 
     const clickOnBackButton = () => {
-        if (page !== totalPages) {
-            setPage((prev) => prev - 1);
-        } else {
+        if (page === 1) {
             return;
+        } else {
+            setPage((prev) => prev - 1);
         }
     };
 
@@ -83,6 +88,13 @@ export const Products = () => {
                     onClick={openCreationModal}>
                     Nuevo producto
                 </button>
+            </div>
+            <div>
+                <ProductSearchBar
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
+                    searchAction={searchAction}
+                />
             </div>
             <table className="text-center rounded-lg shadow-lg overflow-hidden bg-slate-50">
                 <thead className="border border-indigo-600 bg-indigo-600 text-slate-50">
@@ -107,27 +119,29 @@ export const Products = () => {
                     ))}
                 </tbody>
             </table>
-            <div className="w-full flex justify-evenly items-center my-3">
-                {page !== 1 && (
-                    <button
-                        className="p-3 bg-slate-50 rounded-lg shadow-lg"
-                        onClick={clickOnBackButton}>
-                        <MdArrowBackIos />
-                    </button>
-                )}
-                <div>
-                    <span className="mr-3">{page} </span>
-                    <span> . . . </span>
-                    <span className="ml-3"> {totalPages}</span>
+            {totalPages && totalPages > 1 && (
+                <div className="w-full flex justify-center items-center my-3">
+                    {page !== 1 && (
+                        <button
+                            className="p-3 bg-slate-50 rounded-lg shadow-lg"
+                            onClick={clickOnBackButton}>
+                            <MdArrowBackIos />
+                        </button>
+                    )}
+                    <div className="font-semibold">
+                        <span className="mr-3 ml-36">{page} </span>
+                        <span> . . . </span>
+                        <span className="ml-3 mr-36"> {totalPages}</span>
+                    </div>
+                    {page !== totalPages && (
+                        <button
+                            className="p-3 bg-slate-50 rounded-lg shadow-lg"
+                            onClick={clickOnForwardButton}>
+                            <MdArrowForwardIos />
+                        </button>
+                    )}
                 </div>
-                {page !== totalPages && (
-                    <button
-                        className="p-3 bg-slate-50 rounded-lg shadow-lg"
-                        onClick={clickOnForwardButton}>
-                        <MdArrowForwardIos />
-                    </button>
-                )}
-            </div>
+            )}
             <AnimatePresence>
                 {showCreationModal && (
                     <NewProductModal

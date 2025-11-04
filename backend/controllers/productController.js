@@ -51,17 +51,31 @@ export const getAllProdcutsController = async (req, res) => {
     }
 };
 
-export const getPaginatedproductsController = async (req, res) => {
-    const rawPage = parseInt(req.query.page) || 1;
-    const rawPageSize = parseInt(req.query.pageSize) || 20;
-    const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
-    const pageSize =
-        Number.isFinite(rawPageSize) && rawPageSize > 0 ? rawPageSize : 20;
+export const getAllProductNamesController = async (req, res) => {
     try {
-        const result = await ProductModel.getPaginatedProducts(page, pageSize);
+        const productNames = await ProductModel.getAllProductNames();
+        return res.status(200).json(productNames);
+    } catch (error) {
+        return res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
+export const getPaginatedProductsController = async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 20;
+    const { search } = req.query;
+    try {
+        const result = await ProductModel.getPaginatedProducts(
+            search,
+            page,
+            pageSize
+        );
         res.status(200).json(result);
     } catch (error) {
-        console.error('Error en getPaginatedProductsController ', error);
+        console.error(
+            'Error en getPaginatedProductsBySearchController ',
+            error
+        );
         return res.status(500).json({ message: 'Error al obtener productos' });
     }
 };

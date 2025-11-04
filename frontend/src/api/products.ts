@@ -65,10 +65,30 @@ export const getAllProducts = async () => {
     }));
 };
 
-export const getPaginatedProducts = async (page: number = 1, pageSize: number = 20) => {
+export const getAllProductNames = async () => {
+    const token = sessionStorage.getItem('token');
+    const res = await fetch(`http://localhost:3000/api/products/names`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!res.ok) {
+        throw new Error('Error al obtener los nombres de los productos');
+    }
+    const data = await res.json();
+    return data;
+};
+
+export const getPaginatedProducts = async (
+    search: string,
+    page: number = 1,
+    pageSize: number = 20
+) => {
     const token = sessionStorage.getItem('token');
     const res = await fetch(
-        `http://localhost:3000/api/products?page=${page}&pageSize=${pageSize}`,
+        `http://localhost:3000/api/products?search=${search}&page=${page}&pageSize=${pageSize}`,
         {
             method: 'GET',
             headers: {

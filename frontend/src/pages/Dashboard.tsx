@@ -24,38 +24,38 @@ export const Dashboard = () => {
                         <SalesByDateLineChart
                             from={currentWeek.from}
                             until={currentWeek.until}
-                            period="Semana Actual"
+                            period="SEMANA ACTUAL"
                         />
                         <SalesByDateLineChart
                             from={previousWeek.from}
                             until={previousWeek.until}
-                            period="Semana Anterior"
+                            period="SEMANA ANTERIOR"
                         />
                     </div>
                     <div className="flex gap-4">
                         <SalesByDateLineChart
                             from={currentMonth.from}
                             until={currentMonth.until}
-                            period="Mes Actual"
+                            period="MES ACTUAL"
                         />
                         <SalesByDateLineChart
                             from={previousMonth.from}
                             until={previousMonth.until}
-                            period="Mes Anterior"
+                            period="MES ANTERIOR"
                         />
                     </div>
                 </div>
             </div>
-            <div className='flex gap-4'>
+            <div className="flex gap-4">
                 <PaymentMethodParticipationChart
                     from={previousMonth.from}
                     until={previousMonth.until}
-                    title="Participación de Métodos de Pago Mes Anterior"
+                    title="Participación de Métodos de Pago MES ANTERIOR"
                 />
                 <PaymentMethodParticipationChart
                     from={currentMonth.from}
                     until={currentMonth.until}
-                    title="Participación de Métodos de Pago Mes Actual"
+                    title="Participación de Métodos de Pago MES ACTUAL"
                 />
             </div>
             <div className="mb-3">
@@ -65,18 +65,26 @@ export const Dashboard = () => {
                 <ProductsSoldByDateChart
                     from={previousMonth.from}
                     until={previousMonth.until}
-                    title="Productos Mas Vendidos Último Mes (por unidad)"
+                    title="Productos Mas Vendidos MES ANTERIOR (por unidad)"
                 />
                 <ProductsSoldByDateChart
                     from={currentMonth.from}
                     until={currentMonth.until}
-                    title="Productos Mas Vendidos Este Mes (por unidad)"
+                    title="Productos Mas Vendidos MES ACTUAL (por unidad)"
                 />
-                <CategoriesParticipationChart
-                    from={previousMonth.from}
-                    until={previousMonth.until}
-                    title="Participación de Categorías de Productos Mes Anterior"
-                />
+
+                <div className='flex gap-3'>
+                    <CategoriesParticipationChart
+                        from={previousMonth.from}
+                        until={previousMonth.until}
+                        title="Participación de Categorías de Productos MES ANTERIOR"
+                    />
+                    <CategoriesParticipationChart
+                        from={currentMonth.from}
+                        until={currentMonth.until}
+                        title="Participación de Categorías de Productos MES ACTUAL"
+                    />
+                </div>
             </div>
         </div>
     );

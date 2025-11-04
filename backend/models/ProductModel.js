@@ -41,23 +41,59 @@ export const getAllProdcuts = async () => {
     }
 };
 
-export const getPaginatedProducts = async (page, pageSize) => {
+export const getAllProductNames = async () => {
+    try {
+        const result = await pool.query(
+            'SELECT name FROM products ORDER BY name ASC'
+        );
+        return result.rows;
+    } catch (error) {
+        console.error('Error en productsModel', error);
+    }
+};
+
+export const getPaginatedProducts = async (
+    search,
+    page = 1,
+    pageSize = 20
+) => {
     const offset = (page - 1) * pageSize;
     try {
-        const products = await pool.query(
-            'SELECT * FROM products ORDER BY name LIMIT $1 OFFSET $2',
-            [pageSize, offset]
-        );
-        const total = await pool.query('SELECT COUNT(*) FROM products');
-        return {
-            products: products.rows,
-            total: parseInt(total.rows[0].count),
-            page,
-            pageSize,
-            totalPages: Math.ceil(total.rows[0].count / pageSize),
-        };
+        if (search !== '') {
+            const products = await pool.query(
+                'SELECT * FROM products WHERE name ILIKE $1 ORDER BY name LIMIT $2 OFFSET $3',
+                [`%${search}%`, pageSize, offset]
+            );
+            const total = await pool.query(
+                'SELECT COUNT(*) FROM products WHERE name ILIKE $1',
+                [`%${search}%`]
+            );
+            return {
+                products: products.rows,
+                total: parseInt(total.rows[0].count),
+                page,
+                pageSize,
+                totalPages: Math.ceil(total.rows[0].count / pageSize),
+            };
+        } else {
+            const products = await pool.query(
+                'SELECT * FROM products ORDER BY name LIMIT $1 OFFSET $2',
+                [pageSize, offset]
+            );
+            const total = await pool.query('SELECT COUNT(*) FROM products');
+            return {
+                products: products.rows,
+                total: parseInt(total.rows[0].count),
+                page,
+                pageSize,
+                totalPages: Math.ceil(total.rows[0].count / pageSize),
+            };
+        }
     } catch (error) {
-        console.error('Error en productModel', error);
+        console.error(
+            'Error en productModel - getPaginatedProductsBySearch: ',
+            error
+        );
         throw error;
     }
 };
@@ -75,8 +111,6 @@ export const getProductById = async (product_id) => {
 };
 
 export const updateProduct = async (product_id, product) => {
-    console.log(product_id);
-    console.log(product);
     const {
         category_id,
         brand_id,
@@ -110,7 +144,7 @@ export const updateProduct = async (product_id, product) => {
         );
         return result.rows[0];
     } catch (error) {
-        console.log(error);
+        console.error(error);
         throw error;
     }
 };
