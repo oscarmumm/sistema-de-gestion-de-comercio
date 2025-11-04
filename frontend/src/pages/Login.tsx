@@ -88,6 +88,7 @@ export const Login = () => {
                             </button>
                         </div>
                     </div>
+                    <p className='text-red-500 font-semibold text-center'>{error}</p>
                     <button
                         className="p-3 my-3 shadow-lg rounded-lg bg-indigo-600 text-white cursor-pointer"
                         type="submit">
