@@ -32,7 +32,7 @@ export const Products = () => {
     };
 
     const searchAction = () => {
-        fetchPaginatedProducts(page);
+        fetchPaginatedProducts(1);
     };
 
     const fetchProducts = async () => {
@@ -123,7 +123,7 @@ export const Products = () => {
                 <div className="w-full flex justify-center items-center my-3">
                     {page !== 1 && (
                         <button
-                            className="p-3 bg-slate-50 rounded-lg shadow-lg"
+                            className="p-3 bg-slate-50 rounded-lg shadow-lg cursor-pointer"
                             onClick={clickOnBackButton}>
                             <MdArrowBackIos />
                         </button>
@@ -135,7 +135,7 @@ export const Products = () => {
                     </div>
                     {page !== totalPages && (
                         <button
-                            className="p-3 bg-slate-50 rounded-lg shadow-lg"
+                            className="p-3 bg-slate-50 rounded-lg shadow-lg cursor-pointer"
                             onClick={clickOnForwardButton}>
                             <MdArrowForwardIos />
                         </button>
