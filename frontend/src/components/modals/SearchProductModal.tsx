@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Product } from '../../types';
 import { AnimatePresence, motion } from 'motion/react';
 import {
@@ -28,13 +28,21 @@ export const SearchProductModal = ({
         fetchPaginatedProducts(1);
     };
 
+    useEffect(() => {
+        fetchPaginatedProducts(page)
+    }, [page])
+
     const chooseProduct = (product: Product) => {
         selectProduct(product);
     };
 
     const fetchPaginatedProducts = async (currentPage: number) => {
         try {
-            const data = await getPaginatedProducts(searchValue, currentPage);
+            const data = await getPaginatedProducts(
+                searchValue,
+                currentPage,
+                10
+            );
             setProducts(data.products);
             setPage(data.page);
             setTotalPages(data.totalPages);
@@ -133,38 +141,33 @@ export const SearchProductModal = ({
                                         </tr>
                                     ))}
                                 </tbody>
-                                {totalPages && totalPages > 1 && (
-                                    <div className="w-full flex justify-center items-center my-3">
-                                        {page !== 1 && (
-                                            <button
-                                                className="p-3 bg-slate-50 rounded-lg shadow-lg cursor-pointer"
-                                                onClick={clickOnBackButton}>
-                                                <MdArrowBackIos />
-                                            </button>
-                                        )}
-                                        <div className="font-semibold">
-                                            <span className="mr-3 ml-36">
-                                                {page}{' '}
-                                            </span>
-                                            <span> . . . </span>
-                                            <span className="ml-3 mr-36">
-                                                {' '}
-                                                {totalPages}
-                                            </span>
-                                        </div>
-                                        {page !== totalPages && (
-                                            <button
-                                                className="p-3 bg-slate-50 rounded-lg shadow-lg cursor-pointer"
-                                                onClick={clickOnForwardButton}>
-                                                <MdArrowForwardIos />
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
                             </motion.table>
                         )}
                     </AnimatePresence>
                 </ul>
+            {totalPages && totalPages > 1 && (
+                <div className="w-full flex justify-center items-center my-3">
+                    {page !== 1 && (
+                        <button
+                            className="p-3 bg-slate-50 rounded-lg shadow-lg cursor-pointer"
+                            onClick={clickOnBackButton}>
+                            <MdArrowBackIos />
+                        </button>
+                    )}
+                    <div className="font-semibold">
+                        <span className="mr-3 ml-24">{page} </span>
+                        <span> . . . </span>
+                        <span className="ml-3 mr-24"> {totalPages}</span>
+                    </div>
+                    {page !== totalPages && (
+                        <button
+                            className="p-3 bg-slate-50 rounded-lg shadow-lg cursor-pointer"
+                            onClick={clickOnForwardButton}>
+                            <MdArrowForwardIos />
+                        </button>
+                    )}
+                </div>
+            )}
             </motion.div>
         </motion.div>
     );

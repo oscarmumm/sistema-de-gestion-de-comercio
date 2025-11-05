@@ -78,10 +78,14 @@ export const RegisterSale = () => {
     };
 
     const deleteItemFromSale = (item: SaleItemView) => {
-        const temp = saleItemsView.filter(
+        const updatedSaleItemsView = saleItemsView.filter(
             (product) => product.product_id !== item.product_id
         );
-        setSaleItemsView(temp);
+        const updatedSaleItems = saleItems.filter(
+            (product) => product.product_id !== item.product_id
+        );
+        setSaleItemsView(updatedSaleItemsView);
+        setSaleItems(updatedSaleItems);
     };
 
     const editItemFromSale = (item: SaleItemView, newQuantity: number) => {
