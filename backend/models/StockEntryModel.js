@@ -10,6 +10,7 @@ export const createStockEntry = async (
             'INSERT INTO stock_entries (user_id, supplier_id, goods_receipt) VALUES ($1, $2, $3) RETURNING *',
             [user_id, supplier_id, goods_receipt]
         );
+        console.log(result.rows[0])
         return result.rows[0];
     } catch (error) {
         throw error;
@@ -28,7 +29,7 @@ export const getAllStockEntries = async () => {
 export const getStockEntryById = async (id) => {
     try {
         const result = await pool.query(
-            'SELECT * FROM stock_entries WHERE entry_id = $1',
+            'SELECT suppliers.name AS supplier_name, users.username , goods_receipt AS receipt_code, entry_date FROM stock_entries JOIN suppliers ON suppliers.supplier_id = stock_entries.supplier_id JOIN users ON users.user_id = stock_entries.user_id WHERE entry_id = $1;',
             [id]
         );
         return result.rows[0];

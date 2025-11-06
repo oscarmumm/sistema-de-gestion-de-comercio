@@ -15,5 +15,15 @@ router.post(
     verifyToken,
     StockEntryItemsController.createStockEntryItemController
 );
+router.get(
+    '/:id',
+    verifyToken,
+    StockEntriesController.getStockEntryByIdController
+);
+router.get(
+    '/items/:id',
+    verifyToken,
+    StockEntryItemsController.getStockEntriesByEntryIdController
+);
 
 export default router;

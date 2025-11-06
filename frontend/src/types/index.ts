@@ -110,8 +110,20 @@ export interface StockEntryItemView extends StockEntryItem {
     box_price: number;
 }
 
-export interface GoodsReceipt extends StockEntry {
-    products: StockEntryItemView[];
+interface itemsOnRecipeView {
+    name: string;
+    boxes: number;
+    product_id: number;
+    unit_cost: string;
+    units_per_box: number;
+}
+
+export interface GoodsReceipt {
+    supplier_name: string;
+    username: string;
+    receipt_code: string;
+    entry_date: Date;
+    products: itemsOnRecipeView[];
 }
 
 export interface DateRange {

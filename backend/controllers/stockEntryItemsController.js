@@ -20,3 +20,14 @@ export const createStockEntryItemController = async (req, res) => {
         return res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
+
+export const getStockEntriesByEntryIdController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const products = await StockEntryItemModel.getStockEntriesByEntryId(id);
+        return res.json(products);
+    } catch (error) {
+        console.error('Error en getStockEntriesByEntryIdController', error);
+        return res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};

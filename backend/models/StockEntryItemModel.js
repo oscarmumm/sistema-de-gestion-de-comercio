@@ -33,6 +33,19 @@ export const createStockEntryItem = async (product_id, entry_id, boxes) => {
     }
 };
 
+export const getStockEntriesByEntryId = async (entry_id) => {
+    try {
+        const result = await pool.query(
+            'SELECT products.product_id, name, unit_cost, boxes, units_per_box FROM stock_entry_items JOIN products ON products.product_id = stock_entry_items.product_id WHERE entry_id = $1',
+            [entry_id]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error('Error en stockEntryItemModel: ', error);
+        throw error;
+    }
+};
+
 export const getTotalBoxesByProduct = async (product_id) => {};
 
 export const getEntriesByProduct = async (product_id) => {};

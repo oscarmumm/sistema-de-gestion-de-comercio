@@ -8,11 +8,17 @@ import type {
     StockEntryItemView,
     Supplier,
     StockEntryItem,
+    GoodsReceipt,
 } from '../../types';
 import { useEffect, useState } from 'react';
 import { getUserIdFromSession } from '../../utils/utils';
-import { createStockEntry } from '../../api/stockEntry';
-import { insertStockEntryItems } from '../../api/stockEntryItems';
+import { createStockEntry, getStockEntryById } from '../../api/stockEntry';
+import {
+    getStockEntryItemsByEntryId,
+    insertStockEntryItems,
+} from '../../api/stockEntryItems';
+import { GoodsReceiptPDF } from '../GoodsReceiptPDF';
+import { pdf } from '@react-pdf/renderer';
 
 interface ConfirmStockEntryModalProps {
     total: number;
@@ -36,10 +42,45 @@ export const ConfirmStockEntryModal = ({
     goodsReceipt,
 }: ConfirmStockEntryModalProps) => {
     const [user, setUser] = useState<number>(0);
+    const [receitpData, setReceiptData] = useState<GoodsReceipt>();
 
     useEffect(() => {
         setUser(getUserIdFromSession);
     }, []);
+
+    const openReceipt = async (receitpData: GoodsReceipt) => {
+        const blob = await pdf(
+            <GoodsReceiptPDF receipt={receitpData} />
+        ).toBlob();
+        const url = URL.createObjectURL(blob);
+        window.open(url);
+    };
+
+    const generateReceiptData = async (id: number) => {
+        const entry = await fetchStockEntry(id);
+        const entryItems = await fetchStockEntryItems(id);
+        const data = { ...entry, products: entryItems };
+        setReceiptData(data);
+        openReceipt(data);
+    };
+
+    const fetchStockEntry = async (id: number) => {
+        try {
+            const entry = await getStockEntryById(id);
+            return entry;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const fetchStockEntryItems = async (id: number) => {
+        try {
+            const entryItems = await getStockEntryItemsByEntryId(id);
+            return entryItems;
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
         <motion.div
@@ -126,6 +167,7 @@ export const ConfirmStockEntryModal = ({
                                 entryId,
                                 itemsArray: saleItemsPayload,
                             });
+                            generateReceiptData(entryId);
                             clearStockEntryItems();
                             closeModal();
                             successfulEntry();
