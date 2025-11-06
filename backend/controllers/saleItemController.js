@@ -22,3 +22,14 @@ export const createSaleItemsController = async (req, res) => {
         return res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
+
+export const getItemsBySaleIdController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const items = await SaleItemModel.getItemsBySaleId(id);
+        return res.json(items);
+    } catch (error) {
+        console.error('Error en saleItemController', error);
+        return res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};

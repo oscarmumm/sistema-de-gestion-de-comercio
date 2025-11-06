@@ -60,7 +60,10 @@ export const getSalesByDay = async ({ from, until }: getSalesByDayProps) => {
     return data;
 };
 
-export const getPaymentMethodsByDate = async ({ from, until }: getSalesByDayProps) => {
+export const getPaymentMethodsByDate = async ({
+    from,
+    until,
+}: getSalesByDayProps) => {
     const token = sessionStorage.getItem('token');
 
     const res = await fetch(
@@ -81,7 +84,10 @@ export const getPaymentMethodsByDate = async ({ from, until }: getSalesByDayProp
     return data;
 };
 
-export const getCategoriesSoldByDate = async ({ from, until }: getSalesByDayProps) => {
+export const getCategoriesSoldByDate = async ({
+    from,
+    until,
+}: getSalesByDayProps) => {
     const token = sessionStorage.getItem('token');
 
     const res = await fetch(
@@ -102,8 +108,10 @@ export const getCategoriesSoldByDate = async ({ from, until }: getSalesByDayProp
     return data;
 };
 
-
-export const getProductsSoldByDate = async ({ from, until }: getSalesByDayProps) => {
+export const getProductsSoldByDate = async ({
+    from,
+    until,
+}: getSalesByDayProps) => {
     const token = sessionStorage.getItem('token');
 
     const res = await fetch(
@@ -119,6 +127,23 @@ export const getProductsSoldByDate = async ({ from, until }: getSalesByDayProps)
     if (!res.ok) {
         const errorMsg = await res.text();
         throw new Error(`Error al obtener los datos de ventas: ${errorMsg}`);
+    }
+    const data = await res.json();
+    return data;
+};
+
+export const getSaleById = async (id: number) => {
+    const token = sessionStorage.getItem('token');
+    const res = await fetch(`http://localhost:3000/api/sales/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!res.ok) {
+        const errorMsg = await res.text();
+        throw new Error(`Error al obtener el registro: ${errorMsg}`);
     }
     const data = await res.json();
     return data;

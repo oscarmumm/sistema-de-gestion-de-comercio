@@ -18,11 +18,27 @@ export const bulkInsert = async (itemsArray) => {
             );
         });
 
-        const query = `INSERT INTO sale_items (sale_id, product_id, quantity, discount, price_type) VALUES ${placeholders.join(', ')} RETURNING *`
+        const query = `INSERT INTO sale_items (sale_id, product_id, quantity, discount, price_type) VALUES ${placeholders.join(
+            ', '
+        )} RETURNING *`;
 
         const result = await pool.query(query, values);
         return result.rows;
     } catch (error) {
+        console.error('Error en SaleItemModel: ', error);
+        throw error;
+    }
+};
+
+export const getItemsBySaleId = async (id) => {
+    try {
+        const result = await pool.query(
+            'SELECT sale_items.product_id, products.name AS name, sale_price AS unit_price, quantity FROM sale_items JOIN products ON products.product_id = sale_items.product_id WHERE sale_id = $1',
+            [id]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error('Error en SaleItemModel: ', error);
         throw error;
     }
 };

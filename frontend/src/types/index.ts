@@ -89,6 +89,21 @@ export interface Sale {
     updated_by: number;
 }
 
+interface InvoiceItem {
+    product_id: number;
+    name: string;
+    unit_price: number;
+    quantity: number;
+}
+
+export interface Invoice {
+    username: string;
+    total: number;
+    payment_method: string;
+    date: Date;
+    products: InvoiceItem[];
+}
+
 export interface StockEntry {
     user_id: number;
     supplier_id: number;

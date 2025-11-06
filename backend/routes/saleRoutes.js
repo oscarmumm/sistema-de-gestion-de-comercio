@@ -27,5 +27,11 @@ router.get(
     verifyToken,
     SaleController.getSalesByCategoryController
 );
+router.get('/:id', verifyToken, SaleController.getSaleByIdController);
+router.get(
+    '/items/:id',
+    verifyToken,
+    SaleItemController.getItemsBySaleIdController
+);
 
 export default router;

@@ -4,12 +4,17 @@ import {
     modalFormVariants,
 } from '../../animations/animations';
 import { MdClose } from 'react-icons/md';
-import type { SaleItemView, SaleItem, PaymentMethod } from '../../types';
+import type {
+    SaleItemView,
+    SaleItem,
+    PaymentMethod,
+    Invoice,
+} from '../../types';
 import { useEffect, useState } from 'react';
 import { getPaymentMethods } from '../../api/paymentMethods';
 import { getUserIdFromSession } from '../../utils/utils';
-import { createSale } from '../../api/sales';
-import { insertSaleItems } from '../../api/saleItems';
+import { createSale, getSaleById } from '../../api/sales';
+import { insertSaleItems, getSaleItemsBySaleId } from '../../api/saleItems';
 import { Input } from '../Input';
 
 interface PaymentModalProps {
@@ -29,7 +34,7 @@ export const PaymentModal = ({
     saleItemsView,
     saleItems,
     clearSaleItems,
-    successfulSale
+    successfulSale,
 }: PaymentModalProps) => {
     const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
     const [user, setUser] = useState<number>(0);
@@ -39,6 +44,7 @@ export const PaymentModal = ({
             name: 'Sin método seleccionado',
         });
     const [customer, setCustomer] = useState<string>('');
+    const [invoiceData, setInvoiceData] = useState<Invoice>();
 
     useEffect(() => {
         fetchPaymentMethods();
@@ -49,6 +55,32 @@ export const PaymentModal = ({
         try {
             const data = await getPaymentMethods();
             setPaymentMethods(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const generateInvoiceData = async (id: number) => {
+        const saleData = await fetchSaleData(id);
+        const saleItems = await fetchSaleItems(id);
+        const data = { ...saleData, products: saleItems };
+        console.log(data)
+        setInvoiceData(data);
+    };
+
+    const fetchSaleData = async (id: number) => {
+        try {
+            const saleData = await getSaleById(id);
+            return saleData;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const fetchSaleItems = async (id: number) => {
+        try {
+            const saleItems = await getSaleItemsBySaleId(id);
+            return saleItems;
         } catch (error) {
             console.error(error);
         }
@@ -160,6 +192,7 @@ export const PaymentModal = ({
                                         saleId,
                                         itemsArray: saleItemsPayload,
                                     });
+                                    generateInvoiceData(saleId);
                                     setSelectedPaymentMethod({
                                         payment_method_id: 0,
                                         name: 'Sin método seleccionado',

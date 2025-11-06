@@ -4,9 +4,7 @@ export const createSaleController = async (req, res) => {
     try {
         const { user_id, total, customer, payment_method_id } = req.body;
         if (!user_id || !total || !customer || !payment_method_id) {
-            return res
-                .status(400)
-                .json({ message: 'Parámetros faltantes' });
+            return res.status(400).json({ message: 'Parámetros faltantes' });
         }
         const newSale = await SaleModel.createSale(
             user_id,
@@ -14,13 +12,12 @@ export const createSaleController = async (req, res) => {
             customer,
             payment_method_id
         );
-        return res.status(200).json({newSale});
+        return res.status(200).json({ newSale });
     } catch (error) {
         console.error('Error en createSaleController', error);
         return res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
-
 
 export const getSalesByDayController = async (req, res) => {
     try {
@@ -50,7 +47,7 @@ export const getSalesByDayController = async (req, res) => {
                 data: [],
             });
         }
-        return res.status(200).json({data: sales});
+        return res.status(200).json({ data: sales });
     } catch (error) {
         console.error('Error en getSalesByDateController', error);
         return res.status(500).json({ message: 'Error interno del servidor' });
@@ -85,7 +82,7 @@ export const getSalesByPaymentMethodController = async (req, res) => {
                 data: [],
             });
         }
-        return res.status(200).json({data: sales});
+        return res.status(200).json({ data: sales });
     } catch (error) {
         console.error('Error en getSalesByDateController', error);
         return res.status(500).json({ message: 'Error interno del servidor' });
@@ -120,7 +117,7 @@ export const getSalesByCategoryController = async (req, res) => {
                 data: [],
             });
         }
-        return res.status(200).json({data: sales});
+        return res.status(200).json({ data: sales });
     } catch (error) {
         console.error('Error en getSalesByDateController', error);
         return res.status(500).json({ message: 'Error interno del servidor' });
@@ -155,7 +152,18 @@ export const getProductsSoldByDateController = async (req, res) => {
                 data: [],
             });
         }
-        return res.status(200).json({data: products});
+        return res.status(200).json({ data: products });
+    } catch (error) {
+        console.error('Error en getSalesByDateController', error);
+        return res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
+export const getSaleByIdController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const entry = await SaleModel.getSaleById(id);
+        return res.json(entry);
     } catch (error) {
         console.error('Error en getSalesByDateController', error);
         return res.status(500).json({ message: 'Error interno del servidor' });
