@@ -98,7 +98,7 @@ export const getProductsSoldByDate = async (from, until) => {
 export const getSaleById = async (id) => {
     try {
         const result = await pool.query(
-            'SELECT total, sales.user_id AS username, payment_methods.name AS payment_method, sales.created_at AS date FROM sales JOIN payment_methods ON payment_methods.payment_method_id = sales.payment_method_id JOIN users ON users.user_id = sales.user_id WHERE sale_id = $1',
+            'SELECT total, users.username AS username, payment_methods.name AS payment_method, sales.created_at AS date FROM sales JOIN payment_methods ON payment_methods.payment_method_id = sales.payment_method_id JOIN users ON users.user_id = sales.user_id WHERE sale_id = $1',
             [id]
         );
         return result.rows[0];

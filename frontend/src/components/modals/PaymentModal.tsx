@@ -16,6 +16,8 @@ import { getUserIdFromSession } from '../../utils/utils';
 import { createSale, getSaleById } from '../../api/sales';
 import { insertSaleItems, getSaleItemsBySaleId } from '../../api/saleItems';
 import { Input } from '../Input';
+import { pdf } from '@react-pdf/renderer';
+import { InvoicePDF } from '../InvoicePDF';
 
 interface PaymentModalProps {
     total: number;
@@ -51,6 +53,12 @@ export const PaymentModal = ({
         setUser(getUserIdFromSession);
     }, []);
 
+    const openInvoice = async (invoiceData: Invoice) => {
+        const blob = await pdf(<InvoicePDF invoice={invoiceData} />).toBlob();
+        const url = URL.createObjectURL(blob);
+        window.open(url);
+    };
+
     const fetchPaymentMethods = async () => {
         try {
             const data = await getPaymentMethods();
@@ -64,8 +72,9 @@ export const PaymentModal = ({
         const saleData = await fetchSaleData(id);
         const saleItems = await fetchSaleItems(id);
         const data = { ...saleData, products: saleItems };
-        console.log(data)
+        console.log(data);
         setInvoiceData(data);
+        openInvoice(data);
     };
 
     const fetchSaleData = async (id: number) => {
