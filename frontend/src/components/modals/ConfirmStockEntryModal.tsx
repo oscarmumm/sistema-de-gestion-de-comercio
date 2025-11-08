@@ -56,12 +56,25 @@ export const ConfirmStockEntryModal = ({
         window.open(url);
     };
 
+    const downloadReceipt = async (receitpData: GoodsReceipt) => {
+        const blob = await pdf(<GoodsReceiptPDF receipt={receitpData} />).toBlob();
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Factura-${receitpData.entry_date || 'descarga'}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
     const generateReceiptData = async (id: number) => {
         const entry = await fetchStockEntry(id);
         const entryItems = await fetchStockEntryItems(id);
         const data = { ...entry, products: entryItems };
         setReceiptData(data);
-        openReceipt(data);
+        downloadReceipt(data);
     };
 
     const fetchStockEntry = async (id: number) => {

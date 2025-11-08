@@ -53,10 +53,17 @@ export const PaymentModal = ({
         setUser(getUserIdFromSession);
     }, []);
 
-    const openInvoice = async (invoiceData: Invoice) => {
+    const downloadInvoice = async (invoiceData: Invoice) => {
         const blob = await pdf(<InvoicePDF invoice={invoiceData} />).toBlob();
         const url = URL.createObjectURL(blob);
-        window.open(url);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Factura-${invoiceData.date || 'descarga'}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     };
 
     const fetchPaymentMethods = async () => {
@@ -74,7 +81,7 @@ export const PaymentModal = ({
         const data = { ...saleData, products: saleItems };
         console.log(data);
         setInvoiceData(data);
-        openInvoice(data);
+        downloadInvoice(data);
     };
 
     const fetchSaleData = async (id: number) => {
